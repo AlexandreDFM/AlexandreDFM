@@ -14,17 +14,17 @@ Everyday, I get to create awesome experiences and engage with the vibrant GitHub
 ### Find on these websites:
 
 <p align="left">
-<a href="http://twitter.com/Deslock06" target="blank"><img align="center" src="https://github.com/Deslock06/Deslock06/blob/master/socials/twitter%20(2).png" alt="" height="30" /></a>
-<a href="http://linkedin.com/in/Deslock06" target="blank"><img align="center" src="https://github.com/Deslock06/Deslock06/blob/master/socials/transparent-Linkedin-logo-icon.png" alt="" height="30" /></a>
-<a href="http://instagram.com/Deslock06" target="blank"><img align="center" src="https://github.com/Deslock06/Deslock06/blob/master/socials/instagram.png" alt="" height="30" /></a>
-<a href="http://twitch.tv/Deslock06" target="blank"><img align="center" src="https://github.com/Deslock06/Deslock06/blob/master/socials/twitch.png" alt="" height="30" /></a>
-<a href="http://youtube.com/c/Deslock06" target="blank"><img align="center" src="https://github.com/Deslock06/Deslock06/blob/master/socials/youtube.png" alt="" height="30" /></a>
-<a href="http://Deslock06.com" target="blank"><img align="center" src="https://github.com/Deslock06/Deslock06/blob/master/socials/chrome.png" alt="" height="30" /></a>
+<a href="http://twitter.com/Deslock06" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/socials/twitter.png" alt="" height="30" /></a>
+<a href="http://linkedin.com/in/Deslock06" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/socials/linkedin.png" alt="" height="30" /></a>
+<a href="http://instagram.com/Deslock06" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/socials/instagram.png" alt="" height="30" /></a>
+<a href="http://twitch.tv/Deslock06" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/socials/twitch.png" alt="" height="30" /></a>
+<a href="http://youtube.com/c/Deslock06" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/socials/youtube.png" alt="" height="30" /></a>
+<a href="http://Deslock06.com" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/socials/chrome.png" alt="" height="30" /></a>
 </p>
 
 <!-- TODO add in the rest of the URLs here -->
 ### I'm a gamer too, so you might find me on:
-<a href="https://jetlags.fr/discord" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/Game%20Icons/Discord.png" height="30" /></a>
+<a href="https://jetlags.fr/discord" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/Game%20Icons/discord.png" height="30" /></a>
 <a href=" " target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/Game%20Icons/Epic.png" height="30" /></a> 
 <a href=" " target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/Game%20Icons/LoL.png" height="30" /></a>
 <a href=" " target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/Game%20Icons/Battlenet.png" height="30" /></a>
