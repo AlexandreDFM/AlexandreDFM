@@ -47,5 +47,5 @@ I'm looking forward to hearing your opinion about my projects and I hope you lik
 
 <img align="right" width="150" height="150" src="https://github.com/AlexandreDFM/Profil/blob/main/me/alexandre.jpg"></a>
 ### Some fun facts about me:
-I love playing video games which you can find on my [Twitch Channel] (http://twitch.tv/deslock06 or http://twitch.tv/jetlagsoff). On my channel, I also do live coding, sharing that allows me to grow with the help of others! If you think you'd like to find me, you can follow me online for now, and then participate in my discussions on Twitch!
+I love playing video games which you can find on my Twitch Channel (http://twitch.tv/deslock06 or http://twitch.tv/jetlagsoff). On my channel, I also do live coding, sharing that allows me to grow with the help of others! If you think you'd like to find me, you can follow me online for now, and then participate in my discussions on Twitch!
 
