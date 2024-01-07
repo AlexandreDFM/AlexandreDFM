@@ -36,13 +36,13 @@ WORKDIR /app
 
 # Install app dependencies
 COPY package*.json ./
-RUN npm install
+RUN yarn install
 
 # Bundle app source
 COPY . .
 
 # Build app
-RUN npm build
+RUN yarn run build
 
 ########################
 #      PRODUCTION      #
