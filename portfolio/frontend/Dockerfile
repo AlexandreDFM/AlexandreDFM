@@ -1,9 +1,9 @@
-#
-# File Name: .gitignore
-# Author: Alexandre DE FREITAS MARTINS
+# File Name: Dockerfile
+# Author: Alexandre Kévin De Freitas Martins
 # Creation Date: 2023
-# Description: .gitignore
-# Company: Tux Inc.
+# Description: Dockerfile for the frontend of the application
+#
+# Copyright (c) 2023 Tux Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the 'Software'), to deal
@@ -22,8 +22,33 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-#
 
-*.env
-*.idea
-*.vscode
+# Build stage
+FROM node:latest AS build-stage
+
+# Create app directory
+RUN mkdir /app
+WORKDIR /app
+
+# Install app dependencies
+COPY package*.json ./
+RUN npm install
+
+# Bundle app source
+COPY . .
+
+# Build app
+RUN npm run generate
+
+
+# Production stage
+FROM nginx:latest AS production-stage
+
+# Copy build from build-stage
+COPY --from=build-stage /app/dist /usr/share/nginx/html
+
+# Expose port 80
+EXPOSE 80
+
+# Copy nginx config
+CMD ["nginx", "-g", "daemon off;"]
