@@ -26,6 +26,8 @@
 
 /** @type {import('next').NextConfig} */
 
-const nextConfig = {}
+const nextConfig = {
+    distDir: 'dist',
+}
 
 module.exports = nextConfig
