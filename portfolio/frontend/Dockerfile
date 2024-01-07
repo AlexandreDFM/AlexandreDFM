@@ -1,9 +1,9 @@
 # File Name: Dockerfile
 # Author: Alexandre Kévin De Freitas Martins
-# Creation Date: 2023
+# Creation Date: 2024
 # Description: Dockerfile for the frontend of the application
 #
-# Copyright (c) 2023 Tux Inc.
+# Copyright (c) 2024 Tux Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the 'Software'), to deal
@@ -23,8 +23,12 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+########################
+# BUILD FOR PRODUCTION #
+########################
+
 # Build stage
-FROM node:latest AS build-stage
+FROM node:latest as build-stage
 
 # Create app directory
 RUN mkdir /app
@@ -38,11 +42,14 @@ RUN npm install
 COPY . .
 
 # Build app
-RUN npm run generate
+RUN npm build
 
+########################
+#      PRODUCTION      #
+########################
 
 # Production stage
-FROM nginx:latest AS production-stage
+FROM nginx:latest as production-stage
 
 # Copy build from build-stage
 COPY --from=build-stage /app/dist /usr/share/nginx/html
