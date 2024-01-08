@@ -52,10 +52,7 @@ RUN yarn run build
 FROM nginx:latest as production-stage
 
 # Copy build from build-stage
-COPY --from=build-stage /app/dist /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
+COPY --from=build-stage /app/dist /app/
 
 # Copy nginx config
-CMD ["nginx", "-g", "daemon off;"]
+COPY nginx.conf /etc/nginx/nginx.conf
