@@ -5,11 +5,6 @@ on:
     branches:
       - main
 
-env:
-  REGISTRY: ghcr.io
-  FRONTEND_IMAGE_NAME: ${{ github.actor }}/alexandredfm:latest
-  BACKEND_IMAGE_NAME: ${{ github.actor }}/alexandredfm-api:latest
-
 jobs:
   build_api:
     name: Build and push Backend images
@@ -74,18 +69,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@master
-      - name: Setup SSH
+      - name: Create SSH Keys
         run: |
           mkdir -p ~/.ssh/
           echo "${{ secrets.SSH_PRIV_KEY }}" > ~/.ssh/id_rsa
-          echo "${{ secrets.SSH_PUB_KEY }}" > ~/.ssh/id_rsa.pub
           chmod 600 ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa.pub
           ssh-keyscan -H ${{ secrets.IP }} >> ~/.ssh/known_hosts
-      - name: copy builds to server
+      - name: Copy Docker Compose
         run: |
-          rsync -vrm docker-compose-production.yml ${{ secrets.USER_IP }}:${{ secrets.WORK_DIR }}/docker-compose.yml
+          rsync -avz -e "ssh -o StrictHostKeyChecking=no" --progress ./docker-compose-production.yml ${{ secrets.USER_IP }}:${{ secrets.WORK_DIR }}
       - name: Connect and Pull Docker
-        run: ssh ${{ secrets.USER_IP }} "cd ${{ secrets.WORK_DIR }} && docker-compose -f docker-compose-production.yml pull && docker-compose -f docker-compose-production.yml up -d && exit"
+        run: |
+          ssh ${{ secrets.USER_IP }} "cd ${{ secrets.WORK_DIR }} && cp ./docker-compose-production.yml ${{ secrets.WORK_DIR }}/docker-compose.yml && docker-compose -f docker-compose-production.yml pull && docker-compose -f docker-compose-production.yml up -d && exit"
       - name: cleanup
         run: rm -rf ~/.ssh
