@@ -89,5 +89,5 @@ jobs:
       - name: Connect and Pull Docker
         run: |
           ssh ${{ secrets.USER_IP }} "cd ${{ secrets.WORK_DIR }}/portfolio && docker compose -f docker-compose-production.yml pull && docker compose -f docker-compose-production.yml up -d && exit"
-      - name: cleanup
+      - name: Clean up SSH Keys
         run: rm -rf ~/.ssh

@@ -24,9 +24,11 @@
 
 version: "3"
 
+name: alexandredfm-production
 services:
   # Nginx Proxy Manager
   nginx-proxy-manager:
+    container_name: alexandredfm-nginx-proxy-manager
     image: jc21/nginx-proxy-manager:latest
     restart: always
     ports:
@@ -39,7 +41,7 @@ services:
 
   # MariaDB
   db:
-    container_name: alexandredfm-db
+    container_name: alexandredfm-db-prod
     image: mariadb
     restart: always
     ports:
@@ -54,15 +56,12 @@ services:
 
   # Nest API
   api:
-    container_name: alexandredfm-api
+    container_name: alexandredfm-api-prod
     image: ghcr.io/alexandredfm/alexandredfm-api:latest
     restart: always
     working_dir: /usr/src/app
     ports:
       - "3000:3000"
-    volumes:
-      - ./backend:/usr/src/app
-      - ./backend/node_modules:/usr/src/app/node_modules
     depends_on:
       - db
     networks:
@@ -70,12 +69,12 @@ services:
 
   # Next Frontend
   frontend:
-    container_name: alexandredfm-frontend
+    container_name: alexandredfm-frontend-prod
     image: ghcr.io/alexandredfm/alexandredfm:latest
     restart: always
     working_dir: /usr/src/app
     ports:
-      - "80:8080"
+      - "8080:80"
     depends_on:
       - api
     networks:

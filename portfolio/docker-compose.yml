@@ -24,6 +24,7 @@
 
 version: "3.1"
 
+name: alexandredfm-dev
 services:
   # MariaDB
   db:
