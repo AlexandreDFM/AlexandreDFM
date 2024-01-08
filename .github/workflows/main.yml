@@ -77,9 +77,10 @@ jobs:
           ssh-keyscan -H ${{ secrets.IP }} >> ~/.ssh/known_hosts
       - name: Copy Docker Compose
         run: |
-          rsync -v -v -e 'ssh -p 22' --progress ./docker-compose-production.yml ${{ secrets.USER_IP }}:${{ secrets.WORK_DIR }}
+          sudo apt intall scp -y
+          scp -r -o StrictHostKeyChecking=no docker-compose-production.yml ${{ secrets.USER_IP }}:${{ secrets.WORK_DIR }}/docker-compose.yml
       - name: Connect and Pull Docker
         run: |
-          ssh ${{ secrets.USER_IP }} "cd ${{ secrets.WORK_DIR }} && cp ./docker-compose-production.yml ${{ secrets.WORK_DIR }}/docker-compose.yml && docker-compose -f docker-compose-production.yml pull && docker-compose -f docker-compose-production.yml up -d && exit"
+          ssh ${{ secrets.USER_IP }} "cd ${{ secrets.WORK_DIR }} && docker-compose -f docker-compose-production.yml pull && docker-compose -f docker-compose-production.yml up -d && exit"
       - name: cleanup
         run: rm -rf ~/.ssh
