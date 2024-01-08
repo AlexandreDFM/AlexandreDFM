@@ -78,7 +78,7 @@ jobs:
       - name: Copy Docker Compose
         run: |
           sudo apt intall scp -y
-          scp -r -o StrictHostKeyChecking=no docker-compose-production.yml ${{ secrets.USER_IP }}:${{ secrets.WORK_DIR }}/docker-compose.yml
+          scp docker-compose-production.yml ${{ secrets.USER_IP }}:${{ secrets.WORK_DIR }}/docker-compose.yml
       - name: Connect and Pull Docker
         run: |
           ssh ${{ secrets.USER_IP }} "cd ${{ secrets.WORK_DIR }} && docker-compose -f docker-compose-production.yml pull && docker-compose -f docker-compose-production.yml up -d && exit"
