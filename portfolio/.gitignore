@@ -24,6 +24,10 @@
 # THE SOFTWARE.
 #
 
+#Folders
+data/
+.idea
+.vscode
+
+#Files
 *.env
-*.idea
-*.vscode
