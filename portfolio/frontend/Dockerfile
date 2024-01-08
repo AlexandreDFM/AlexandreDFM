@@ -31,8 +31,8 @@
 FROM node:latest as build-stage
 
 # Create app directory
-RUN mkdir /app
-WORKDIR /app
+RUN mkdir /usr/src/app
+WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package*.json ./
@@ -52,7 +52,7 @@ RUN yarn run build
 FROM nginx:latest as production-stage
 
 # Copy build from build-stage
-COPY --from=build-stage /app/dist /app/
+COPY --from=build-stage /usr/src/app/dist /app/
 
 # Copy nginx config
 COPY nginx.conf /etc/nginx/nginx.conf
