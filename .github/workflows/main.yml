@@ -77,7 +77,7 @@ jobs:
           ssh-keyscan -H ${{ secrets.IP }} >> ~/.ssh/known_hosts
       - name: Copy Docker Compose
         run: |
-          sudo apt intall scp -y
+          sudo apt install scp -y
           scp docker-compose-production.yml ${{ secrets.USER_IP }}:${{ secrets.WORK_DIR }}/docker-compose.yml
       - name: Connect and Pull Docker
         run: |
