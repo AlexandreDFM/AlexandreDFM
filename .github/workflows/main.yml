@@ -84,7 +84,7 @@ jobs:
           ssh-keyscan -H ${{ secrets.IP }} >> ~/.ssh/known_hosts
       - name: copy builds to server
         run: |
-          rsync -vrm docker-compose-production.yml ${{ secrets.USER_IP }}:/home/alexandredfm/docker-compose.yml
+          rsync -vrm docker-compose-production.yml ${{ secrets.USER_IP }}:${{ secrets.WORK_DIR }}/docker-compose.yml
       - name: Connect and Pull Docker
         run: ssh ${{ secrets.USER_IP }} "cd ${{ secrets.WORK_DIR }} && docker-compose -f docker-compose-production.yml pull && docker-compose -f docker-compose-production.yml up -d && exit"
       - name: cleanup
