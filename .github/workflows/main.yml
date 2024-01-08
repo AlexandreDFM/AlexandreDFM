@@ -80,6 +80,6 @@ jobs:
       #     rsync -avz -e "ssh -o StrictHostKeyChecking=no" --progress ./docker-compose-production.yml ${{ secrets.USER_IP }}:${{ secrets.WORK_DIR }}
       - name: Connect and Pull Docker
         run: |
-          ssh ${{ secrets.USER_IP }} "cd ${{ secrets.WORK_DIR }} && cp ./docker-compose-production.yml ${{ secrets.WORK_DIR }}/docker-compose.yml && docker-compose -f docker-compose-production.yml pull && docker-compose -f docker-compose-production.yml up -d && exit"
+          ssh ${{ secrets.USER_IP }} "cd ${{ secrets.WORK_DIR }} && docker-compose -f docker-compose-production.yml pull && docker-compose -f docker-compose-production.yml up -d && exit"
       - name: cleanup
         run: rm -rf ~/.ssh
