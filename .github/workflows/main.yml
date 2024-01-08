@@ -88,6 +88,6 @@ jobs:
           target: ${{ secrets.WORK_DIR }}/docker-compose.yml
       - name: Connect and Pull Docker
         run: |
-          ssh ${{ secrets.USER_IP }} "cd ${{ secrets.WORK_DIR }} && docker-compose -f docker-compose-production.yml pull && docker-compose -f docker-compose-production.yml up -d && exit"
+          ssh ${{ secrets.USER_IP }} "cd ${{ secrets.WORK_DIR }} && docker-compose pull && docker-compose up -d && exit"
       - name: cleanup
         run: rm -rf ~/.ssh
