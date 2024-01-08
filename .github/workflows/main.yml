@@ -84,7 +84,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           port: ${{ secrets.PORT }}
           key: ${{ secrets.SSH_PRIV_KEY }}
-          source: "docker-compose-production.yml"
+          source: "./portfolio/docker-compose-production.yml"
           target: ${{ secrets.WORK_DIR }}/docker-compose.yml
       - name: Copy Docker Compose
         run: scp docker-compose-production.yml ${{ secrets.USER_IP }}:${{ secrets.WORK_DIR }}/docker-compose.yml
