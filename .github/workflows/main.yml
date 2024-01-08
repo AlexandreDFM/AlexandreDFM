@@ -66,3 +66,26 @@ jobs:
             ghcr.io/alexandredfm/alexandredfm:${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  deploy-server:
+    name: Deploy Docker Compose to server & restart
+    needs: [build_frontend, build_api]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SSH_PRIV_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PUB_KEY }}" > ~/.ssh/id_rsa.pub
+          chmod 600 ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa.pub
+          ssh-keyscan -H ${{ secrets.IP }} >> ~/.ssh/known_hosts
+      - name: copy builds to server
+        run: |
+          rsync -vrm docker-compose-production.yml ${{ secrets.USER_IP }}:/home/alexandredfm/docker-compose.yml
+      - name: Connect and Pull Docker
+        run: ssh ${{ secrets.USER_IP }} "cd ${{ secrets.WORK_DIR }} && docker-compose -f docker-compose-production.yml pull && docker-compose -f docker-compose-production.yml up -d && exit"
+      - name: cleanup
+        run: rm -rf ~/.ssh
