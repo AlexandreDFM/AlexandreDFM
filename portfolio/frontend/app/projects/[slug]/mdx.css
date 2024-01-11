@@ -1,9 +1,9 @@
 /**
- * File Name: next.config.js
+ * File Name: mdx.css
  * Author: Alexandre Kévin DE FREITAS MARTINS
- * Creation Date: 2023
- * Description: next.config.js
- * Copyright (c) 2023 Tux Inc.
+ * Creation Date: 2024
+ * Description: mdx.css
+ * Copyright (c) 2024 Tux Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the 'Software'), to deal
@@ -24,14 +24,42 @@
  * THE SOFTWARE.
  */
 
-/** @type {import('next').NextConfig} */
-
-const nextConfig = {
-    output: 'export',
-    distDir: 'dist',
-    devIndicators: {
-        autoPrerender: false,
-    },
+[data-rehype-pretty-code-fragment] code {
+  @apply grid min-w-full break-words rounded-none border-0 bg-transparent p-0 text-sm text-black;
+  counter-reset: line;
+  box-decoration-break: clone;
 }
 
-module.exports = nextConfig
+[data-rehype-pretty-code-fragment] .line {
+  @apply px-4 py-1;
+}
+
+[data-rehype-pretty-code-fragment] [data-line-numbers]>.line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 1rem;
+  margin-right: 1rem;
+  text-align: right;
+  color: gray;
+}
+
+[data-rehype-pretty-code-fragment] .line--highlighted {
+  @apply bg-zinc-300 bg-opacity-10;
+}
+
+[data-rehype-pretty-code-fragment] .line-highlighted span {
+  @apply relative;
+}
+
+[data-rehype-pretty-code-fragment] .word--highlighted {
+  @apply rounded-md bg-zinc-300 bg-opacity-10 p-1;
+}
+
+[data-rehype-pretty-code-title] {
+  @apply mt-4 py-2 px-4 text-sm font-medium;
+}
+
+[data-rehype-pretty-code-title]+pre {
+  @apply mt-0;
+}

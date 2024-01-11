@@ -1,9 +1,9 @@
 /**
- * File Name: next.config.js
+ * File Name: mouse.ts
  * Author: Alexandre Kévin DE FREITAS MARTINS
- * Creation Date: 2023
- * Description: next.config.js
- * Copyright (c) 2023 Tux Inc.
+ * Creation Date: 2024
+ * Description: mouse.ts
+ * Copyright (c) 2024 Tux Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the 'Software'), to deal
@@ -24,14 +24,30 @@
  * THE SOFTWARE.
  */
 
-/** @type {import('next').NextConfig} */
+// import { useEffect, useState } from "react";
 
-const nextConfig = {
-    output: 'export',
-    distDir: 'dist',
-    devIndicators: {
-        autoPrerender: false,
-    },
-}
+// interface MousePosition {
+// 	x: number;
+// 	y: number;
+// }
 
-module.exports = nextConfig
+// export function useMousePosition(): MousePosition {
+// 	const [mousePosition, setMousePosition] = useState<MousePosition>({
+// 		x: 0,
+// 		y: 0,
+// 	});
+
+// 	useEffect(() => {
+// 		const handleMouseMove = (event: MouseEvent) => {
+// 			setMousePosition({ x: event.clientX, y: event.clientY });
+// 		};
+
+// 		window.addEventListener("mousemove", handleMouseMove);
+
+// 		return () => {
+// 			window.removeEventListener("mousemove", handleMouseMove);
+// 		};
+// 	}, []);
+
+// 	return mousePosition;
+// }

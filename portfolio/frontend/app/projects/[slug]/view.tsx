@@ -1,9 +1,9 @@
 /**
- * File Name: next.config.js
+ * File Name: view.tsx
  * Author: Alexandre Kévin DE FREITAS MARTINS
- * Creation Date: 2023
- * Description: next.config.js
- * Copyright (c) 2023 Tux Inc.
+ * Creation Date: 2024
+ * Description: view.tsx
+ * Copyright (c) 2024 Tux Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the 'Software'), to deal
@@ -24,14 +24,20 @@
  * THE SOFTWARE.
  */
 
-/** @type {import('next').NextConfig} */
+"use client";
 
-const nextConfig = {
-    output: 'export',
-    distDir: 'dist',
-    devIndicators: {
-        autoPrerender: false,
-    },
-}
+import { useEffect } from "react";
 
-module.exports = nextConfig
+export const ReportView: React.FC<{ slug: string }> = ({ slug }) => {
+	// useEffect(() => {
+	// 	fetch("/api/incr", {
+	// 		method: "POST",
+	// 		headers: {
+	// 			"Content-Type": "application/json",
+	// 		},
+	// 		body: JSON.stringify({ slug }),
+	// 	});
+	// }, [slug]);
+
+	return null;
+};

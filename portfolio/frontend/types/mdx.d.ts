@@ -1,9 +1,9 @@
 /**
- * File Name: next.config.js
+ * File Name: mdx.d.ts
  * Author: Alexandre Kévin DE FREITAS MARTINS
- * Creation Date: 2023
- * Description: next.config.js
- * Copyright (c) 2023 Tux Inc.
+ * Creation Date: 2024
+ * Description: mdx.d.ts
+ * Copyright (c) 2024 Tux Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the 'Software'), to deal
@@ -24,14 +24,8 @@
  * THE SOFTWARE.
  */
 
-/** @type {import('next').NextConfig} */
-
-const nextConfig = {
-    output: 'export',
-    distDir: 'dist',
-    devIndicators: {
-        autoPrerender: false,
-    },
+// types/mdx.d.ts
+declare module "*.mdx" {
+	let MDXComponent: (props) => JSX.Element;
+	export default MDXComponent;
 }
-
-module.exports = nextConfig

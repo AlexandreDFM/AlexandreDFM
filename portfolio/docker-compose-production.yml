@@ -74,7 +74,7 @@ services:
     restart: always
     working_dir: /usr/src/app
     ports:
-      - "8080:80"
+      - "80:80"
     depends_on:
       - api
     networks:

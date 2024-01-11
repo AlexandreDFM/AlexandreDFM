@@ -1,9 +1,9 @@
 /**
- * File Name: next.config.js
+ * File Name: layout.tsx
  * Author: Alexandre Kévin DE FREITAS MARTINS
- * Creation Date: 2023
- * Description: next.config.js
- * Copyright (c) 2023 Tux Inc.
+ * Creation Date: 2024
+ * Description: layout.tsx
+ * Copyright (c) 2024 Tux Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the 'Software'), to deal
@@ -24,14 +24,12 @@
  * THE SOFTWARE.
  */
 
-/** @type {import('next').NextConfig} */
-
-const nextConfig = {
-    output: 'export',
-    distDir: 'dist',
-    devIndicators: {
-        autoPrerender: false,
-    },
+export default function ProjectsLayout({
+	children,
+}: { children: React.ReactNode }) {
+	return (
+		<div className="relative min-h-screen bg-gradient-to-tl from-zinc-900 via-zinc-400/10 to-zinc-900 ">
+			{children}
+		</div>
+	);
 }
-
-module.exports = nextConfig
