@@ -24,51 +24,113 @@
  * THE SOFTWARE.
  */
 
-import { notFound } from "next/navigation";
-// import { allProjects } from "contentlayer/generated";
-// import { Mdx } from "@/app/components/mdx";
-import { Header } from "./header";
 import "./mdx.css";
+import { Header } from "./header";
 import { ReportView } from "./view";
+import { notFound } from "next/navigation";
+import { Mdx } from "../../components/mdx";
+// import { allProjects } from "contentlayer/generated";
 
-// allProjects = [
-//   {}
-// ]
+const allProjects = [
+    {
+        title: "Project 1",
+        slug: "project-1",
+        description: "Project 1 description",
+        body: {
+            code: `
+# Project 1
+`,
+        },
+        repository: "AlexandreDFM/Project-1",
+        url: "https://alexandredfm.com",
+        published: true,
+    },
+    {
+        title: "Project 2",
+        slug: "project-2",
+        description: "Project 2 description",
+        body: {
+            code: `
+# Project 2
+`,
+        },
+        repository: "AlexandreDFM/Project-2",
+        url: "https://alexandredfm.com",
+        published: true,
+    },
+    {
+        title: "Project 3",
+        slug: "project-3",
+        description: "Project 3 description",
+        body: {
+            code: `
+# Project 3
+`,
+        },
+        repository: "AlexandreDFM/Project-3",
+        url: "https://alexandredfm.com",
+        published: true,
+    },
+    {
+        title: "Project 4",
+        slug: "project-4",
+        description: "Project 4 description",
+        body: {
+            code: `
+# Project 4
+`,
+        },
+        repository: "AlexandreDFM/Project-4",
+        url: "https://alexandredfm.com",
+        published: true,
+    },
+    {
+        title: "Project 5",
+        slug: "project-5",
+        description: "Project 5 description",
+        body: {
+            code: `
+# Project 5
+`,
+        },
+        repository: "AlexandreDFM/Project-5",
+        url: "https://alexandredfm.com",
+        published: true,
+    },
+];
 
 export const revalidate = 60;
 
 type Props = {
-  params: {
-    slug: string;
-  };
+    params: {
+        slug: string;
+    };
 };
 
-
 export async function generateStaticParams(): Promise<Props["params"][]> {
-  // return allProjects
-  //   .filter((p) => p.published)
-  //   .map((p) => ({
-  //     slug: p.slug,
-  //   }));
-  return [];
+    return allProjects
+        .filter((p) => p.published)
+        .map((p) => ({
+            slug: p.slug,
+        }));
 }
 
 export default async function PostPage({ params }: Props) {
-  const slug = params?.slug;
-  // const project = allProjects.find((project) => project.slug === slug);
+    const slug = params?.slug;
+    const project = allProjects.find((project) => project.slug === slug);
 
-  // if (!project) {
-  //   notFound();
-  // }
+    if (!project) {
+        notFound();
+    }
 
-  return (
-    <div className="bg-zinc-50 min-h-screen">
-      {/* <Header project={project} views={views} />
-      <ReportView slug={project.slug} /> */}
+    return (
+        <div className="bg-zinc-50 min-h-screen">
+            <Header project={project} views={0} />
+            <ReportView slug={project.slug} />
 
-      <article className="px-4 py-12 mx-auto prose prose-zinc prose-quoteless">
-        {/* <Mdx code={project.body.code} /> */}
-      </article>
-    </div>
-  );
+            <article className="px-4 py-12 mx-auto prose prose-zinc prose-quoteless">
+                <Mdx code={project.body.code} />
+            </article>
+        </div>
+    );
 }
