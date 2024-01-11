@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/mdx": "^14.0.4",
     "@nextui-org/react": "^2.2.9",
     "@tailwindcss/typography": "^0.5.10",
     "framer-motion": "^10.16.16",
