@@ -1,9 +1,9 @@
 /**
- * File Name: next.config.js
+ * File Name: globals.css
  * Author: Alexandre Kévin DE FREITAS MARTINS
- * Creation Date: 2023
- * Description: next.config.js
- * Copyright (c) 2023 Tux Inc.
+ * Creation Date: 2024
+ * Description: globals.css
+ * Copyright (c) 2024 Tux Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the 'Software'), to deal
@@ -24,14 +24,27 @@
  * THE SOFTWARE.
  */
 
-/** @type {import('next').NextConfig} */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-const nextConfig = {
-    output: 'export',
-    distDir: 'dist',
-    devIndicators: {
-        autoPrerender: false,
-    },
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
 }
 
-module.exports = nextConfig
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+}

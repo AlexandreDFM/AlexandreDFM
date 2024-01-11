@@ -10,10 +10,13 @@
   },
   "dependencies": {
     "@nextui-org/react": "^2.2.9",
+    "@tailwindcss/typography": "^0.5.10",
     "framer-motion": "^10.16.16",
+    "lucide-react": "^0.309.0",
     "next": "14.0.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "tailwindcss-debug-screens": "^2.2.1"
   },
   "devDependencies": {
     "@types/node": "^20",

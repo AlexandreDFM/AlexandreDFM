@@ -26,6 +26,7 @@
 
 #Folders
 data/
+mysql/
 .idea
 .vscode
 
