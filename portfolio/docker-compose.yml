@@ -1,8 +1,8 @@
 # File Name: docker-compose.yml
 # Author: Alexandre Kévin De Freitas Martins
-# Creation Date: 2023
+# Creation Date: 2024
 # Description: Docker compose file for the AlexandreDFM project
-# Copyright (c) 2023 Tux Inc.
+# Copyright (c) 2024 Tux Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the 'Software'), to deal
@@ -30,6 +30,7 @@ services:
   db:
     image: mariadb
     restart: unless-stopped
+    mem_limit: 512m
     ports:
       - "3306:3306"
     environment:
@@ -45,6 +46,7 @@ services:
     container_name: alexandredfm-api
     image: node:latest
     restart: unless-stopped
+    mem_limit: 2048m
     command: yarn start:dev
     working_dir: /app
     ports:
@@ -64,6 +66,7 @@ services:
     container_name: alexandredfm-frontend
     image: node:latest
     restart: unless-stopped
+    mem_limit: 2048m
     command: yarn dev
     working_dir: /usr/src/app
     ports:
