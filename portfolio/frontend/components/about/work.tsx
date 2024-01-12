@@ -1,8 +1,8 @@
 /**
- * File Name: next.config.js
+ * File Name: work.tsx
  * Author: Alexandre Kévin DE FREITAS MARTINS
  * Creation Date: 2024
- * Description: next.config.js
+ * Description: work.tsx
  * Copyright (c) 2024 Tux Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,17 +24,20 @@
  * THE SOFTWARE.
  */
 
-/** @type {import('next').NextConfig} */
+import { Card, CardHeader } from "@nextui-org/react";
 
-const nextConfig = {
-    // output: 'export',
-    distDir: 'dist',
-    devIndicators: {
-        autoPrerender: false,
-    },
-    images: {
-        domains: ['https://nextui.org/'],
-    },
+export default function Work() {
+    return (
+        <div>
+            <Card>
+                <CardHeader className="justify-between">
+                    <div className="flex gap-5">
+                        <h1 className="text-2xl font-bold text-gray-900">
+                            Alexandre Kévin DE FREITAS MARTINS
+                        </h1>
+                    </div>
+                </CardHeader>
+            </Card>
+        </div>
+    );
 }
-
-module.exports = nextConfig

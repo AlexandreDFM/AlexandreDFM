@@ -24,12 +24,13 @@
  * THE SOFTWARE.
  */
 
-import Link from "next/link";
 import React from "react";
-import Particles from "./components/particles";
+import Link from "next/link";
+import Particles from "components/particles";
 
 export default function Home() {
     const navigation = [
+        { name: "About", href: "/about" },
         { name: "Projects", href: "/projects" },
         { name: "Contact", href: "/contact" },
     ];

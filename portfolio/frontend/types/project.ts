@@ -1,8 +1,8 @@
 /**
- * File Name: next.config.js
+ * File Name: project.ts
  * Author: Alexandre Kévin DE FREITAS MARTINS
  * Creation Date: 2024
- * Description: next.config.js
+ * Description: project.ts
  * Copyright (c) 2024 Tux Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,17 +24,14 @@
  * THE SOFTWARE.
  */
 
-/** @type {import('next').NextConfig} */
-
-const nextConfig = {
-    // output: 'export',
-    distDir: 'dist',
-    devIndicators: {
-        autoPrerender: false,
-    },
-    images: {
-        domains: ['https://nextui.org/'],
-    },
+export interface Project {
+    id: number;
+    title: string;
+    description: string;
+    link?: string;
+    github?: string;
+    body: {
+        code: string;
+    };
+    date: string;
 }
-
-module.exports = nextConfig

@@ -27,15 +27,15 @@
 "use client";
 
 import Link from "next/link";
-import { Card } from "../components/card";
-import { Navigation } from "../components/nav";
-import { Github, Mail, Twitter } from "lucide-react";
+import { Github, Mail, XIcon } from "lucide-react";
+import { Navigation } from "components/navigation";
+import { Card } from "components/card";
 
 const socials = [
     {
-        icon: <Twitter size={20} />,
-        href: "https://twitter.com/AlexandreDFM",
-        label: "Twitter",
+        icon: <XIcon size={20} />,
+        href: "https://x.com/AlexandreDFM",
+        label: "X",
         handle: "@AlexandreDFM",
     },
     {

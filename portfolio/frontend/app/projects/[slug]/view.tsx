@@ -28,9 +28,9 @@
 
 import { useEffect } from "react";
 
-export const ReportView: React.FC<{ slug: string }> = ({ slug }) => {
+export const ReportView: React.FC<{ slug: number }> = ({ slug }) => {
     useEffect(() => {
-        fetch("/api/incr", {
+        fetch("/incr", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
