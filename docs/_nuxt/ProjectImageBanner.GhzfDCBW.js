@@ -1,0 +1,1 @@
+import{f as s,o as a,c as n,a as e}from"./entry.ab7fK3w4.js";const c={class:"flex justify-center"},o=["src"],m=s({__name:"ProjectImageBanner",props:{img:{type:String,default:"/img/img.jpg"}},setup(t){return(r,i)=>(a(),n("div",null,[e("div",c,[e("img",{class:"rounded-lg shadow-2xl my-2 justify-center",src:`/img/${t.img}`,alt:"${img}"},null,8,o)])]))}});export{m as default};
