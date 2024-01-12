@@ -1,0 +1,1 @@
+import{f as a}from"./node.uMQX-T_c.js";import{r as n,_ as f,o,c as _}from"./entry.ab7fK3w4.js";const l=(e,t,r,...c)=>e[t]?n({...e,[t]:()=>a(e[t](),r==null?void 0:r.unwrap)},t,r,...c):n(e,t,r,...c),u={},d={class:"text-4xl text-center"};function i(e,t){return o(),_("h1",d,[l(e.$slots,"default",{unwrap:"p"})])}const h=f(u,[["render",i]]);export{h as default};
