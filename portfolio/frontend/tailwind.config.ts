@@ -26,13 +26,16 @@
 
 import type { Config } from "tailwindcss";
 const defaultTheme = require("tailwindcss/defaultTheme");
+const { nextui } = require("@nextui-org/react");
 
 const config: Config = {
     content: [
         "./pages/**/*.{js,ts,jsx,tsx,mdx}",
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
+        "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
     ],
+    darkMode: "class",
     theme: {
         extend: {
             typography: {
@@ -136,6 +139,7 @@ const config: Config = {
     plugins: [
         require("@tailwindcss/typography"),
         require("tailwindcss-debug-screens"),
+        nextui(),
     ],
 };
 export default config;

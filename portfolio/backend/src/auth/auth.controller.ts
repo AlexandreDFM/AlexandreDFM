@@ -32,54 +32,52 @@ import {
     Param,
     Patch,
     Post,
-    Delete,
-    BadRequestException,
+    UnauthorizedException,
+    UseGuards,
 } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { Auth } from "./entities/auth.entity";
+import { JwtService } from "@nestjs/jwt";
+import { AuthGuard } from "./auth.guard";
 
 @Controller("auth")
 export class AuthController {
-    constructor(private readonly authService: AuthService) {}
+    constructor(
+        private readonly authService: AuthService,
+        private jwtService: JwtService,
+    ) {}
 
     @Post("/sign-up")
-    async createAuth(@Body() account: Auth) {
-        if (!account.name || !account.email || !account.password) {
-            throw new BadRequestException("Missing fields");
-        } else if (account.password.length < 8) {
-            throw new BadRequestException("Password too short");
-        } else if (await this.authService.findOneByEmail(account.email)) {
-            throw new BadRequestException("Email already used");
-        }
+    async createAuth(@Body() account: Auth): Promise<void> {
         return await this.authService.create(account);
     }
 
+    @UseGuards(AuthGuard)
     @Get()
-    findAll() {
-        return this.authService.getAllAccounts();
+    findAll(): Promise<Auth[]> {
+        return this.authService.getAll();
     }
 
     @Post("/sign-in")
-    findOne(@Body("email") email: string, @Body("password") password: string) {
-        console.log(email, password);
-        if (!email || !password) {
-            throw new BadRequestException("Missing fields");
-        } else if (password.length < 8) {
-            throw new BadRequestException("Email or password invalid");
-        } else if (!this.authService.findOneByEmail(email)) {
-            throw new BadRequestException("Email or password invalid");
-        }
-        return this.authService.findOne(email, password);
+    async signIn(
+        @Body("email") email: string,
+        @Body("password") password: string,
+    ): Promise<{ access_token: string }> {
+        const user: Auth =
+            await this.authService.findOneByEmailWithPassword(email);
+        if (user?.password !== password) throw new UnauthorizedException();
+        const payload: { sub: number; username: string } = {
+            sub: user.id,
+            username: user.email,
+        };
+        return {
+            access_token: this.jwtService.sign(payload),
+        };
     }
 
     @Patch(":id")
     update(@Param("id") id: string, @Body() account: Auth) {
         account.updated_at = new Date();
         return this.authService.update(+id, account);
-    }
-
-    @Delete("/sign-rm/:id")
-    remove(@Param("id") id: string) {
-        return this.authService.deleteOneAuthById(id);
     }
 }

@@ -29,10 +29,20 @@ import { AuthService } from "./auth.service";
 import { Auth } from "./entities/auth.entity";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AuthController } from "./auth.controller";
+import { JwtModule } from "@nestjs/jwt";
+import { jwtConstants } from "./constants";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Auth])],
+    imports: [
+        TypeOrmModule.forFeature([Auth]),
+        JwtModule.register({
+            secret: jwtConstants.secret,
+            signOptions: { expiresIn: "1d" },
+            global: true,
+        }),
+    ],
     providers: [AuthService],
     controllers: [AuthController],
+    exports: [JwtModule, AuthModule],
 })
 export class AuthModule {}

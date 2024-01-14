@@ -44,8 +44,9 @@ export class ProjectsService {
         return await this.projectsRepository.findOneBy({ id });
     }
 
-    async createProject(project: Project) {
-        this.projectsRepository.save(project);
+    async createProject(project: Project, user_id: number): Promise<Project> {
+        project.user_id = user_id;
+        return await this.projectsRepository.save(project);
     }
 
     async deleteOneProjectById(id: string): Promise<void> {

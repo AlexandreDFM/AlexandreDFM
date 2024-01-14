@@ -42,7 +42,7 @@ export default function ProjectsPage() {
     const [views, setViews] = useState<{ [slug: string]: number }>({});
 
     useEffect(() => {
-        fetch("http://localhost:3000/projects", {
+        fetch("http://localhost:3000/projects/", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
@@ -70,37 +70,6 @@ export default function ProjectsPage() {
                 <div className="w-full h-px bg-blue-800" />
 
                 <div className="grid grid-cols-1 gap-8 mx-auto lg:grid-cols-2 ">
-                    <Card>
-                        <Link href={`/projects/1`}>
-                            <article className="relative w-full h-full p-4 md:p-8">
-                                <div className="flex items-center justify-between gap-2">
-                                    <div className="text-xs text-blue-100">
-                                        <span>SOON</span>
-                                    </div>
-                                    <span className="flex items-center gap-1 text-xs text-blue-500">
-                                        <Eye className="w-4 h-4" />{" "}
-                                    </span>
-                                </div>
-
-                                <h2
-                                    id="featured-post"
-                                    className="mt-4 text-3xl font-bold text-blue-100 group-hover:text-white sm:text-4xl font-display"
-                                >
-                                    Title
-                                </h2>
-                                <p className="mt-4 leading-8 duration-150 text-blue-400 group-hover:text-blue-300">
-                                    Description
-                                </p>
-                                <div className="absolute bottom-4 md:bottom-8">
-                                    <p className="hidden text-blue-200 hover:text-blue-50 lg:block">
-                                        Read more
-                                        <span aria-hidden="true">&rarr;</span>
-                                    </p>
-                                </div>
-                            </article>
-                        </Link>
-                    </Card>
-
                     <div className="flex flex-col w-full gap-8 mx-auto border-t border-gray-900/10 lg:mx-0 lg:border-t-0 ">
                         {projects.map((project) => (
                             <Card key={project.id}>

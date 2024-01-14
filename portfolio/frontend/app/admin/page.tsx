@@ -23,39 +23,207 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+"use client";
 
-import { Card, CardBody, CardHeader, Image } from "@nextui-org/react";
+import {
+    Card,
+    CardBody,
+    CardHeader,
+    Button,
+    useDisclosure,
+    Modal,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+} from "@nextui-org/react";
+import cookieCutter from "@boiseitguru/cookie-cutter";
+import { FormEvent, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
-type PageProps = {
-    children: React.ReactNode;
-};
+export default function AdminPage() {
+    const [projects, setProjects] = useState([]);
+    const [token, setToken] = useState("");
+    useEffect(() => {
+        const token = cookieCutter.get("token");
+        setToken(token || "");
+    }, []);
 
-export default function AdminPage({ children }: PageProps) {
+    const router = useRouter();
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    async function onSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault();
+
+        const formData: FormData = new FormData(event.currentTarget);
+        const json: string = JSON.stringify(Object.fromEntries(formData));
+        const response: Response = await fetch(
+            "http://localhost:3000/projects/",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: json,
+            },
+        );
+        if (response.ok) {
+            console.log("Success");
+            onOpenChange();
+        } else {
+            console.log("Error");
+        }
+    }
+
+    async function deleteProject(id: number) {
+        const response: Response = await fetch(
+            `http://localhost:3000/projects/${id}/`,
+            {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            },
+        );
+        if (response.ok) {
+            console.log("Success");
+        } else {
+            console.log("Error");
+        }
+    }
+    function logout() {
+        router.push("/admin/login");
+    }
+    useEffect(() => {
+        async function fetchProjects() {
+            const response = await fetch("http://localhost:3000/projects/", {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            const projects = await response.json();
+            setProjects(projects);
+        }
+        fetchProjects();
+    }, [deleteProject, onSubmit, token]);
     return (
         <div className="flex flex-col items-center justify-center w-screen h-screen overflow-hidden bg-gradient-to-tl from-black via-zinc-600/20 to-black">
-            <div className="absolute top-0 p-4 text-sm text-white">
-                Hello, <span className="font-bold">AlexandreDFM</span>
+            <div className="absolute top-0 p-4 text-sm text-white flex flex-row justify-between items-center w-full">
+                <div>
+                    Hello, <span className="font-bold">AlexandreDFM</span>
+                </div>
+                <div className="flex flex-row gap-2">
+                    <Button color="primary" size="md" onPress={onOpen}>
+                        Add a project
+                    </Button>
+                    <Button color="danger" size="md" onClick={logout}>
+                        Logout
+                    </Button>
+                </div>
             </div>
             {"Voici tout vos projets :"}
-            <div className="absolute bottom-0 p-4 text-sm text-white">
-                <Card className="py-4">
-                    <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-                        <p className="text-tiny uppercase font-bold">
-                            Daily Mix
-                        </p>
-                        <small className="text-default-500">12 Tracks</small>
-                        <h4 className="font-bold text-large">Frontend Radio</h4>
-                    </CardHeader>
-                    <CardBody className="overflow-visible py-2">
-                        <Image
-                            alt="Card background"
-                            className="object-cover rounded-xl"
-                            src="https://avatars.githubusercontent.com/u/91661544?s=400&u=b19ddd2445ac5cdaa4e09e9dd2422868e35569f0&v=4"
-                            width={270}
-                        />
-                    </CardBody>
-                </Card>
+            <div className="text-sm text-white flex flex-col gap-2 mt-2">
+                {projects.map((project: any) => (
+                    <Card
+                        key={project.id}
+                        className="bg-black rounded-2xl p-4 flex flex-col gap-2 items-center justify-start"
+                    >
+                        <CardHeader
+                            className={"text-white flex flex-col gap-2 w-full"}
+                        >
+                            <div
+                                className={
+                                    "flex flex-row w-full justify-between items-center"
+                                }
+                            >
+                                <span className={"text-2xl font-bold"}>
+                                    {project.title}
+                                </span>
+                                <Button
+                                    color={"danger"}
+                                    size={"sm"}
+                                    onClick={() => deleteProject(project.id)}
+                                >
+                                    Delete
+                                </Button>
+                            </div>
+                            <span className={"text-lg italic"}>
+                                {project.description}
+                            </span>
+                        </CardHeader>
+                        <CardBody className={"w-full"}>
+                            <p className={"truncate line-clamp-1 text-white"}>
+                                {project.body}
+                            </p>
+                        </CardBody>
+                    </Card>
+                ))}
             </div>
+            <Modal
+                isOpen={isOpen}
+                onOpenChange={onOpenChange}
+                className={"bg-black"}
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1 text-white w-full">
+                                New project
+                            </ModalHeader>
+                            <ModalBody className={"text-white"}>
+                                <form
+                                    className="flex flex-col items-end justify-end gap-2"
+                                    onSubmit={onSubmit}
+                                >
+                                    <input
+                                        className="p-2 rounded-lg bg-zinc-600/20 text-white w-full"
+                                        type={"text"}
+                                        name={"title"}
+                                        placeholder="Title"
+                                    />
+                                    <input
+                                        className="p-2 rounded-lg bg-zinc-600/20 text-white w-full"
+                                        type={"text"}
+                                        name={"description"}
+                                        placeholder="Description"
+                                    />
+                                    <input
+                                        className="p-2 rounded-lg bg-zinc-600/20 text-white w-full"
+                                        type={"text"}
+                                        name={"link"}
+                                        placeholder="Link"
+                                    />
+                                    <input
+                                        className="p-2 rounded-lg bg-zinc-600/20 text-white w-full"
+                                        type={"text"}
+                                        name={"github"}
+                                        placeholder="Github"
+                                    />
+                                    <textarea
+                                        className="p-2 rounded-lg bg-zinc-600/20 text-white w-full"
+                                        name={"body"}
+                                        placeholder="Body"
+                                    />
+                                    <input
+                                        className="p-2 rounded-lg bg-zinc-600/20 text-white w-full"
+                                        type={"date"}
+                                        name={"date"}
+                                        placeholder="Date"
+                                    />
+                                    <Button
+                                        color={"primary"}
+                                        type={"submit"}
+                                        size={"md"}
+                                    >
+                                        Create
+                                    </Button>
+                                </form>
+                            </ModalBody>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </div>
     );
 }

@@ -24,8 +24,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 
-import { Repository } from "typeorm";
-import { Injectable } from "@nestjs/common";
+import { Repository, SelectQueryBuilder } from "typeorm";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { Auth } from "./entities/auth.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 
@@ -35,23 +35,34 @@ export class AuthService {
         @InjectRepository(Auth) private authRepository: Repository<Auth>,
     ) {}
 
-    async create(account: Auth) {
+    async create(account: Auth): Promise<void> {
+        if (!account.name || !account.email || !account.password) {
+            throw new BadRequestException("Missing fields");
+        } else if (account.password.length < 8) {
+            throw new BadRequestException("Password too short");
+        } else if (await this.findOneByEmail(account.email)) {
+            throw new BadRequestException("Email already in use");
+        }
         await this.authRepository.save(account);
     }
 
-    async getAllAccounts(): Promise<Auth[]> {
+    async getAll(): Promise<Auth[]> {
         return await this.authRepository.find();
     }
 
-    async findOne(email: string, password: string) {
-        return await this.authRepository.findOneBy({ email, password });
+    async findOneByEmailWithPassword(email: string): Promise<Auth> {
+        const queryBuilder: SelectQueryBuilder<Auth> =
+            this.authRepository.createQueryBuilder("auth");
+        queryBuilder.select("auth.password");
+        queryBuilder.where("auth.email = :email", { email });
+        return await queryBuilder.getOne();
     }
 
-    async findOneByEmail(email: string) {
+    async findOneByEmail(email: string): Promise<Auth> {
         return await this.authRepository.findOneBy({ email });
     }
 
-    async update(id: number, account: Auth) {
+    async update(id: number, account: Auth): Promise<void> {
         await this.authRepository.update(id, account);
     }
 

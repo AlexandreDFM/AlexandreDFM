@@ -29,10 +29,17 @@ import { Project } from "./entities/project.entity";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ProjectsService } from "./projects.service";
 import { ProjectsController } from "./projects.controller";
+import { AuthService } from "../auth/auth.service";
+import { AuthModule } from "../auth/auth.module";
+import { Auth } from "../auth/entities/auth.entity";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Project])],
-    providers: [ProjectsService],
+    imports: [
+        TypeOrmModule.forFeature([Project]),
+        AuthModule,
+        TypeOrmModule.forFeature([Auth]),
+    ],
+    providers: [ProjectsService, AuthService],
     controllers: [ProjectsController],
 })
 export class ProjectsModule {}

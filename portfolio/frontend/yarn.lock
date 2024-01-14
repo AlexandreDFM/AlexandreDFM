@@ -26,6 +26,11 @@
   dependencies:
     regenerator-runtime "^0.14.0"
 
+"@boiseitguru/cookie-cutter@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@boiseitguru/cookie-cutter/-/cookie-cutter-0.2.3.tgz#34c64e5e2d78f820b03f29e9f3703fac85725fcd"
+  integrity sha512-5Qc77XxPKZ3nQi+UZux31YdPZjNirrYYDTUUhmmHvvE8LqTgmwtXOdrOFCNhp4u+2O6uKFHg1s/B/AqiBQCDTA==
+
 "@contentlayer/core@0.3.4":
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/@contentlayer/core/-/core-0.3.4.tgz#9f108a6fdc612482d6c59255ad5b3f2f3d8091d5"
@@ -2975,6 +2980,11 @@ concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
+
+cookie-cutter@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/cookie-cutter/-/cookie-cutter-0.2.0.tgz#5988f598b68c060a00ec8524ad6e6aa193e72244"
+  integrity sha512-eVyP5liHjDMCmGlp2OD+qoin5TJlwUBRjBKN8R2yJ3ePf8xqUtqmRP6e36ipe0nBm2lTiertH6iHPOptNQzAEw==
 
 core-util-is@^1.0.3:
   version "1.0.3"

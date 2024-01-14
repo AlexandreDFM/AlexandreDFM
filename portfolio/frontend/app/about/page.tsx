@@ -52,21 +52,14 @@ export default function Home() {
                     quantity={100}
                 />
                 <div className="flex flex-col items-center justify-center mx-10">
-                    <Card>
+                    <Card className={"p-4"}>
                         <CardHeader className="justify-between">
                             <div className="flex gap-5">
-                                {/*
                                 <Avatar
                                     isBordered
                                     radius="full"
-                                    size="md"
-                                    src="https://nextui.org/avatars/avatar-1.png"
-                                />
-                                */}
-                                <img
-                                    className="rounded-full size-[80px]"
-                                    alt="AlexandreDFM"
-                                    src="/app/about/alexandredfm.jpeg"
+                                    size="lg"
+                                    src="/app/bio/alexandredfm.jpeg"
                                 />
                                 <div className="flex flex-col gap-1 items-start justify-center">
                                     <h4 className="text-small font-semibold leading-none text-default-600">
@@ -113,14 +106,14 @@ export default function Home() {
                                 #Docker
                             </span>
                         </CardBody>
-                        <CardFooter className="flex flex-col gap-2">
-                            <div>Studies</div>
-                            <Study />
-                            <div>Work experiences</div>
-                            <Work />
-                            <div>Certifications</div>
-                            <Certification />
-                        </CardFooter>
+                        {/*<CardFooter className="flex flex-col gap-2">*/}
+                        {/*    <div>Studies</div>*/}
+                        {/*    <Study />*/}
+                        {/*    <div>Work experiences</div>*/}
+                        {/*    <Work />*/}
+                        {/*    <div>Certifications</div>*/}
+                        {/*    <Certification />*/}
+                        {/*</CardFooter>*/}
                     </Card>
                 </div>
             </div>

@@ -32,9 +32,12 @@ import {
     Param,
     Post,
     Put,
+    Req,
+    UseGuards,
 } from "@nestjs/common";
 import { Project } from "./entities/project.entity";
 import { ProjectsService } from "./projects.service";
+import { AuthGuard } from "../auth/auth.guard";
 
 @Controller("projects")
 export class ProjectsController {
@@ -50,22 +53,29 @@ export class ProjectsController {
         return await this.projectsService.findOne(id);
     }
 
+    @UseGuards(AuthGuard)
     @Post()
-    async createProject(@Body() project: Project): Promise<void> {
-        console.log(project);
-        await this.projectsService.createProject(project);
+    async createProject(
+        @Body() project: Project,
+        @Req() req: any,
+    ): Promise<void> {
+        const { id } = req.user;
+        await this.projectsService.createProject(project, id);
     }
 
+    @UseGuards(AuthGuard)
     @Delete("/:id")
-    async deleteOneprojectById(@Param("id") id: string): Promise<void> {
+    async deleteOneProjectById(@Param("id") id: string): Promise<void> {
         await this.projectsService.deleteOneProjectById(id);
     }
 
+    @UseGuards(AuthGuard)
     @Delete("")
     async deleteAllprojects(): Promise<void> {
         await this.projectsService.deleteAllProjects();
     }
 
+    @UseGuards(AuthGuard)
     @Put(":id")
     async editOneprojectById(
         @Param("id") id: number,
