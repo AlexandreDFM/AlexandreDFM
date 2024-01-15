@@ -25,10 +25,13 @@
  */
 "use client";
 
-import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
 import { FormEvent } from "react";
+import getConfig from "next/config";
 import { useRouter } from "next/navigation";
 import cookieCutter from "@boiseitguru/cookie-cutter";
+import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
+
+const { publicRuntimeConfig } = getConfig();
 
 export default function AdminLoginPage() {
     const router = useRouter();
@@ -38,7 +41,7 @@ export default function AdminLoginPage() {
         const formData: FormData = new FormData(event.currentTarget);
         const json: string = JSON.stringify(Object.fromEntries(formData));
         const response: Response = await fetch(
-            "http://localhost:3000/auth/sign-in/",
+            `${publicRuntimeConfig.apiURL}/auth/sign-in/`,
             {
                 method: "POST",
                 headers: {

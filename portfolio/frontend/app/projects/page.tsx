@@ -27,6 +27,7 @@
 "use client";
 
 import { Article } from "./article";
+import getConfig from "next/config";
 import { Card } from "components/card";
 import { Project } from "types/project";
 import { Navigation } from "components/navigation";
@@ -34,12 +35,14 @@ import { useEffect, useState } from "react";
 
 export const revalidate = 60;
 
+const { publicRuntimeConfig } = getConfig();
+
 export default function ProjectsPage() {
     const [projects, setProjects] = useState<Project[]>([]);
     const [views, setViews] = useState<{ [slug: string]: number }>({});
 
     useEffect(() => {
-        fetch("http://localhost:3000/projects/", {
+        fetch(`${publicRuntimeConfig.apiURL}/projects/`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

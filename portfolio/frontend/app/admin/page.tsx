@@ -37,9 +37,12 @@ import {
     ModalBody,
     ModalFooter,
 } from "@nextui-org/react";
+import getConfig from "next/config";
+import { useRouter } from "next/navigation";
 import cookieCutter from "@boiseitguru/cookie-cutter";
 import { FormEvent, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+
+const { publicRuntimeConfig } = getConfig();
 
 export default function AdminPage() {
     const [projects, setProjects] = useState([]);
@@ -57,7 +60,7 @@ export default function AdminPage() {
         const formData: FormData = new FormData(event.currentTarget);
         const json: string = JSON.stringify(Object.fromEntries(formData));
         const response: Response = await fetch(
-            "http://localhost:3000/projects/",
+            `${publicRuntimeConfig.apiURL}/projects/`,
             {
                 method: "POST",
                 headers: {
@@ -77,7 +80,7 @@ export default function AdminPage() {
 
     async function deleteProject(id: number) {
         const response: Response = await fetch(
-            `http://localhost:3000/projects/${id}/`,
+            `${publicRuntimeConfig.apiURL}/projects/${id}/`,
             {
                 method: "DELETE",
                 headers: {
@@ -97,11 +100,14 @@ export default function AdminPage() {
     }
     useEffect(() => {
         async function fetchProjects() {
-            const response = await fetch("http://localhost:3000/projects/", {
-                headers: {
-                    Authorization: `Bearer ${token}`,
+            const response = await fetch(
+                `${publicRuntimeConfig.apiURL}/projects/`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
                 },
-            });
+            );
             const projects = await response.json();
             setProjects(projects);
         }

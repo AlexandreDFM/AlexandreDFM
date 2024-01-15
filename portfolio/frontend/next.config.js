@@ -35,6 +35,10 @@ const nextConfig = {
     images: {
         domains: ['https://nextui.org/'],
     },
+    publicRuntimeConfig: {
+        // Will be available on both server and client
+        apiURL: process.env.API_BASE_URL,
+    },
 }
 
 module.exports = nextConfig
