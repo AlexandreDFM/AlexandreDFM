@@ -59,7 +59,6 @@ services:
     container_name: alexandredfm-api-prod
     image: ghcr.io/alexandredfm/alexandredfm-api:latest
     restart: always
-    working_dir: /usr/src/app
     ports:
       - "3000:3000"
     depends_on:
