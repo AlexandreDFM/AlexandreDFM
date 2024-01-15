@@ -66,6 +66,8 @@ services:
       - db
     networks:
       - alexandredfm-network
+    env_file:
+      - .env
 
   # Next Frontend
   frontend:
@@ -79,6 +81,8 @@ services:
       - api
     networks:
       - alexandredfm-network
+    env_file:
+      - .env
 
 networks:
   alexandredfm-network:

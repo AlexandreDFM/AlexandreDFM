@@ -26,14 +26,11 @@
 
 "use client";
 
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { Eye } from "lucide-react";
 import { Article } from "./article";
 import { Card } from "components/card";
-import { Navigation } from "components/navigation";
 import { Project } from "types/project";
-import { on } from "events";
+import { Navigation } from "components/navigation";
+import { useEffect, useState } from "react";
 
 export const revalidate = 60;
 
@@ -71,50 +68,54 @@ export default function ProjectsPage() {
 
                 <div className="grid grid-cols-1 gap-8 mx-auto lg:grid-cols-2 ">
                     <div className="flex flex-col w-full gap-8 mx-auto border-t border-gray-900/10 lg:mx-0 lg:border-t-0 ">
-                        {projects.map((project) => (
-                            <Card key={project.id}>
-                                <Article
-                                    project={project}
-                                    views={views[project.id] ?? 0}
-                                />
-                            </Card>
-                        ))}
+                        {projects
+                            .filter((_, i) => i === 0 || i === 1 || i === 2)
+                            .map((project) => (
+                                <Card key={project.id}>
+                                    <Article project={project} />
+                                </Card>
+                            ))}
                     </div>
                 </div>
                 <div className="hidden w-full h-px md:block bg-blue-800" />
 
                 <div className="grid grid-cols-1 gap-4 mx-auto lg:mx-0 md:grid-cols-3">
                     <div className="grid grid-cols-1 gap-4">
-                        {projects.map((project) => (
-                            <Card key={project.id}>
-                                <Article
-                                    project={project}
-                                    views={views[project.id] ?? 0}
-                                />
-                            </Card>
-                        ))}
-                    </div>
-                    <div className="grid grid-cols-1 gap-4">
                         {projects
-                            .filter((_, i) => i % 3 === 1)
+                            .filter((_, i) => i !== 0 && i !== 1 && i !== 2)
                             .map((project) => (
                                 <Card key={project.id}>
-                                    <Article
-                                        project={project}
-                                        views={views[project.id] ?? 0}
-                                    />
+                                    <Article project={project} />
                                 </Card>
                             ))}
                     </div>
                     <div className="grid grid-cols-1 gap-4">
                         {projects
-                            .filter((_, i) => i % 3 === 2)
+                            .filter(
+                                (_, i) =>
+                                    i !== 0 &&
+                                    i !== 1 &&
+                                    i !== 2 &&
+                                    i % 3 === 1,
+                            )
                             .map((project) => (
                                 <Card key={project.id}>
-                                    <Article
-                                        project={project}
-                                        views={views[project.id] ?? 0}
-                                    />
+                                    <Article project={project} />
+                                </Card>
+                            ))}
+                    </div>
+                    <div className="grid grid-cols-1 gap-4">
+                        {projects
+                            .filter(
+                                (_, i) =>
+                                    i !== 0 &&
+                                    i !== 1 &&
+                                    i !== 2 &&
+                                    i % 3 === 2,
+                            )
+                            .map((project) => (
+                                <Card key={project.id}>
+                                    <Article project={project} />
                                 </Card>
                             ))}
                     </div>
