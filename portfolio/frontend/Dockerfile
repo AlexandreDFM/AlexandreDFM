@@ -52,13 +52,10 @@ RUN yarn run build
 FROM node:latest as production-stage
 
 # Copy build from build-stage
-COPY --from=build-stage /usr/src/app/dist /app/
+# COPY --from=build-stage /usr/src/app/dist /app/
 
-# Set workdir
-WORKDIR /app
-
-# Expose port
-EXPOSE 8080
+COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=build /usr/src/app/dist ./dist
 
 # Run serve
 CMD ["node", "server.js"]
