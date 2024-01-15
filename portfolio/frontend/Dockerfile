@@ -49,10 +49,16 @@ RUN yarn run build
 ########################
 
 # Production stage
-FROM nginx:latest as production-stage
+FROM node:latest as production-stage
 
 # Copy build from build-stage
 COPY --from=build-stage /usr/src/app/dist /app/
 
-# Copy nginx config
-COPY nginx.conf /etc/nginx/nginx.conf
+# Set workdir
+WORKDIR /app
+
+# Expose port
+EXPOSE 8080
+
+# Run serve
+CMD ["node", "server.js"]
