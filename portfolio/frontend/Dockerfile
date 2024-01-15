@@ -31,8 +31,8 @@
 FROM node:latest as build-stage
 
 # Create app directory
-RUN mkdir /usr/src/app
-WORKDIR /usr/src/app
+RUN mkdir /app
+WORKDIR /app
 
 # Install app dependencies
 COPY package*.json ./
@@ -51,11 +51,14 @@ RUN yarn run build
 # Production stage
 FROM node:latest as production-stage
 
+WORKDIR /app
+
 # Copy build from build-stage
-# COPY --from=build-stage /usr/src/app/dist /app/
+COPY --from=build-stage /app/public ./public
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=build-stage --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=build-stage --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
-COPY --chown=node:node --from=build /usr/src/app/dist ./dist
-
-# Run serve
-CMD ["node", "server.js"]
+# Run server
+CMD ["node", "/app/server.js"]

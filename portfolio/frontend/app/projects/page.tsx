@@ -30,8 +30,8 @@ import { Article } from "./article";
 import getConfig from "next/config";
 import { Card } from "components/card";
 import { Project } from "types/project";
-import { Navigation } from "components/navigation";
 import { useEffect, useState } from "react";
+import { Navigation } from "components/navigation";
 
 export const revalidate = 60;
 

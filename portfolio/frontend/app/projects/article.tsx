@@ -25,8 +25,6 @@
  */
 
 import Link from "next/link";
-import { Project } from "types/project";
-import { Eye, View } from "lucide-react";
 
 type Props = {
     project: any;
