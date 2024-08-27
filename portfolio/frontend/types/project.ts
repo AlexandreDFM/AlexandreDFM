@@ -27,11 +27,11 @@
 export interface Project {
     id: number;
     title: string;
+    date: string;
     description: string;
     link?: string;
     github?: string;
     body: {
         code: string;
     };
-    date: string;
 }

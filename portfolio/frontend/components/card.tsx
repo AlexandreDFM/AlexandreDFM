@@ -32,7 +32,6 @@ import {
     useMotionValue,
     useSpring,
 } from "framer-motion";
-
 import { MouseEventHandler, PropsWithChildren } from "react";
 
 export const Card: React.FC<PropsWithChildren> = ({ children }) => {
@@ -44,6 +43,7 @@ export const Card: React.FC<PropsWithChildren> = ({ children }) => {
         mouseX.set(clientX - left);
         mouseY.set(clientY - top);
     }
+
     const maskImage = useMotionTemplate`radial-gradient(240px at ${mouseX}px ${mouseY}px, white, transparent)`;
     const style = { maskImage, WebkitMaskImage: maskImage };
 

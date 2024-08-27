@@ -22,9 +22,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-version: "3"
-
 name: alexandredfm-production
+
 services:
   # Nginx Proxy Manager
   nginx-proxy-manager:
@@ -40,39 +39,58 @@ services:
       - ./letsencrypt:/etc/letsencrypt
 
   # MariaDB
-  db:
-    container_name: alexandredfm-db-prod
+  database:
+    container_name: database-prod
     image: mariadb
     restart: always
+    platform: linux/amd64
+    volumes:
+        - ./database/empty_directus_db.sql:/docker-entrypoint-initdb.d/empty_directus_db.sql
     ports:
       - "3306:3306"
-    environment:
-      MYSQL_DATABASE: alexandredfm_db
-      MYSQL_USER: alexandredfm
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: root_password
+    env_file:
+      - ./env/.env.database
     networks:
       - alexandredfm-network
 
-  # Nest API
-  api:
-    container_name: alexandredfm-api-prod
-    image: ghcr.io/alexandredfm/alexandredfm-api:latest
+  # Redis Cache
+  cache:
+    container_name: cache-prod
+    image: redis:6
+    restart: unless-stopped
+    ports:
+        - 6379:6379
+    depends_on:
+        - database
+    networks:
+        - alexandredfm-network
+
+  # Directus Backend
+  backend:
+    container_name: backend-prod
+    image: directus/directus:latest
     restart: always
     ports:
-      - "3000:3000"
+      - "8055:8055"
+    volumes:
+        - ./backend/uploads:/directus/uploads
+        - ./backend/extensions:/directus/extensions
+        - ./backend/templates:/directus/templates
+        - ./backend/snapshots/:/directus/snapshots
     depends_on:
-      - db
+      - cache
+      - database
+    env_file:
+      - ./env/.env.directus
     networks:
       - alexandredfm-network
-    env_file:
-      - .env
 
   # Next Frontend
   frontend:
     container_name: alexandredfm-frontend-prod
     image: ghcr.io/alexandredfm/alexandredfm:latest
     restart: always
+    command: bash -c "yarn start"
     working_dir: /usr/src/app
     ports:
       - "8080:3000"
@@ -81,11 +99,8 @@ services:
     networks:
       - alexandredfm-network
     env_file:
-      - .env
+      - ./env/.env.frontend
 
 networks:
   alexandredfm-network:
     driver: bridge
-
-volumes:
-  db_data:

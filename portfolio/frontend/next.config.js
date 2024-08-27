@@ -37,6 +37,7 @@ const nextConfig = {
     publicRuntimeConfig: {
         // Will be available on both server and client
         apiURL: process.env.API_BASE_URL,
+        apiBearerToken: process.env.API_BEARER_TOKEN,
     },
 }
 

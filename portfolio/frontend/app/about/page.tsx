@@ -51,9 +51,9 @@ export default function Home() {
                     className="absolute inset-0 -z-10 animate-fade-in"
                     quantity={100}
                 />
-                <div className="flex flex-col items-center justify-center mx-10">
+                <div className="flex flex-col items-center justify-center mx-10 max-w-7xl">
                     <Card className={"p-4"}>
-                        <CardHeader className="justify-between">
+                        <CardHeader className="justify-center">
                             <div className="flex gap-5">
                                 <Avatar
                                     isBordered
@@ -94,7 +94,7 @@ export default function Home() {
                                 Languages
                             </h5>
                             <span className="pt-2">
-                                #French #English #Spanish
+                                #French #English #Portuguese
                             </span>
                             {/* Enumarate Technologies */}
                             <h5 className="font-semibold text-default-600 text-small">
@@ -106,14 +106,14 @@ export default function Home() {
                                 #Docker
                             </span>
                         </CardBody>
-                        {/*<CardFooter className="flex flex-col gap-2">*/}
-                        {/*    <div>Studies</div>*/}
-                        {/*    <Study />*/}
-                        {/*    <div>Work experiences</div>*/}
-                        {/*    <Work />*/}
-                        {/*    <div>Certifications</div>*/}
-                        {/*    <Certification />*/}
-                        {/*</CardFooter>*/}
+                        <CardFooter className="flex flex-col gap-2">
+                            <div>Studies</div>
+                            <Study />
+                            <div>Work experiences</div>
+                            <Work />
+                            <div>Certifications</div>
+                            <Certification />
+                        </CardFooter>
                     </Card>
                 </div>
             </div>

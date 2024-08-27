@@ -22,52 +22,62 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-version: "3.1"
-
 name: alexandredfm-dev
+
 services:
   # MariaDB
-  db:
+  database:
+    container_name: database
     image: mariadb
     restart: unless-stopped
-    mem_limit: 512m
+    platform: linux/amd64
+    volumes:
+        - ./database/empty_directus_db.sql:/docker-entrypoint-initdb.d/empty_directus_db.sql
     ports:
       - "3306:3306"
-    environment:
-      MYSQL_DATABASE: alexandredfm_db
-      MYSQL_USER: alexandredfm
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: root_password
+    env_file:
+      - ./env/.env.database
     networks:
       - alexandredfm-network
 
-  # Nest API
-  api:
-    container_name: alexandredfm-api
-    image: node:latest
+  # Redis Cache
+  cache:
+    container_name: cache
+    image: redis:6
     restart: unless-stopped
-    mem_limit: 2048m
-    command: yarn start:dev
-    working_dir: /app
     ports:
-      - "3000:3000"
-    volumes:
-      - ./backend:/app
-      - ./backend/node_modules:/app/node_modules
+        - 6379:6379
     depends_on:
-      - db
+        - database
     networks:
-      - alexandredfm-network
+        - alexandredfm-network
+
+  # Directus Backend
+  backend:
+    container_name: backend
+    image: directus/directus:latest
+    restart: unless-stopped
+    ports:
+        - 8055:8055
+    volumes:
+        - ./backend/uploads:/directus/uploads
+        - ./backend/extensions:/directus/extensions
+        - ./backend/templates:/directus/templates
+        - ./backend/snapshots/:/directus/snapshots
+    depends_on:
+        - cache
+        - database
     env_file:
-      - .env
+        - ./env/.env.directus
+    networks:
+        - alexandredfm-network
 
   # Next Frontend
   frontend:
     container_name: alexandredfm-frontend
     image: node:latest
     restart: unless-stopped
-    mem_limit: 2048m
-    command: yarn dev
+    command: bash -c "yarn dev"
     working_dir: /usr/src/app
     ports:
       - "8080:3000"
@@ -77,11 +87,8 @@ services:
     networks:
       - alexandredfm-network
     env_file:
-      - .env
+      - ./env/.env.frontend
 
 networks:
   alexandredfm-network:
     driver: bridge
-
-volumes:
-  db_data:

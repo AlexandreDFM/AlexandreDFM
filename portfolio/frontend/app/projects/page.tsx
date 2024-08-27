@@ -24,40 +24,41 @@
  * THE SOFTWARE.
  */
 
-"use client";
-
 import { Article } from "./article";
 import getConfig from "next/config";
 import { Card } from "components/card";
 import { Project } from "types/project";
-import { useEffect, useState } from "react";
 import { Navigation } from "components/navigation";
-
-export const revalidate = 60;
 
 const { publicRuntimeConfig } = getConfig();
 
-export default function ProjectsPage() {
-    const [projects, setProjects] = useState<Project[]>([]);
-    const [views, setViews] = useState<{ [slug: string]: number }>({});
+async function getProjects() {
+    const res = await fetch(`http://backend:8055/items/projects/`, {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${publicRuntimeConfig.apiBearerToken}`,
+        },
+        next: { revalidate: 1 },
+    });
+    if (!res.ok) {
+        return [];
+    }
+    const repo = await res.json();
+    if (!repo.data) {
+        return [];
+    }
+    return repo.data;
+}
 
-    useEffect(() => {
-        fetch(`${publicRuntimeConfig.apiURL}/projects/`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        })
-            .then((res) => res.json())
-            .then((data) => {
-                setProjects(data);
-            });
-    }, []);
+export default async function ProjectsPage() {
+    const projectsData = getProjects();
+    const [projects]: [Project[]] = await Promise.all([projectsData]);
 
     return (
         <div className="relative pb-16">
             <Navigation />
-            <div className="px-6 pt-20 mx-auto space-y-8 max-w-7xl lg:px-8 md:space-y-16 md:pt-24 lg:pt-32">
+            <div className="px-6 pt-20 mx-auto space-y-8 max-w-7xl lg:px-8 md:space-y-12 md:pt-24 lg:pt-32">
                 <div className="max-w-2xl mx-auto lg:mx-0">
                     <h2 className="text-3xl font-bold tracking-tight text-blue-100 sm:text-4xl">
                         Projects
@@ -68,61 +69,81 @@ export default function ProjectsPage() {
                     </p>
                 </div>
                 <div className="w-full h-px bg-blue-800" />
-
-                <div className="grid grid-cols-1 gap-8 mx-auto lg:grid-cols-2 ">
-                    <div className="flex flex-col w-full gap-8 mx-auto border-t border-gray-900/10 lg:mx-0 lg:border-t-0 ">
-                        {projects
-                            .filter((_, i) => i === 0 || i === 1 || i === 2)
-                            .map((project) => (
-                                <Card key={project.id}>
-                                    <Article project={project} />
-                                </Card>
-                            ))}
+                {projects.length === 0 && (
+                    <div className="flex items-center justify-center h-96">
+                        <p className="text-blue-400">No projects found.</p>
                     </div>
-                </div>
-                <div className="hidden w-full h-px md:block bg-blue-800" />
-
-                <div className="grid grid-cols-1 gap-4 mx-auto lg:mx-0 md:grid-cols-3">
-                    <div className="grid grid-cols-1 gap-4">
-                        {projects
-                            .filter((_, i) => i !== 0 && i !== 1 && i !== 2)
-                            .map((project) => (
-                                <Card key={project.id}>
-                                    <Article project={project} />
-                                </Card>
-                            ))}
+                )}
+                {projects.length >= 0 && (
+                    <div>
+                        <div className="grid grid-row-1 gap-4 mx-auto lg:grid-row-2 ">
+                            <div className="flex flex-col w-full gap-4 mx-auto border-t border-gray-900/10 lg:mx-0 lg:border-t-0">
+                                {projects
+                                    .filter(
+                                        (_: any, index: number) =>
+                                            index === 0 ||
+                                            index === 1 ||
+                                            index === 2,
+                                    )
+                                    .map((project: Project) => (
+                                        <Card key={project.id}>
+                                            <Article project={project} />
+                                        </Card>
+                                    ))}
+                            </div>
+                        </div>
                     </div>
-                    <div className="grid grid-cols-1 gap-4">
-                        {projects
-                            .filter(
-                                (_, i) =>
-                                    i !== 0 &&
-                                    i !== 1 &&
-                                    i !== 2 &&
-                                    i % 3 === 1,
-                            )
-                            .map((project) => (
-                                <Card key={project.id}>
-                                    <Article project={project} />
-                                </Card>
-                            ))}
+                )}
+                {projects.length >= 3 && (
+                    <div>
+                        <div className="grid grid-cols-1 gap-4 mx-auto lg:mx-0 md:grid-cols-3">
+                            <div className="grid grid-cols-1 gap-4">
+                                {projects
+                                    .filter(
+                                        (_: any, index: number) =>
+                                            index !== 0 &&
+                                            index !== 1 &&
+                                            index !== 2,
+                                    )
+                                    .map((project: Project) => (
+                                        <Card key={project.id}>
+                                            <Article project={project} />
+                                        </Card>
+                                    ))}
+                            </div>
+                            <div className="grid grid-cols-1 gap-4">
+                                {projects
+                                    .filter(
+                                        (_: any, index: number) =>
+                                            index !== 0 &&
+                                            index !== 1 &&
+                                            index !== 2 &&
+                                            index % 3 === 1,
+                                    )
+                                    .map((project: Project) => (
+                                        <Card key={project.id}>
+                                            <Article project={project} />
+                                        </Card>
+                                    ))}
+                            </div>
+                            <div className="grid grid-cols-1 gap-4">
+                                {projects
+                                    .filter(
+                                        (_: any, index: number) =>
+                                            index !== 0 &&
+                                            index !== 1 &&
+                                            index !== 2 &&
+                                            index % 3 === 2,
+                                    )
+                                    .map((project: Project) => (
+                                        <Card key={project.id}>
+                                            <Article project={project} />
+                                        </Card>
+                                    ))}
+                            </div>
+                        </div>
                     </div>
-                    <div className="grid grid-cols-1 gap-4">
-                        {projects
-                            .filter(
-                                (_, i) =>
-                                    i !== 0 &&
-                                    i !== 1 &&
-                                    i !== 2 &&
-                                    i % 3 === 2,
-                            )
-                            .map((project) => (
-                                <Card key={project.id}>
-                                    <Article project={project} />
-                                </Card>
-                            ))}
-                    </div>
-                </div>
+                )}
             </div>
         </div>
     );
