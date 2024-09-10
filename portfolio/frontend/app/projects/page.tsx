@@ -33,22 +33,26 @@ import { Navigation } from "components/navigation";
 const { publicRuntimeConfig } = getConfig();
 
 async function getProjects() {
-    const res = await fetch(`http://backend:8055/items/projects/`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${publicRuntimeConfig.apiBearerToken}`,
-        },
-        next: { revalidate: 1 },
-    });
-    if (!res.ok) {
+    try {
+        const res = await fetch(`http://backend:8055/items/projects/`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${publicRuntimeConfig.apiBearerToken}`,
+            },
+            next: { revalidate: 1 },
+        });
+        if (!res.ok) {
+            return [];
+        }
+        const repo = await res.json();
+        if (!repo.data) {
+            return [];
+        }
+        return repo.data;
+    } catch (error) {
         return [];
     }
-    const repo = await res.json();
-    if (!repo.data) {
-        return [];
-    }
-    return repo.data;
 }
 
 export default async function ProjectsPage() {
