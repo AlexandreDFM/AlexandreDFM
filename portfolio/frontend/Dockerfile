@@ -35,8 +35,7 @@ RUN mkdir /app
 WORKDIR /app
 
 # Install app dependencies
-# COPY ./package.json /package.json
-COPY package.json ./
+COPY ./package.json /package.json
 RUN yarn install
 
 # Bundle app source
