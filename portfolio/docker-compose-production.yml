@@ -95,7 +95,7 @@ services:
     ports:
       - "8080:3000"
     depends_on:
-      - api
+      - backend
     networks:
       - alexandredfm-network
     env_file:
