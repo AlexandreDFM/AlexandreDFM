@@ -24,20 +24,26 @@
  * THE SOFTWARE.
  */
 
-import { Card, CardHeader } from "@nextui-org/react";
+'use client';
+
+import { useTranslation } from "hooks/useTranslation";
 
 export default function Association() {
+    const { t } = useTranslation();
+
     return (
         <div>
-            <Card>
-                <CardHeader className="justify-between">
-                    <div className="flex gap-5">
-                        <h1 className="text-2xl font-bold text-gray-900">
-                            Alexandre Kévin DE FREITAS MARTINS
-                        </h1>
+            <div className="flex flex-col gap-4 w-full">
+                {t<any[]>('about.content.association.items', { returnObjects: true }).map((assoc, index) => (
+                    <div key={index} className="flex flex-col gap-2">
+                        <div className="flex justify-between items-center">
+                            <h3 className="text-lg font-semibold text-default-600">{assoc.title}</h3>
+                            <span className="text-sm text-default-400">{assoc.date}</span>
+                        </div>
+                        <p className="text-sm text-default-400">{assoc.description}</p>
                     </div>
-                </CardHeader>
-            </Card>
+                ))}
+            </div>
         </div>
     );
 }

@@ -27,43 +27,46 @@
 "use client";
 
 import Link from "next/link";
-import { Github, Mail, XIcon } from "lucide-react";
-import { Navigation } from "components/navigation";
 import { Card } from "components/card";
+import { ISocial } from "types/ISocial";
+import { useTranslation } from "hooks/useTranslation";
+import { Github, InstagramIcon, Linkedin, Mail, Phone, XIcon } from "lucide-react";
 
-const socials = [
-    {
-        icon: <XIcon size={20} />,
-        href: "https://x.com/AlexandreDFM",
-        label: "X",
-        handle: "@AlexandreDFM",
-    },
-    {
-        icon: <Mail size={20} />,
-        href: "mailto:contact@alexandredfm.com",
-        label: "Email",
-        handle: "contact@alexandredfm.com",
-    },
-    {
-        icon: <Github size={20} />,
-        href: "https://github.com/AlexandreDFM",
-        label: "Github",
-        handle: "AlexandreDFM",
-    },
-];
+export default function Contact() {
+    const { t } = useTranslation();
 
-export default function Example() {
+    const socials: ISocial[] = t<any[]>("contact.items", {
+        returnObjects: true,
+    }).map((item, _) => ({
+        icon:
+            item.icon === "instagram" ? (
+                <InstagramIcon size={20} />
+            ) : item.icon === "x" ? (
+                <XIcon size={20} />
+            ) : item.icon === "mail" ? (
+                <Mail size={20} />
+            ) : item.icon === "github" ? (
+                <Github size={20} />
+            ) : item.icon === "phone" ? (
+                <Phone size={20} />
+            ) : item.icon === "linkedin" ? (
+                <Linkedin size={20} />
+            ) : null,
+        href: item.href,
+        label: item.label,
+        handle: item.value,
+    }));
+
     return (
-        <div className=" bg-gradient-to-tl from-zinc-900/0 via-zinc-900 to-zinc-900/0">
-            <Navigation />
-            <div className="container flex items-center justify-center min-h-screen px-4 mx-auto">
-                <div className="grid w-full grid-cols-1 gap-8 mx-auto mt-32 sm:mt-0 sm:grid-cols-3 lg:gap-16">
+        <div>
+            <div className="container flex items-center justify-center px-4 mx-auto">
+                <div className="grid w-full grid-cols-1 gap-4 mx-auto mt-32 sm:mt-0 sm:grid-cols-2 md:grid-cols-3 lg:gap-8">
                     {socials.map((s) => (
                         <Card key={s.href}>
                             <Link
                                 href={s.href}
                                 target="_blank"
-                                className="p-4 relative flex flex-col items-center gap-4 duration-700 group md:gap-8 md:py-24  lg:pb-48  md:p-16"
+                                className="p-4 relative flex flex-col items-center gap-2 duration-700 group md:gap-4 md:py-9 lg:pb-12 md:p-8"
                             >
                                 <span
                                     className="absolute w-px h-2/3 bg-gradient-to-b from-zinc-500 via-zinc-500/50 to-transparent"
@@ -73,7 +76,7 @@ export default function Example() {
                                     {s.icon}
                                 </span>{" "}
                                 <div className="z-10 flex flex-col items-center">
-                                    <span className="lg:text-xl font-medium duration-150 xl:text-3xl text-zinc-200 group-hover:text-white font-display">
+                                    <span className="text-center lg:text-xl font-medium duration-150 xl:text-3xl text-zinc-200 group-hover:text-white font-display">
                                         {s.handle}
                                     </span>
                                     <span className="mt-4 text-sm text-center duration-1000 text-zinc-400 group-hover:text-zinc-200">

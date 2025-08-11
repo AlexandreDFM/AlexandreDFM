@@ -24,16 +24,23 @@
  * THE SOFTWARE.
  */
 
+"use client";
+
 import "./globals.css";
-import type { Metadata } from "next";
+import localFont from "next/font/local";
 import { Inter } from "next/font/google";
+import { NextUIProvider } from "@nextui-org/react";
+import AnimatedBackground from "components/layout/AnimatedBackground";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+    subsets: ["latin"],
+    variable: "--font-inter",
+});
 
-export const metadata: Metadata = {
-    title: "AlexandreDFM",
-    description: "Created with Next.js and TypeScript",
-};
+const calSans = localFont({
+    src: "../public/fonts/CalSans-SemiBold.ttf",
+    variable: "--font-calsans",
+});
 
 export default function RootLayout({
     children,
@@ -41,8 +48,14 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
-            <body className={inter.className}>{children}</body>
+        <html lang="en" className={[inter.variable, calSans.variable].join(" ")}>
+            <body className={`bg-black ${process.env.NODE_ENV === "development" ? "debug-screens" : undefined}`}>
+                <NextUIProvider>
+                    <AnimatedBackground>
+                        {children}
+                    </AnimatedBackground>
+                </NextUIProvider>
+            </body>
         </html>
     );
 }

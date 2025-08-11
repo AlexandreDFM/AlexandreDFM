@@ -1,0 +1,258 @@
+{
+    "common": {
+        "home": "Accueil",
+        "projects": "Projets",
+        "about": "À propos",
+        "contact": "Contact"
+    },
+    "projects": {
+        "title": "Projets",
+        "subtitle": "Découvrez mes réalisations",
+        "role": "Rôle",
+        "duration": "Durée",
+        "skills": "Compétences",
+        "technologies": "Technologies",
+        "achievements": "Réalisations clés",
+        "content": {
+            "head_projects": [
+                {
+                    "id": "1",
+                    "title": "Projects",
+                    "description": "Discover my work",
+                    "date": "2025-01-01",
+                    "github": "https://github.com/AlexandreDeFreitasMartins",
+                    "role": "Role",
+                    "duration": "Duration",
+                    "skills": "Skills",
+                    "technologies": [
+                        "React",
+                        "Next.js",
+                        "Tailwind CSS",
+                        "TypeScript",
+                        "Node.js",
+                        "Express",
+                        "MongoDB"
+                    ],
+                    "achievements": [
+                        "Réalisation de l'application de gestion de projets",
+                        "Réalisation de l'application de gestion de projets"
+                    ],
+                    "category": "professional"
+                }
+            ],
+            "projects": [
+                {
+                    "id": "2",
+                    "title": "Projets",
+                    "description": "Découvrez mes réalisations",
+                    "date": "2025-01-01",
+                    "github": "https://github.com/AlexandreDeFreitasMartins",
+                    "role": "Rôle",
+                    "duration": "Durée",
+                    "skills": "Compétences",
+                    "technologies": [
+                        "React",
+                        "Next.js",
+                        "Tailwind CSS",
+                        "TypeScript"
+                    ],
+                    "achievements": [
+                        "Réalisation de l'application de gestion de projets",
+                        "Réalisation de l'application de gestion de projets"
+                    ],
+                    "category": "personal"
+                }
+            ]
+        }
+    },
+    "about": {
+        "title": "À propos de moi",
+        "education": "Formation",
+        "experience": "Expérience",
+        "skills": "Compétences",
+        "content": {
+            "personnal_info": {
+                "myname": "Alexandre",
+                "mylastname": "De Freitas Martins",
+                "mydesc": "22 ans, Nice, France"
+            },
+            "language": {
+                "title": "Langues",
+                "items": [
+                    "Français",
+                    "Portugais",
+                    "Anglais",
+                    "Allemand (KMK)",
+                    "Coréen (Débutant)"
+                ]
+            },
+            "languageLevel": {
+                "title": "Niveaux de langue",
+                "items": [
+                    "L1",
+                    "L2",
+                    "B1",
+                    "B1",
+                    "A1"
+                ]
+            },
+            "skills": {
+                "title": "Compétences",
+                "items": [
+                    "Assembly",
+                    "C",
+                    "C++",
+                    "C#",
+                    "Python",
+                    "Cython",
+                    "ReactNative",
+                    "Docker",
+                    "VueJS",
+                    "NuxtJS",
+                    "Directus",
+                    "NestJS",
+                    "NextJS",
+                    "React",
+                    "Flutter"
+                ]
+            },
+            "interest": {
+                "title": "Centres d'intérêt",
+                "items": [
+                    "Graphisme, Montage",
+                    "Jeux Vidéo",
+                    "Tennis, Tennis de Table"
+                ]
+            },
+            "bio": {
+                "title": "Biographie",
+                "items": [
+                    "Actuellement en étude pour obtenir un diplôme m'octroyant le titre d'Expert en Technologies de l'Information et ingénierie logicielle à Epitech, j'aime créer et concevoir de moi-même des projets visuels ou auditifs que je partage sur les réseaux, ou dans mon cercle privé.",
+                    "Durant mon temps libre, j'approfondis mes connaissances et cherche à comprendre le fonctionnement des choses."
+                ]
+            },
+            "formation": {
+                "title": "Formation",
+                "items": [
+                    {
+                        "date": "09/2018 - 07/2021",
+                    "degree": "Baccalauréat Section Euro Allemande",
+                    "school": "Lycée Albert Calmette, 5 Av Marechal Foch 06000 Nice",
+                    "desc": "Spécialités NSI, Mathématiques et SVT"
+                    },
+                    {
+                        "date": "09/2021 - Aujourd'hui",
+                        "degree": "Titre d'Expert en Technologies de l’Information et ingénierie logicielle",
+                        "school": "Epitech, 131 Bd René Cassin 06200 Nice",
+                        "desc": "Epitech me permet d'étudier le développement informatique, en réalisant plusieurs projets contenant des algorithmes puissants, des sites internet à l'infrastructure complexe, ainsi que des jeux."
+                    },
+                    {
+                        "date": "09/2024 - Aujourd'hui",
+                        "degree": "Études spécialisées en ingénierie des jeux vidéos et des logiciels",
+                        "school": "Keimyung University, Daegu, South Korea",
+                        "desc": "Mon échange à Keimyung University me permet d'apprendre le développement de jeu vidéo à travers ses différentes complexités."
+                    }
+                ]
+            },
+            "job": {
+                "title": "Expérience professionnelle",
+                "items": [
+                    {
+                        "date": "02/2024 - 06/2024",
+                        "title": "Stage - Chef de Projet",
+                        "company": "Jeandet Peintures Refinishing (JPR) \newline 307 Bd de la Madeleine, 06000 Nice, France",
+                        "desc": "Mon stage à JPR constitait à mettre à jour le parc informatique et logiciel ainsi qu'au développement d'une plateforme d'E-Commerce."
+                    },
+                    {
+                        "date": "02/2023 - 02/2024",
+                        "title": "Stage - Assistant Epitech Régional (AER)",
+                        "company": "Epitech, 131 Bd René Cassin 06200 Nice",
+                        "desc": "En tant qu'Assistant Epitech Régional à Epitech, j'étais chargé de dispenser des cours et de fournir un soutien technique et relationnel aux étudiants."
+                    },
+                    {
+                        "date": "07/2022 - 12/2022",
+                        "title": "Stage - Développeur Full-Stack",
+                        "company": "Indigen Solutions, 29 Rue Pastorelli 06000 Nice",
+                        "desc": "Au sein d'Indigen Solutions, une société de solutions informatiques, j'ai pu être placé sur de nombreux projets web pour différentes PME."
+                    }
+                ]
+            },
+            "certification": {
+                "title": "Certifications",
+                "items": [
+                    {
+                        "date": "04/05/2023",
+                    "certification": "STORYTELLING DIGITAL",
+                    "deliveredBy": "IonisX"
+                    },
+                    {
+                        "date": "04/05/2023",
+                        "certification": "GESTION DE PROJET INFORMATIQUE",
+                        "deliveredBy": "IonisX"
+                    }
+                ]
+            },
+            "association": {
+                "title": "Associations",
+                "items": [
+                        {
+                            "date": "09/2022 - Aujourd'hui",
+                            "title": "Epitech - Ambassadeur",
+                            "description": "Promotion, et mise en avant de l'école EPITECH à travers différents évènements."
+                        },
+                    {
+                        "date": "02/2023 - 08/2024",
+                        "title": "Coding Club Nice - Coordinateur Coding Club",
+                        "description": "Accompagnement, et promotion d'activités destinées à apprendre l'informatique à un jeune public."
+                    },
+                    {
+                        "date": "01/2022 - 07/2024",
+                        "title": "E-MMA Nice - Communication Manager",
+                        "description": "E-mma est une association qui promeut la mixité dans le domaine technologique."
+                    }
+                ]
+            }
+        }
+    },
+    "contact": {
+        "title": "Contact",
+        "items": [
+            {
+                "icon": "phone",
+                "href": "tel:+33766963693",
+                "label": "Téléphone",
+                "value": "+33 7 66 96 36 93"
+            },
+            {
+                "icon": "mail",
+                "href": "mailto:contact@alexandredfm.fr",
+                "label": "Mail",
+                "value": "contact@alexandredfm.fr"
+            },
+            {
+                "icon": "linkedin",
+                "href": "https://www.linkedin.com/in/alexandre-de-freitas-martins/",
+                "label": "LinkedIn",
+                "value": "Alexandre De Freitas Martins"
+            },
+            {
+                "icon": "github",
+                "href": "https://github.com/AlexandreDFM",
+                "label": "GitHub",
+                "value": "AlexandreDFM"
+            },
+            {
+                "icon": "instagram",
+                "href": "https://www.instagram.com/AlexandreDFM/",
+                "label": "Instagram",
+                "value": "alexandre.dfm"
+            },
+            {
+                "icon": "x",
+                "href": "https://x.com/AlexandreDFM",
+                "label": "X",
+                "value": "AlexandreDFM"
+            }
+        ]
+    }
+}

@@ -73,6 +73,9 @@ const config: Config = {
                 title: "title 3s ease-out forwards",
                 "fade-left": "fade-left 3s ease-in-out forwards",
                 "fade-right": "fade-right 3s ease-in-out forwards",
+                "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                aurora: "aurora 15s ease infinite",
+                floating: "floating 3s ease-in-out infinite",
             },
             keyframes: {
                 "fade-in": {
@@ -131,6 +134,28 @@ const config: Config = {
                     "100%": {
                         "line-height": "100%",
                         opacity: "100%",
+                    },
+                },
+                aurora: {
+                    "0%": {
+                        transform: "rotate(0deg)",
+                    },
+                    "100%": {
+                        transform: "rotate(360deg)",
+                    },
+                },
+                floating: {
+                    "0%": {
+                        transform: "translateY(0px) scale(1)",
+                        opacity: "0.3",
+                    },
+                    "50%": {
+                        transform: "translateY(-20px) scale(1.1)",
+                        opacity: "0.6",
+                    },
+                    "100%": {
+                        transform: "translateY(0px) scale(1)",
+                        opacity: "0.3",
                     },
                 },
             },

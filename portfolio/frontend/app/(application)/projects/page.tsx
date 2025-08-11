@@ -24,61 +24,67 @@
  * THE SOFTWARE.
  */
 
+'use client';
+
 import { Article } from "./article";
 import getConfig from "next/config";
 import { Card } from "components/card";
-import { Project } from "types/project";
-import { Navigation } from "components/navigation";
+import { IProject } from "types/IProject";
+import { Navbar } from "components/navbar";
+import { useTranslation } from "hooks/useTranslation";
 
-const { publicRuntimeConfig } = getConfig();
+// const { publicRuntimeConfig } = getConfig();
 
-async function getProjects() {
-    try {
-        const res = await fetch(`http://backend:8055/items/projects/`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${publicRuntimeConfig.apiBearerToken}`,
-            },
-            next: { revalidate: 1 },
-        });
-        if (!res.ok) {
-            return [];
-        }
-        const repo = await res.json();
-        if (!repo.data) {
-            return [];
-        }
-        return repo.data;
-    } catch (error) {
-        return [];
-    }
-}
+// async function getProjects() {
+//     try {
+//         const res = await fetch(`http://backend:8055/items/projects/`, {
+//             method: "GET",
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 Authorization: `Bearer ${publicRuntimeConfig.apiBearerToken}`,
+//             },
+//             next: { revalidate: 1 },
+//         });
+//         if (!res.ok) {
+//             return [];
+//         }
+//         const repo = await res.json();
+//         if (!repo.data) {
+//             return [];
+//         }
+//         return repo.data;
+//     } catch (error) {
+//         return [];
+//     }
+// }
 
-export default async function ProjectsPage() {
-    const projectsData = getProjects();
-    const [projects]: [Project[]] = await Promise.all([projectsData]);
+export default function ProjectsPage() {
+    // const projectsData = getProjects();
+    // const [projects]: [Project[]] = await Promise.all([projectsData]);
+    const { t } = useTranslation();
+    const head_projects: IProject[] = t<IProject[]>('projects.content.head_projects', { returnObjects: true });
+
+    const projects: IProject[] = t<IProject[]>('projects.content.projects', { returnObjects: true });
 
     return (
         <div className="relative pb-16">
-            <Navigation />
             <div className="px-6 pt-20 mx-auto space-y-8 max-w-7xl lg:px-8 md:space-y-12 md:pt-24 lg:pt-32">
                 <div className="max-w-2xl mx-auto lg:mx-0">
-                    <h2 className="text-3xl font-bold tracking-tight text-blue-100 sm:text-4xl">
+                    <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
                         Projects
                     </h2>
-                    <p className="mt-4 text-blue-400">
+                    <p className="mt-4 text-default-400">
                         Some of the projects are from work and some are on my
                         own time.
                     </p>
                 </div>
-                <div className="w-full h-px bg-blue-800" />
-                {projects.length === 0 && (
+                <div className="w-full h-px bg-default-400" />
+                {head_projects.length <= 0 && projects.length <= 0 && (
                     <div className="flex items-center justify-center h-96">
-                        <p className="text-blue-400">No projects found.</p>
+                        <p className="text-default-400">No projects found.</p>
                     </div>
                 )}
-                {projects.length >= 0 && (
+                {head_projects.length >= 0 && (
                     <div>
                         <div className="grid grid-row-1 gap-4 mx-auto lg:grid-row-2 ">
                             <div className="flex flex-col w-full gap-4 mx-auto border-t border-gray-900/10 lg:mx-0 lg:border-t-0">
@@ -89,7 +95,7 @@ export default async function ProjectsPage() {
                                             index === 1 ||
                                             index === 2,
                                     )
-                                    .map((project: Project) => (
+                                    .map((project: IProject) => (
                                         <Card key={project.id}>
                                             <Article project={project} />
                                         </Card>
@@ -109,7 +115,7 @@ export default async function ProjectsPage() {
                                             index !== 1 &&
                                             index !== 2,
                                     )
-                                    .map((project: Project) => (
+                                    .map((project: IProject) => (
                                         <Card key={project.id}>
                                             <Article project={project} />
                                         </Card>
@@ -124,7 +130,7 @@ export default async function ProjectsPage() {
                                             index !== 2 &&
                                             index % 3 === 1,
                                     )
-                                    .map((project: Project) => (
+                                    .map((project: IProject) => (
                                         <Card key={project.id}>
                                             <Article project={project} />
                                         </Card>
@@ -139,7 +145,7 @@ export default async function ProjectsPage() {
                                             index !== 2 &&
                                             index % 3 === 2,
                                     )
-                                    .map((project: Project) => (
+                                    .map((project: IProject) => (
                                         <Card key={project.id}>
                                             <Article project={project} />
                                         </Card>

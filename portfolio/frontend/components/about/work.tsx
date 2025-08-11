@@ -24,20 +24,28 @@
  * THE SOFTWARE.
  */
 
+'use client';
+
 import { Card, CardHeader } from "@nextui-org/react";
+import { useTranslation } from "hooks/useTranslation";
 
 export default function Work() {
+    const { t } = useTranslation();
+
     return (
         <div>
-            <Card>
-                <CardHeader className="justify-between">
-                    <div className="flex gap-5">
-                        <h1 className="text-2xl font-bold text-gray-900">
-                            Alexandre Kévin DE FREITAS MARTINS
-                        </h1>
+            <div className="flex flex-col gap-4 w-full">
+                {t<any[]>('about.content.job.items', { returnObjects: true }).map((job, index) => (
+                    <div key={index} className="flex flex-col gap-2">
+                        <div className="flex justify-between items-center">
+                            <h3 className="text-lg font-semibold text-default-600">{job.title}</h3>
+                            <span className="text-sm text-default-400">{job.date}</span>
+                        </div>
+                        <div className="text-sm text-default-500">{job.company}</div>
+                        <p className="text-sm text-default-400">{job.desc}</p>
                     </div>
-                </CardHeader>
-            </Card>
+                ))}
+            </div>
         </div>
     );
 }

@@ -1,9 +1,10 @@
 /**
- * File Name: certification.tsx
+ * File Name: LanguageSwitcher.tsx
  * Author: Alexandre Kévin DE FREITAS MARTINS
- * Creation Date: 2024
- * Description: certification.tsx
- * Copyright (c) 2024 Tux Inc.
+ * Creation Date: 6/6/2025
+ * Description: This is the LanguageSwitcher.tsx
+ * Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
+ * Version: 1.0.0
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the 'Software'), to deal
@@ -26,24 +27,35 @@
 
 'use client';
 
-import { Card, CardHeader } from "@nextui-org/react";
-import { useTranslation } from "hooks/useTranslation";
+import { useTranslation } from '../hooks/useTranslation';
 
-export default function Certification() {
-    const { t } = useTranslation();
+export const LanguageSwitcher = () => {
+    const { locale, setLocale } = useTranslation();
+
     return (
-        <div>
-            <div className="flex flex-col gap-4 w-full">
-                {t<any[]>('about.content.certification.items', { returnObjects: true }).map((cert, index) => (
-                    <div key={index} className="flex flex-col gap-2">
-                        <div className="flex justify-between items-center">
-                            <h3 className="text-lg font-semibold text-default-600">{cert.certification}</h3>
-                            <span className="text-sm text-default-400">{cert.date}</span>
-                        </div>
-                        <div className="text-sm text-default-500">{cert.deliveredBy}</div>
-                    </div>
-                ))}
-            </div>
+        <div className="flex items-center space-x-2">
+            <button
+                onClick={() => setLocale('fr')}
+                className={`px-2 py-1 rounded ${
+                    locale === 'fr'
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-gray-200 text-gray-700'
+                }`}
+                aria-label="Changer la langue en français"
+            >
+                FR
+            </button>
+            <button
+                onClick={() => setLocale('en')}
+                className={`px-2 py-1 rounded ${
+                    locale === 'en'
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-gray-200 text-gray-700'
+                }`}
+                aria-label="Change language to English"
+            >
+                EN
+            </button>
         </div>
     );
-}
+};

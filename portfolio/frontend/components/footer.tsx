@@ -1,9 +1,10 @@
 /**
- * File Name: layout.tsx
+ * File Name: footer.tsx
  * Author: Alexandre Kévin DE FREITAS MARTINS
- * Creation Date: 2024
- * Description: layout.tsx
- * Copyright (c) 2024 Tux Inc.
+ * Creation Date: 11/8/2025
+ * Description: This is the footer.tsx
+ * Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
+ * Version: 1.0.0
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the 'Software'), to deal
@@ -24,12 +25,33 @@
  * THE SOFTWARE.
  */
 
-export default function ProjectsLayout({
-	children,
-}: { children: React.ReactNode }) {
-	return (
-		<div className="relative min-h-screen bg-gradient-to-tl from-zinc-900 via-zinc-400/10 to-zinc-900 ">
-			{children}
-		</div>
-	);
-}
+"use client";
+
+import { useTranslation } from "../hooks/useTranslation";
+import React, { useEffect, useRef, useState } from "react";
+
+export const Footer: React.FC = () => {
+    const { t } = useTranslation();
+    const ref = useRef<HTMLElement>(null);
+    const [isIntersecting, setIntersecting] = useState(true);
+
+    useEffect(() => {
+        if (!ref.current) return;
+        const observer = new IntersectionObserver(([entry]) =>
+            setIntersecting(entry.isIntersecting),
+        );
+
+        observer.observe(ref.current);
+        return () => observer.disconnect();
+    }, []);
+
+    return (
+        <footer ref={ref}>
+            <div className="backdrop-blur border-t bg-zinc-900/500 border-zinc-800">
+                <div className="container flex flex-row-reverse items-center justify-between p-6 mx-auto">
+                    This is a footer component.
+                </div>
+            </div>
+        </footer>
+    );
+};

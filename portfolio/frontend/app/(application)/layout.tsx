@@ -1,8 +1,8 @@
 /**
- * File Name: certification.tsx
+ * File Name: layout.tsx
  * Author: Alexandre Kévin DE FREITAS MARTINS
  * Creation Date: 2024
- * Description: certification.tsx
+ * Description: layout.tsx
  * Copyright (c) 2024 Tux Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,26 +24,23 @@
  * THE SOFTWARE.
  */
 
-'use client';
+"use client";
 
-import { Card, CardHeader } from "@nextui-org/react";
-import { useTranslation } from "hooks/useTranslation";
+import { Footer } from "components/footer";
+import { Navbar } from "components/navbar";
 
-export default function Certification() {
-    const { t } = useTranslation();
+export default function ApplicationLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     return (
-        <div>
-            <div className="flex flex-col gap-4 w-full">
-                {t<any[]>('about.content.certification.items', { returnObjects: true }).map((cert, index) => (
-                    <div key={index} className="flex flex-col gap-2">
-                        <div className="flex justify-between items-center">
-                            <h3 className="text-lg font-semibold text-default-600">{cert.certification}</h3>
-                            <span className="text-sm text-default-400">{cert.date}</span>
-                        </div>
-                        <div className="text-sm text-default-500">{cert.deliveredBy}</div>
-                    </div>
-                ))}
-            </div>
-        </div>
+        <>
+            <Navbar />
+                <div className="min-h-full">
+                    {children}
+                </div>
+            <Footer />
+        </>
     );
 }

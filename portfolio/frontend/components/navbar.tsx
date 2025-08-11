@@ -1,9 +1,10 @@
 /**
- * File Name: nav.tsx
+ * File Name: navbar.tsx
  * Author: Alexandre Kévin DE FREITAS MARTINS
- * Creation Date: 2024
- * Description: nav.tsx
- * Copyright (c) 2024 Tux Inc.
+ * Creation Date: 10/8/2025
+ * Description: This is the navbar.tsx
+ * Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
+ * Version: 1.0.0
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the 'Software'), to deal
@@ -28,9 +29,12 @@
 
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useTranslation } from "../hooks/useTranslation";
 import React, { useEffect, useRef, useState } from "react";
 
-export const Navigation: React.FC = () => {
+export const Navbar: React.FC = () => {
+    const { t } = useTranslation();
     const ref = useRef<HTMLElement>(null);
     const [isIntersecting, setIntersecting] = useState(true);
 
@@ -47,39 +51,40 @@ export const Navigation: React.FC = () => {
     return (
         <header ref={ref}>
             <div
-                className={`fixed inset-x-0 top-0 z-50 backdrop-blur  duration-200 border-b  ${
+                className={`fixed inset-x-0 top-0 z-50 backdrop-blur duration-200 border-b ${
                     isIntersecting
                         ? "bg-zinc-900/0 border-transparent"
-                        : "bg-zinc-900/500  border-zinc-800 "
+                        : "bg-zinc-900/500 border-zinc-800"
                 }`}
             >
                 <div className="container flex flex-row-reverse items-center justify-between p-6 mx-auto">
-                    <div className="flex justify-between gap-8">
+                    <div className="flex justify-between gap-8 items-center">
                         <Link
                             href="/about"
                             className="duration-200 text-zinc-400 hover:text-zinc-100"
                         >
-                            About
+                            {t('common.about')}
                         </Link>
                         <Link
                             href="/projects"
                             className="duration-200 text-zinc-400 hover:text-zinc-100"
                         >
-                            Projects
+                            {t('common.projects')}
                         </Link>
                         <Link
                             href="/contact"
                             className="duration-200 text-zinc-400 hover:text-zinc-100"
                         >
-                            Contact
+                            {t('common.contact')}
                         </Link>
+                        <LanguageSwitcher />
                     </div>
 
                     <Link
                         href="/"
                         className="duration-200 text-zinc-300 hover:text-zinc-100"
                     >
-                        <ArrowLeft className="w-6 h-6 " />
+                        <ArrowLeft className="w-6 h-6" />
                     </Link>
                 </div>
             </div>
