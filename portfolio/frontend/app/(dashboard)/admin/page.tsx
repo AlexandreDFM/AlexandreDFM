@@ -36,7 +36,7 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import getConfig from "next/config";
 import { useRouter } from "next/navigation";
 import cookieCutter from "@boiseitguru/cookie-cutter";

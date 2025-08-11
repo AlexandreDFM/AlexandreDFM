@@ -31,7 +31,7 @@ import {
     Avatar,
     Card,
     CardBody,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 import Work from "components/about/work";
 import Study from "components/about/study";

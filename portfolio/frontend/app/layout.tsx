@@ -29,7 +29,7 @@
 import "./globals.css";
 import localFont from "next/font/local";
 import { Inter } from "next/font/google";
-import { NextUIProvider } from "@nextui-org/react";
+import { HeroUIProvider } from "@heroui/react";
 import AnimatedBackground from "components/layout/AnimatedBackground";
 
 const inter = Inter({
@@ -50,11 +50,11 @@ export default function RootLayout({
     return (
         <html lang="en" className={[inter.variable, calSans.variable].join(" ")}>
             <body>
-                <NextUIProvider>
+                <HeroUIProvider>
                     <AnimatedBackground>
                         {children}
                     </AnimatedBackground>
-                </NextUIProvider>
+                </HeroUIProvider>
             </body>
         </html>
     );

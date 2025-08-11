@@ -29,7 +29,7 @@ import { FormEvent } from "react";
 import getConfig from "next/config";
 import { useRouter } from "next/navigation";
 import cookieCutter from "@boiseitguru/cookie-cutter";
-import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
+import { Button, Card, CardBody, CardHeader } from "@heroui/react";
 
 const { publicRuntimeConfig } = getConfig();
 

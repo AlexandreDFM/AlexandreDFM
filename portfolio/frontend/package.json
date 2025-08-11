@@ -11,7 +11,7 @@
   "dependencies": {
     "@boiseitguru/cookie-cutter": "^0.2.3",
     "@next/mdx": "^14.0.4",
-    "@nextui-org/react": "^2.2.9",
+    "@heroui/react": "2.8.2",
     "@tailwindcss/typography": "^0.5.10",
     "@types/js-cookie": "^3.0.6",
     "cookie-cutter": "^0.2.0",
