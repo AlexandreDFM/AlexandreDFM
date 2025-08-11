@@ -30,6 +30,7 @@ import "./globals.css";
 import localFont from "next/font/local";
 import { Inter } from "next/font/google";
 import { HeroUIProvider } from "@heroui/react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 import AnimatedBackground from "components/layout/AnimatedBackground";
 
 const inter = Inter({
@@ -48,12 +49,19 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className={[inter.variable, calSans.variable].join(" ")}>
-            <body>
+        <html lang="en" className={[inter.variable, calSans.variable].join(" ")} suppressHydrationWarning>
+            <body className="bg-black" suppressHydrationWarning>
                 <HeroUIProvider>
-                    <AnimatedBackground>
-                        {children}
-                    </AnimatedBackground>
+                    <NextThemesProvider
+                        attribute="class"
+                        defaultTheme="dark"
+                        enableSystem={false}
+                        disableTransitionOnChange
+                    >
+                        <AnimatedBackground>
+                            {children}
+                        </AnimatedBackground>
+                    </NextThemesProvider>
                 </HeroUIProvider>
             </body>
         </html>
