@@ -57,33 +57,14 @@ export const Navbar: React.FC = () => {
                         : "bg-zinc-900/500 border-zinc-800"
                 }`}
             >
-                <div className="container flex flex-row-reverse items-center justify-between p-6 mx-auto">
-                    <div className="flex justify-between gap-8 items-center">
-                        <Link
-                            href="/about"
-                            className="duration-200 text-zinc-400 hover:text-zinc-100"
-                        >
-                            {t('common.about')}
-                        </Link>
-                        <Link
-                            href="/projects"
-                            className="duration-200 text-zinc-400 hover:text-zinc-100"
-                        >
-                            {t('common.projects')}
-                        </Link>
-                        <Link
-                            href="/contact"
-                            className="duration-200 text-zinc-400 hover:text-zinc-100"
-                        >
-                            {t('common.contact')}
-                        </Link>
+                <div className="container flex flex-row-reverse items-center justify-between gap-8 p-6 mx-auto">
+                    <div className="flex gap-8 items-center w-full justify-end">
+                        <Link href="/about">{t("common.about")}</Link>
+                        <Link href="/projects">{t("common.projects")}</Link>
+                        <Link href="/contact">{t("common.contact")}</Link>
                         <LanguageSwitcher />
                     </div>
-
-                    <Link
-                        href="/"
-                        className="duration-200 text-zinc-300 hover:text-zinc-100"
-                    >
+                    <Link href="/">
                         <ArrowLeft className="w-6 h-6" />
                     </Link>
                 </div>
