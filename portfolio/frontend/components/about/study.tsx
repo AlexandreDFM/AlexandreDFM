@@ -26,7 +26,6 @@
 
 'use client';
 
-import { Card, CardHeader } from "@nextui-org/react";
 import { useTranslation } from "hooks/useTranslation";
 
 export default function Study() {
@@ -34,18 +33,16 @@ export default function Study() {
 
     return (
         <div>
-            <div className="flex flex-col gap-4 w-full">
-                {t<any[]>('about.content.formation.items', { returnObjects: true }).map((formation, index) => (
-                    <div key={index} className="flex flex-col gap-2">
-                        <div className="flex justify-between items-center">
-                            <h3 className="flex-grow text-lg font-semibold text-default-600">{formation.degree}</h3>
-                            <span className="flex-shrink-0 align-middle text-sm text-default-400">{formation.date}</span>
-                        </div>
-                        <div className="text-sm text-default-500">{formation.school}</div>
-                        <p className="text-sm text-default-400">{formation.desc}</p>
+            {t<any[]>('about.content.formation.items', { returnObjects: true }).map((formation, index) => (
+                <div key={index} className="flex flex-col">
+                    <div className="flex justify-between items-center">
+                        <h3 className="flex-grow text-lg font-semibold text-default-600">{formation.degree}</h3>
+                        <span className="flex-shrink-0 align-middle text-sm text-default-400">{formation.date}</span>
                     </div>
-                ))}
-            </div>
+                    <div className="text-sm text-default-500">{formation.school}</div>
+                    <p className="text-sm text-default-400">{formation.desc}</p>
+                </div>
+            ))}
         </div>
     );
 }

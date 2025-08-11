@@ -7,7 +7,8 @@
     },
     "projects": {
         "title": "Projects",
-        "subtitle": "Discover my work",
+        "headline": "Discover my work",
+        "description": "Some of the projects are from work and some are on my own time.",
         "role": "Role",
         "duration": "Duration",
         "skills": "Skills",
@@ -79,21 +80,31 @@
             "language": {
                 "title": "Languages",
                 "items": [
-                    "French",
-                    "Portuguese",
-                    "English",
-                    "German (KMK)",
-                    "Korean (Beginner)"
-                ]
-            },
-            "languageLevel": {
-                "title": "Language Levels",
-                "items": [
-                    "Native",
-                    "Native",
-                    "Professional",
-                    "Basic",
-                    "Basic"
+                    {
+                        "name": "French",
+                        "level": "Native",
+                        "pourcent": "100%"
+                    },
+                    {
+                        "name": "Portuguese",
+                        "level": "Native",
+                        "pourcent": "100%"
+                    },
+                    {
+                        "name": "English",
+                        "level": "Professional",
+                        "pourcent": "80%"
+                    },
+                    {
+                        "name": "German (KMK)",
+                        "level": "Basic",
+                        "pourcent": "50%"
+                    },
+                    {
+                        "name": "Korean",
+                        "level": "Beginner",
+                        "pourcent": "20%"
+                    }
                 ]
             },
             "skills": {

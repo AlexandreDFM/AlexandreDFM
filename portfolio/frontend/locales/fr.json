@@ -7,7 +7,8 @@
     },
     "projects": {
         "title": "Projets",
-        "subtitle": "Découvrez mes réalisations",
+        "headline": "Découvrez mes réalisations",
+        "description": "Certaines des réalisations proviennent de mon travail et d'autres de mon temps libre.",
         "role": "Rôle",
         "duration": "Durée",
         "skills": "Compétences",
@@ -79,21 +80,31 @@
             "language": {
                 "title": "Langues",
                 "items": [
-                    "Français",
-                    "Portugais",
-                    "Anglais",
-                    "Allemand (KMK)",
-                    "Coréen (Débutant)"
-                ]
-            },
-            "languageLevel": {
-                "title": "Niveaux de langue",
-                "items": [
-                    "L1",
-                    "L2",
-                    "B1",
-                    "B1",
-                    "A1"
+                    {
+                        "name": "Français",
+                        "level": "L1",
+                        "pourcent": "100%"
+                    },
+                    {
+                        "name": "Portugais",
+                        "level": "L2",
+                        "pourcent": "100%"
+                    },
+                    {
+                        "name": "Anglais",
+                        "level": "B2",
+                        "pourcent": "80%"
+                    },
+                    {
+                        "name": "Allemand (KMK)",
+                        "level": "B1",
+                        "pourcent": "60%"
+                    },
+                    {
+                        "name": "Coréen",
+                        "level": "A1",
+                        "pourcent": "20%"
+                    }
                 ]
             },
             "skills": {

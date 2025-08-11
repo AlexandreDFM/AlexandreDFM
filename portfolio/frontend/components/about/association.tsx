@@ -33,17 +33,15 @@ export default function Association() {
 
     return (
         <div>
-            <div className="flex flex-col gap-4 w-full">
-                {t<any[]>('about.content.association.items', { returnObjects: true }).map((assoc, index) => (
-                    <div key={index} className="flex flex-col gap-2">
-                        <div className="flex justify-between items-center">
-                            <h3 className="text-lg font-semibold text-default-600">{assoc.title}</h3>
-                            <span className="text-sm text-default-400">{assoc.date}</span>
-                        </div>
-                        <p className="text-sm text-default-400">{assoc.description}</p>
+            {t<any[]>('about.content.association.items', { returnObjects: true }).map((assoc, index) => (
+                <div key={index} className="flex flex-col">
+                    <div className="flex justify-between items-center">
+                        <h3 className="text-lg font-semibold text-default-600">{assoc.title}</h3>
+                        <span className="text-sm text-default-400">{assoc.date}</span>
                     </div>
-                ))}
-            </div>
+                    <p className="text-sm text-default-400">{assoc.description}</p>
+                </div>
+            ))}
         </div>
     );
 }

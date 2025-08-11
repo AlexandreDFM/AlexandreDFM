@@ -24,137 +24,14 @@
  * THE SOFTWARE.
  */
 
-'use client';
+import { Metadata } from 'next';
+import ProjectsClient from './projects-client';
 
-import { Article } from "./article";
-import getConfig from "next/config";
-import { Card } from "components/card";
-import { IProject } from "types/IProject";
-import { Navbar } from "components/navbar";
-import { useTranslation } from "hooks/useTranslation";
-
-// const { publicRuntimeConfig } = getConfig();
-
-// async function getProjects() {
-//     try {
-//         const res = await fetch(`http://backend:8055/items/projects/`, {
-//             method: "GET",
-//             headers: {
-//                 "Content-Type": "application/json",
-//                 Authorization: `Bearer ${publicRuntimeConfig.apiBearerToken}`,
-//             },
-//             next: { revalidate: 1 },
-//         });
-//         if (!res.ok) {
-//             return [];
-//         }
-//         const repo = await res.json();
-//         if (!repo.data) {
-//             return [];
-//         }
-//         return repo.data;
-//     } catch (error) {
-//         return [];
-//     }
-// }
+export const metadata: Metadata = {
+    title: 'Projects',
+    description: 'Discover my projects and work',
+};
 
 export default function ProjectsPage() {
-    // const projectsData = getProjects();
-    // const [projects]: [Project[]] = await Promise.all([projectsData]);
-    const { t } = useTranslation();
-    const head_projects: IProject[] = t<IProject[]>('projects.content.head_projects', { returnObjects: true });
-
-    const projects: IProject[] = t<IProject[]>('projects.content.projects', { returnObjects: true });
-
-    return (
-        <div className="relative pb-16">
-            <div className="px-6 pt-20 mx-auto space-y-8 max-w-7xl lg:px-8 md:space-y-12 md:pt-24 lg:pt-32">
-                <div className="max-w-2xl mx-auto lg:mx-0">
-                    <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                        Projects
-                    </h2>
-                    <p className="mt-4 text-default-400">
-                        Some of the projects are from work and some are on my
-                        own time.
-                    </p>
-                </div>
-                <div className="w-full h-px bg-default-400" />
-                {head_projects.length <= 0 && projects.length <= 0 && (
-                    <div className="flex items-center justify-center h-96">
-                        <p className="text-default-400">No projects found.</p>
-                    </div>
-                )}
-                {head_projects.length >= 0 && (
-                    <div>
-                        <div className="grid grid-row-1 gap-4 mx-auto lg:grid-row-2 ">
-                            <div className="flex flex-col w-full gap-4 mx-auto border-t border-gray-900/10 lg:mx-0 lg:border-t-0">
-                                {projects
-                                    .filter(
-                                        (_: any, index: number) =>
-                                            index === 0 ||
-                                            index === 1 ||
-                                            index === 2,
-                                    )
-                                    .map((project: IProject) => (
-                                        <Card key={project.id}>
-                                            <Article project={project} />
-                                        </Card>
-                                    ))}
-                            </div>
-                        </div>
-                    </div>
-                )}
-                {projects.length >= 3 && (
-                    <div>
-                        <div className="grid grid-cols-1 gap-4 mx-auto lg:mx-0 md:grid-cols-3">
-                            <div className="grid grid-cols-1 gap-4">
-                                {projects
-                                    .filter(
-                                        (_: any, index: number) =>
-                                            index !== 0 &&
-                                            index !== 1 &&
-                                            index !== 2,
-                                    )
-                                    .map((project: IProject) => (
-                                        <Card key={project.id}>
-                                            <Article project={project} />
-                                        </Card>
-                                    ))}
-                            </div>
-                            <div className="grid grid-cols-1 gap-4">
-                                {projects
-                                    .filter(
-                                        (_: any, index: number) =>
-                                            index !== 0 &&
-                                            index !== 1 &&
-                                            index !== 2 &&
-                                            index % 3 === 1,
-                                    )
-                                    .map((project: IProject) => (
-                                        <Card key={project.id}>
-                                            <Article project={project} />
-                                        </Card>
-                                    ))}
-                            </div>
-                            <div className="grid grid-cols-1 gap-4">
-                                {projects
-                                    .filter(
-                                        (_: any, index: number) =>
-                                            index !== 0 &&
-                                            index !== 1 &&
-                                            index !== 2 &&
-                                            index % 3 === 2,
-                                    )
-                                    .map((project: IProject) => (
-                                        <Card key={project.id}>
-                                            <Article project={project} />
-                                        </Card>
-                                    ))}
-                            </div>
-                        </div>
-                    </div>
-                )}
-            </div>
-        </div>
-    );
+    return <ProjectsClient />;
 }

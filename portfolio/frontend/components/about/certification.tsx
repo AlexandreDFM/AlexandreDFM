@@ -26,24 +26,22 @@
 
 'use client';
 
-import { Card, CardHeader } from "@nextui-org/react";
 import { useTranslation } from "hooks/useTranslation";
 
 export default function Certification() {
     const { t } = useTranslation();
+
     return (
         <div>
-            <div className="flex flex-col gap-4 w-full">
-                {t<any[]>('about.content.certification.items', { returnObjects: true }).map((cert, index) => (
-                    <div key={index} className="flex flex-col gap-2">
-                        <div className="flex justify-between items-center">
-                            <h3 className="text-lg font-semibold text-default-600">{cert.certification}</h3>
-                            <span className="text-sm text-default-400">{cert.date}</span>
-                        </div>
-                        <div className="text-sm text-default-500">{cert.deliveredBy}</div>
+            {t<any[]>('about.content.certification.items', { returnObjects: true }).map((cert, index) => (
+                <div key={index} className="flex flex-col">
+                    <div className="flex justify-between items-center">
+                        <h3 className="text-lg font-semibold text-default-600">{cert.certification}</h3>
+                        <span className="text-sm text-default-400">{cert.date}</span>
                     </div>
-                ))}
-            </div>
+                    <div className="text-sm text-default-500">{cert.deliveredBy}</div>
+                </div>
+            ))}
         </div>
     );
 }

@@ -43,11 +43,18 @@ const translations: Record<string, TranslationType> = {
     en,
 };
 
-// Get the user's preferred language from cookies or browser
+// Get the user's preferred language - server-safe
 const getInitialLanguage = (): 'fr' | 'en' => {
+    // Always default to French to avoid hydration mismatch
+    return 'fr';
+};
+
+// Get the actual client language preference
+const getClientLanguage = (): 'fr' | 'en' => {
     if (typeof window === 'undefined') {
         // Server-side: check cookies from request headers
-        return 'fr'; // Default to French on server
+        // Default to French on server
+        return 'fr';
     }
 
     // Client-side: check cookies first, then browser language
