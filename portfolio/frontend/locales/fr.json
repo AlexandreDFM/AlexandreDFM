@@ -1,4 +1,20 @@
 {
+    "lang": [
+        {
+            "fr": {
+                "key": "fr",
+                "flag": "fr",
+                "label": "Français"
+            }
+        },
+        {
+            "en": {
+                "key": "en",
+                "flag": "gb",
+                "label": "English"
+            }
+        }
+    ],
     "common": {
         "home": "Accueil",
         "projects": "Projets",

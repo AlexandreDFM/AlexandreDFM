@@ -25,58 +25,67 @@
  * THE SOFTWARE.
  */
 
-'use client';
+"use client";
 
-import Cookies from 'js-cookie';
-import { useState } from 'react';
-import fr from '../locales/fr.json';
-import en from '../locales/en.json';
-import { usePathname } from 'next/navigation';
+import Cookies from "js-cookie";
+import { useState } from "react";
+import en from "../locales/en.json";
+import fr from "../locales/fr.json";
+import { usePathname } from "next/navigation";
 
 type TranslationType = typeof fr;
-type NestedKeys<T> = T extends string ? never : T extends object ? {
-    [K in keyof T]: `${string & K}${'' | `.${NestedKeys<T[K]>}`}`
-}[keyof T] : never;
+type NestedKeys<T> = T extends string
+    ? never
+    : T extends object
+      ? {
+            [K in keyof T]: `${string & K}${"" | `.${NestedKeys<T[K]>}`}`;
+        }[keyof T]
+      : never;
 
 const translations: Record<string, TranslationType> = {
-    fr,
     en,
+    fr,
 };
 
 // Get the user's preferred language - server-safe
-const getInitialLanguage = (): 'fr' | 'en' => {
-    // Always default to French to avoid hydration mismatch
-    return 'fr';
+const getInitialLanguage = (): "en" | "fr" => {
+    // Always default to English to avoid hydration mismatch
+    return "en";
 };
 
 // Get the actual client language preference
-const getClientLanguage = (): 'fr' | 'en' => {
-    if (typeof window === 'undefined') {
+const getClientLanguage = (): "en" | "fr" => {
+    if (typeof window === "undefined") {
         // Server-side: check cookies from request headers
-        // Default to French on server
-        return 'fr';
+        // Default to English on server
+        return "en";
     }
 
     // Client-side: check cookies first, then browser language
-    const savedLocale = Cookies.get('locale');
-    if (savedLocale === 'fr' || savedLocale === 'en') {
+    const savedLocale = Cookies.get("locale");
+    if (savedLocale === "fr" || savedLocale === "en") {
         return savedLocale;
     }
 
-    const browserLang = navigator.language.split('-')[0];
-    return browserLang === 'fr' ? 'fr' : 'en';
+    const browserLang = navigator.language.split("-")[0];
+    return browserLang === "fr" ? "en" : "fr";
 };
 
 export const useTranslation = () => {
     const pathname = usePathname();
-    const [locale, setLocaleState] = useState<'fr' | 'en'>(getInitialLanguage());
+    const [locale, setLocaleState] = useState<"en" | "fr">(
+        getInitialLanguage(),
+    );
 
-    const t = <T = string>(key: NestedKeys<TranslationType>, options?: { returnObjects: boolean }): T => {
-        const keys = key.split('.');
+    const t = <T = string>(
+        key: NestedKeys<TranslationType>,
+        options?: { returnObjects: boolean },
+    ): T => {
+        const keys = key.split(".");
         let translation: any = translations[locale];
 
         for (const k of keys) {
-            if (translation && typeof translation === 'object') {
+            if (translation && typeof translation === "object") {
                 translation = translation[k];
             } else {
                 return key as T;
@@ -87,15 +96,16 @@ export const useTranslation = () => {
             return translation as T;
         }
 
-        if (typeof translation !== 'string') {
+        if (typeof translation !== "string") {
             return key as T;
         }
 
         return translation as T;
     };
 
-    const setLocale = (newLocale: 'fr' | 'en') => {
-        Cookies.set('locale', newLocale, { expires: 365 }); // Store for 1 year
+    const setLocale = (newLocale: "en" | "fr") => {
+        // Store for 1 year
+        Cookies.set("locale", newLocale, { expires: 365 });
         setLocaleState(newLocale);
         window.location.reload();
     };

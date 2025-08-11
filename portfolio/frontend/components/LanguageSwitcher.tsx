@@ -25,37 +25,67 @@
  * THE SOFTWARE.
  */
 
-'use client';
+"use client";
 
-import { useTranslation } from '../hooks/useTranslation';
+import { useTranslation } from "../hooks/useTranslation";
+import { Avatar, Select, SelectItem } from "@heroui/react";
 
 export const LanguageSwitcher = () => {
-    const { locale, setLocale } = useTranslation();
+    const { t, locale, setLocale } = useTranslation();
+
+    const handleLanguageChange = (keys: any) => {
+        const selectedKey = Array.from(keys)[0] as "fr" | "en";
+        console.log("Selected locale:", selectedKey);
+        setLocale(selectedKey);
+    };
+
+    const langArray = t<
+        Array<{
+            fr?: { key: string; flag: string; label: string };
+            en?: { key: string; flag: string; label: string };
+        }>
+    >("lang", { returnObjects: true });
+
+    const languages: { key: string; flag: string; label: string }[] = [];
+    langArray.forEach((item) => {
+        if (item.fr) languages.push(item.fr);
+        if (item.en) languages.push(item.en);
+    });
+
+    const currentLang = languages.find((lang) => lang.key === locale);
 
     return (
-        <div className="flex items-center space-x-2">
-            <button
-                onClick={() => setLocale('fr')}
-                className={`px-2 py-1 rounded ${
-                    locale === 'fr'
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-gray-200 text-gray-700'
-                }`}
-                aria-label="Changer la langue en français"
+        <>
+            <Select
+                className="w-36"
+                selectedKeys={[locale]}
+                onSelectionChange={handleLanguageChange}
+                startContent={
+                    currentLang && (
+                        <Avatar
+                            alt={currentLang.label}
+                            className="w-6 h-6"
+                            src={`https://flagcdn.com/${currentLang.flag}.svg`}
+                        />
+                    )
+                }
             >
-                FR
-            </button>
-            <button
-                onClick={() => setLocale('en')}
-                className={`px-2 py-1 rounded ${
-                    locale === 'en'
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-gray-200 text-gray-700'
-                }`}
-                aria-label="Change language to English"
-            >
-                EN
-            </button>
-        </div>
+                {languages.map((lang) => (
+                    <SelectItem
+                        key={lang.key}
+                        aria-label={lang.key}
+                        startContent={
+                            <Avatar
+                                alt={lang.label}
+                                className="w-6 h-6"
+                                src={`https://flagcdn.com/${lang.flag}.svg`}
+                            />
+                        }
+                    >
+                        {lang.label}
+                    </SelectItem>
+                ))}
+            </Select>
+        </>
     );
 };
