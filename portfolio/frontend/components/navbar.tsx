@@ -29,6 +29,7 @@
 
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { ThemeSwitcher } from "./ThemeSwitcher";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { useTranslation } from "../hooks/useTranslation";
 import React, { useEffect, useRef, useState } from "react";
@@ -62,6 +63,7 @@ export const Navbar: React.FC = () => {
                         <Link href="/about">{t("common.about")}</Link>
                         <Link href="/projects">{t("common.projects")}</Link>
                         <Link href="/contact">{t("common.contact")}</Link>
+                        <ThemeSwitcher />
                         <LanguageSwitcher />
                     </div>
                     <Link href="/">
