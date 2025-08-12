@@ -55,16 +55,17 @@ export const LanguageSwitcher = () => {
     const currentLang = languages.find((lang) => lang.key === locale);
 
     return (
-        <>
+        <div role="group" aria-label="Language selection">
             <Select
                 className="w-36"
                 selectedKeys={[locale]}
                 onSelectionChange={handleLanguageChange}
+                aria-label="Select language"
                 startContent={
                     currentLang && (
                         <Avatar
-                            alt={currentLang.label}
-                            className="w-6 h-6"
+                            alt={`${currentLang.label} flag`}
+                            className="h-6 w-6"
                             src={`https://flagcdn.com/${currentLang.flag}.svg`}
                         />
                     )
@@ -73,11 +74,11 @@ export const LanguageSwitcher = () => {
                 {languages.map((lang) => (
                     <SelectItem
                         key={lang.key}
-                        aria-label={lang.key}
+                        aria-label={`Switch to ${lang.label}`}
                         startContent={
                             <Avatar
-                                alt={lang.label}
-                                className="w-6 h-6"
+                                alt={`${lang.label} flag`}
+                                className="h-6 w-6"
                                 src={`https://flagcdn.com/${lang.flag}.svg`}
                             />
                         }
@@ -86,6 +87,6 @@ export const LanguageSwitcher = () => {
                     </SelectItem>
                 ))}
             </Select>
-        </>
+        </div>
     );
 };
