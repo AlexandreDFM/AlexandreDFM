@@ -24,18 +24,18 @@
  * THE SOFTWARE.
  */
 
+import { Metadata } from "next";
 import { Footer } from "components/footer";
 import { Navbar } from "components/navbar";
-import { Metadata } from "next";
 
 // Since we can't reliably get the current route in the layout's generateMetadata,
 // let's create individual metadata for each page route by using template metadata
 export const metadata: Metadata = {
     title: {
-        template: 'AlexandreDFM - %s',
-        default: 'AlexandreDFM'
+        template: "AlexandreDFM - %s",
+        default: "AlexandreDFM",
     },
-    description: 'Alexandre De Freitas Martins - Portfolio',
+    description: "Alexandre De Freitas Martins - Portfolio",
 };
 
 export default function ApplicationLayout({
@@ -46,7 +46,9 @@ export default function ApplicationLayout({
     return (
         <>
             <Navbar />
-                <div className="min-h-full pt-36 pb-24 md:px-24 px-12 mx-auto">{children}</div>
+            <div className="m-auto min-h-[calc(100vh-var(--navbar-size))] px-12 pb-24 pt-36 md:px-24 content-center">
+                {children}
+            </div>
             <Footer />
         </>
     );

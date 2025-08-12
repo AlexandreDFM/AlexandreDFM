@@ -27,11 +27,19 @@
 
 "use client";
 
+import {
+    Github,
+    InstagramIcon,
+    Linkedin,
+    Mail,
+    Phone,
+    XIcon,
+} from "lucide-react";
+
 import Link from "next/link";
 import { Card } from "components/card";
 import { ISocial } from "types/ISocial";
 import { useTranslation } from "hooks/useTranslation";
-import { Github, InstagramIcon, Linkedin, Mail, Phone, XIcon } from "lucide-react";
 
 export default function ContactClient() {
     const { t } = useTranslation();
@@ -60,7 +68,7 @@ export default function ContactClient() {
                 icon = <Linkedin size={20} />;
                 break;
             default:
-                icon = <span />; // fallback to an empty span to ensure a valid React element
+                icon = <span />;
         }
         return {
             icon,
@@ -71,26 +79,26 @@ export default function ContactClient() {
     });
 
     return (
-        <div className="grid w-full grid-cols-1 gap-4 mt-32 sm:mt-0 sm:grid-cols-2 md:grid-cols-3 lg:gap-8">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:gap-8">
             {socials.map((s) => (
                 <Card key={s.href}>
                     <Link
                         href={s.href}
                         target="_blank"
-                        className="p-4 relative flex flex-col items-center gap-2 duration-700 group md:gap-4 md:py-9 lg:pb-12 md:p-8"
-                    >
+                        className="group relative flex flex-col items-center gap-2 p-4 duration-700 md:gap-4 md:p-8 md:py-9 lg:pb-12"
+                        >
                         <span
-                            className="absolute w-px h-2/3 bg-gradient-to-b from-zinc-500 via-zinc-500/50 to-transparent"
+                            className="absolute h-2/3 w-px bg-gradient-to-b from-zinc-500 via-zinc-500/50 to-transparent"
                             aria-hidden="true"
-                        />
-                        <span className="relative z-10 flex items-center justify-center w-12 h-12 text-sm duration-1000 border rounded-full text-zinc-200 group-hover:text-white group-hover:bg-zinc-900 border-zinc-500 bg-zinc-900 group-hover:border-zinc-200 drop-shadow-orange">
+                            />
+                        <span className="drop-shadow-orange relative z-10 flex h-12 w-12 items-center justify-center rounded-full border border-zinc-500 bg-zinc-900 text-sm text-zinc-200 duration-1000 group-hover:border-zinc-200 group-hover:bg-zinc-900 group-hover:text-white">
                             {s.icon}
                         </span>{" "}
                         <div className="z-10 flex flex-col items-center">
-                            <span className="text-center lg:text-xl font-medium duration-150 xl:text-3xl text-zinc-200 group-hover:text-white font-display">
+                            <span className="text-center font-display font-medium duration-150 group-hover:text-white dark:group-hover:text-zinc-600 lg:text-xl xl:text-3xl">
                                 {s.handle}
                             </span>
-                            <span className="mt-4 text-sm text-center duration-1000 text-zinc-400 group-hover:text-zinc-200">
+                            <span className="mt-4 text-center text-sm text-zinc-400 duration-1000 group-hover:text-zinc-200">
                                 {s.label}
                             </span>
                         </div>
