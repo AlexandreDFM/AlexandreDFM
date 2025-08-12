@@ -50,13 +50,17 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en" className={[inter.variable, calSans.variable].join(" ")} suppressHydrationWarning>
-            <body className="bg-black" suppressHydrationWarning>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <meta name="description" content="Alexandre De Freitas Martins - Portfolio" />
+            </head>
+            <body suppressHydrationWarning>
                 <HeroUIProvider>
                     <NextThemesProvider
                         attribute="class"
                         defaultTheme="dark"
-                        enableSystem={false}
-                        disableTransitionOnChange
+                        enableSystem={true}
+                        disableTransitionOnChange={false}
                     >
                         <AnimatedBackground>
                             {children}
