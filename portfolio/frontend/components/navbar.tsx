@@ -52,24 +52,48 @@ export const Navbar: React.FC = () => {
     return (
         <header ref={ref}>
             <div
-                className={`fixed inset-x-0 top-0 z-50 backdrop-blur duration-200 border-b ${
+                className={`fixed inset-x-0 top-0 z-50 flex h-[var(--navbar-size)] flex-row-reverse items-center justify-center border-b px-24 backdrop-blur duration-200 ${
                     isIntersecting
-                        ? "bg-zinc-900/0 border-transparent"
+                        ? "border-transparent bg-zinc-900/0"
                         : "bg-zinc-900/500 border-zinc-800"
                 }`}
             >
-                <div className="container flex flex-row-reverse items-center justify-between gap-8 p-6 mx-auto">
-                    <div className="flex gap-8 items-center w-full justify-end">
-                        <Link href="/about">{t("common.about")}</Link>
-                        <Link href="/projects">{t("common.projects")}</Link>
-                        <Link href="/contact">{t("common.contact")}</Link>
-                        <ThemeSwitcher />
-                        <LanguageSwitcher />
-                    </div>
-                    <Link href="/">
-                        <ArrowLeft className="w-6 h-6" />
+                <nav
+                    className="flex w-full items-center justify-end gap-8"
+                    role="navigation"
+                    aria-label="Main navigation"
+                >
+                    <Link
+                        href="/about"
+                        className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                        aria-label="About page"
+                    >
+                        {t("common.about")}
                     </Link>
-                </div>
+                    <Link
+                        href="/projects"
+                        className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                        aria-label="Projects page"
+                    >
+                        {t("common.projects")}
+                    </Link>
+                    <Link
+                        href="/contact"
+                        className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                        aria-label="Contact page"
+                    >
+                        {t("common.contact")}
+                    </Link>
+                    <ThemeSwitcher />
+                    <LanguageSwitcher />
+                </nav>
+                <Link
+                    href="/"
+                    className="focus:ring-primary rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    aria-label="Go back to home page"
+                >
+                    <ArrowLeft className="h-6 w-6" aria-hidden="true" />
+                </Link>
             </div>
         </header>
     );
