@@ -27,11 +27,23 @@
 
 "use client";
 
+import {
+    Github,
+    InstagramIcon,
+    Linkedin,
+    Mail,
+    Phone,
+    XIcon,
+} from "lucide-react";
+
+import Link from "next/link";
+import { ISocial } from "types/ISocial";
 import { useTranslation } from "../hooks/useTranslation";
 import React, { useEffect, useRef, useState } from "react";
 
 export const Footer: React.FC = () => {
     const { t } = useTranslation();
+
     const ref = useRef<HTMLElement>(null);
     const [isIntersecting, setIntersecting] = useState(true);
 
@@ -45,11 +57,58 @@ export const Footer: React.FC = () => {
         return () => observer.disconnect();
     }, []);
 
+    const socials: ISocial[] = t<any[]>("contact.items", {
+        returnObjects: true,
+    }).map((item, _) => {
+        let icon: JSX.Element;
+        switch (item.icon) {
+            case "instagram":
+                icon = <InstagramIcon size={12} />;
+                break;
+            case "x":
+                icon = <XIcon size={12} />;
+                break;
+            case "mail":
+                icon = <Mail size={12} />;
+                break;
+            case "github":
+                icon = <Github size={12} />;
+                break;
+            case "phone":
+                icon = <Phone size={12} />;
+                break;
+            case "linkedin":
+                icon = <Linkedin size={12} />;
+                break;
+            default:
+                icon = <span />;
+        }
+        return {
+            icon,
+            href: item.href,
+            label: item.label,
+            handle: item.value,
+        };
+    });
+
     return (
         <footer ref={ref}>
-            <div className="backdrop-blur border-t bg-zinc-900/500 border-zinc-800">
-                <div className="container flex flex-row-reverse items-center justify-between p-6 mx-auto">
-                    This is a footer component.
+            <div className="bg-zinc-900/500 h-[var(--footer-size)] border-t border-zinc-800 backdrop-blur">
+                <div className="container m-auto flex h-full flex-row-reverse items-center">
+                    <div className="flex space-x-2">
+                        {socials.map((s) => (
+                            <Link
+                                key={s.href}
+                                href={s.href}
+                                target="_blank"
+                                className="items-center"
+                            >
+                                <span className="drop-shadow-orange flex h-8 w-8 items-center justify-center rounded-full border border-zinc-500 bg-zinc-900 text-sm text-zinc-200 group-hover:border-zinc-200 group-hover:bg-zinc-900 group-hover:text-white">
+                                    {s.icon}
+                                </span>
+                            </Link>
+                        ))}
+                    </div>
                 </div>
             </div>
         </footer>
