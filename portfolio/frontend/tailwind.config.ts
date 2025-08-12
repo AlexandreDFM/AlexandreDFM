@@ -38,6 +38,32 @@ const config: Config = {
     darkMode: "class",
     theme: {
         extend: {
+            colors: {
+                primary: {
+                    50: '#eff6ff',
+                    100: '#dbeafe',
+                    200: '#bfdbfe',
+                    300: '#93c5fd',
+                    400: '#60a5fa',
+                    500: '#3b82f6',
+                    600: '#2563eb',
+                    700: '#1d4ed8',
+                    800: '#1e40af',
+                    900: '#1e3a8a',
+                    950: '#172554',
+                },
+                background: {
+                    light: 'rgb(var(--background-start-rgb))',
+                    dark: 'rgb(var(--background-end-rgb))',
+                },
+                foreground: {
+                    DEFAULT: 'rgb(var(--foreground-rgb))',
+                },
+                accent: {
+                    blue: 'rgb(var(--accent-blue))',
+                    'blue-light': 'rgb(var(--accent-blue-light))',
+                },
+            },
             typography: {
                 DEFAULT: {
                     css: {
@@ -164,7 +190,92 @@ const config: Config = {
     plugins: [
         require("@tailwindcss/typography"),
         require("tailwindcss-debug-screens"),
-        heroui(),
+        heroui({
+            themes: {
+                light: {
+                    colors: {
+                        background: "#faf5ee",
+                        foreground: "#292524",
+                        primary: {
+                            50: "#eff6ff",
+                            100: "#dbeafe",
+                            200: "#bfdbfe",
+                            300: "#93c5fd",
+                            400: "#60a5fa",
+                            500: "#3b82f6",
+                            600: "#2563eb",
+                            700: "#1d4ed8",
+                            800: "#1e40af",
+                            900: "#1e3a8a",
+                            DEFAULT: "#1d4ed8",
+                            foreground: "#ffffff",
+                        },
+                        default: {
+                            50: "#faf5ee",
+                            100: "#f5ede3",
+                            200: "#e7d4c1",
+                            300: "#d6b896",
+                            400: "#c69963",
+                            500: "#b8834a",
+                            600: "#a0703f",
+                            700: "#855836",
+                            800: "#6d4830",
+                            900: "#5a3c2a",
+                            DEFAULT: "#e7d4c1",
+                            foreground: "#292524",
+                        },
+                        secondary: {
+                            50: "#faf5ee",
+                            100: "#f5ede3",
+                            200: "#e7d4c1",
+                            300: "#d6b896",
+                            400: "#c69963",
+                            500: "#b8834a",
+                            600: "#a0703f",
+                            700: "#855836",
+                            800: "#6d4830",
+                            900: "#5a3c2a",
+                            DEFAULT: "#e7d4c1",
+                            foreground: "#292524",
+                        },
+                    },
+                },
+                dark: {
+                    colors: {
+                        background: "#0f172a",
+                        foreground: "#f8fafc",
+                        primary: {
+                            50: "#eff6ff",
+                            100: "#dbeafe",
+                            200: "#bfdbfe",
+                            300: "#93c5fd",
+                            400: "#60a5fa",
+                            500: "#3b82f6",
+                            600: "#2563eb",
+                            700: "#1d4ed8",
+                            800: "#1e40af",
+                            900: "#1e3a8a",
+                            DEFAULT: "#3b82f6",
+                            foreground: "#ffffff",
+                        },
+                        default: {
+                            50: "#020617",
+                            100: "#0f172a",
+                            200: "#1e293b",
+                            300: "#334155",
+                            400: "#475569",
+                            500: "#64748b",
+                            600: "#94a3b8",
+                            700: "#cbd5e1",
+                            800: "#e2e8f0",
+                            900: "#f1f5f9",
+                            DEFAULT: "#1e293b",
+                            foreground: "#f8fafc",
+                        },
+                    },
+                },
+            },
+        }),
     ],
 };
 export default config;

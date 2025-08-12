@@ -29,8 +29,8 @@ import Link from "next/link";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: 'AlexandreDFM',
-}
+    title: "AlexandreDFM",
+};
 
 export default function Home() {
     const navigation = [
@@ -40,54 +40,85 @@ export default function Home() {
     ];
 
     return (
-        <div className="flex flex-col items-center justify-center h-screen">
+        <main className="flex flex-col items-center justify-center h-screen">
+            {/* Skip to main content link for screen readers */}
+            <a
+                href="#main-content"
+                className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-white px-4 py-2 rounded-md z-50"
+                aria-label="Skip to main content"
+            >
+                Skip to main content
+            </a>
+
             {/* Navigation */}
-            <nav className="my-16 animate-fade-in">
+            <nav
+                className="my-16 animate-fade-in"
+                role="navigation"
+                aria-label="Main navigation"
+            >
                 <ul className="flex items-center justify-center gap-4">
                     {navigation.map((item) => (
-                        <Link
-                            key={item.href}
-                            href={item.href}
-                            className="text-sm duration-500 text-blue-200/80 hover:text-white hover:scale-110 transition-all"
-                        >
-                            {item.name}
-                        </Link>
+                        <li key={item.href}>
+                            <Link
+                                href={item.href}
+                                className="text-sm duration-500 text-blue-300/80 dark:text-blue-200/80 hover:text-white hover:scale-110 focus:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900 rounded-md px-3 py-2 transition-all"
+                                aria-label={`Navigate to ${item.name} page`}
+                            >
+                                {item.name}
+                            </Link>
+                        </li>
                     ))}
                 </ul>
             </nav>
 
             {/* Decorative lines */}
-            <div className="hidden w-screen h-px animate-glow md:block animate-fade-left bg-gradient-to-r from-blue-500/0 via-blue-500/50 to-blue-500/0" />
+            <div
+                className="hidden w-screen h-px animate-glow md:block animate-fade-left bg-gradient-to-r from-blue-500/0 via-blue-500/50 to-blue-500/0"
+                aria-hidden="true"
+            />
 
             {/* Main title */}
-            <h1 className="z-10 text-4xl text-transparent duration-1000 cursor-default font-display sm:text-6xl md:text-9xl whitespace-nowrap bg-clip-text bg-gradient-to-b from-blue-200 via-blue-400 to-blue-600 animate-title">
-                AlexandreDFM
-            </h1>
+            <div id="main-content">
+                <h1 className="z-10 text-4xl text-transparent duration-1000 cursor-default font-display sm:text-6xl md:text-9xl whitespace-nowrap bg-clip-text bg-gradient-to-b from-blue-200 via-blue-400 to-blue-600 animate-title">
+                    AlexandreDFM
+                </h1>
+            </div>
 
-            <div className="hidden w-screen h-px animate-glow md:block animate-fade-right bg-gradient-to-r from-blue-500/0 via-blue-500/50 to-blue-500/0" />
+            <div
+                className="hidden w-screen h-px animate-glow md:block animate-fade-right bg-gradient-to-r from-blue-500/0 via-blue-500/50 to-blue-500/0"
+                aria-hidden="true"
+            />
 
             {/* Subtitle */}
             <div className="my-16 text-center animate-fade-in">
-                <h2 className="text-sm text-blue-200/80">
+                <h2 className="text-sm text-blue-300/80 dark:text-blue-200/80">
                     I{"'"}m a developer. I love{" "}
                     <Link
                         target="_blank"
                         href="https://hownee.com"
-                        className="underline duration-500 hover:text-white hover:scale-110 inline-block transition-all"
+                        className="underline duration-500 hover:text-white hover:scale-110 focus:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900 rounded-sm inline-block transition-all"
+                        aria-label="Visit hownee.com (opens in new tab)"
+                        rel="noopener noreferrer"
                     >
                         hownee.com
-                    </Link>
-                    {" "}and{" "}
+                    </Link>{" "}
+                    and{" "}
                     <Link
                         target="_blank"
                         href="https://tux-inc.com"
-                        className="underline duration-500 hover:text-white hover:scale-110 inline-block transition-all"
+                        className="underline duration-500 hover:text-white hover:scale-110 focus:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900 rounded-sm inline-block transition-all"
+                        aria-label="Visit tux-inc.com (opens in new tab)"
+                        rel="noopener noreferrer"
                     >
                         tux-inc.com
-                    </Link>
-                    {" "}with all my heart 💙 !
+                    </Link>{" "}
+                    with all my heart{" "}
+                    <span role="img" aria-label="blue heart emoji">
+                        💙
+                    </span>{" "}
+                    !
                 </h2>
             </div>
-        </div>
+        </main>
     );
 }

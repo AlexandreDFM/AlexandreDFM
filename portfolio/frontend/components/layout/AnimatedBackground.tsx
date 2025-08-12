@@ -27,14 +27,16 @@
 
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 import Particles from "components/particles";
+import React, { useState, useEffect } from "react";
 
 interface AnimatedBackgroundProps {
     children: React.ReactNode;
 }
 
 export default function AnimatedBackground({ children }: AnimatedBackgroundProps) {
+    const { theme } = useTheme();
     const [floatingLights, setFloatingLights] = useState<Array<{
         left: string;
         top: string;
@@ -53,20 +55,34 @@ export default function AnimatedBackground({ children }: AnimatedBackgroundProps
         setFloatingLights(lights);
     }, []);
 
+    const isDark = theme === 'dark';
+
     return (
-        <div className="relative flex flex-col items-center justify-center w-screen min-h-screen overflow-hidden bg-gradient-to-tl from-black via-blue-900/30 to-black">
+        <div className={`relative flex flex-col items-center justify-center w-screen min-h-screen overflow-hidden transition-all duration-300 ${
+            isDark
+                ? 'bg-gradient-to-tl from-slate-900 via-blue-900/30 to-slate-900'
+                : 'bg-gradient-to-tl from-orange-50 via-blue-50/50 to-blue-100/30'
+        }`}>
             {/* Animated background effects */}
-            <div className="absolute inset-0 bg-gradient-to-b from-blue-950/50 to-transparent animate-pulse-slow" />
+            {/* <div className={`absolute inset-0 animate-pulse-slow transition-all duration-300 ${
+                isDark
+                    ? 'bg-gradient-to-b from-blue-950/50 to-transparent'
+                    : 'bg-gradient-to-b from-blue-100/30 to-transparent'
+            }`} />
             <div className="absolute inset-0">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(0,149,255,0.1),rgba(0,149,255,0)_50%)] animate-aurora" />
-            </div>
+                <div className={`absolute inset-0 animate-aurora transition-all duration-300 ${
+                    isDark
+                        ? 'bg-[radial-gradient(circle_at_50%_120%,rgba(59,130,246,0.15),rgba(59,130,246,0)_50%)]'
+                        : 'bg-[radial-gradient(circle_at_50%_120%,rgba(59,130,246,0.08),rgba(147,197,253,0)_50%)]'
+                }`} />
+            </div> */}
 
             {/* Particles effect */}
             <Particles
                 className="absolute inset-0 -z-10 animate-fade-in"
                 quantity={150}
                 staticity={30}
-                color="59, 130, 246"
+                color={isDark ? "59, 130, 246" : "37, 99, 235"}
             />
 
             {/* Floating lights */}
@@ -74,12 +90,14 @@ export default function AnimatedBackground({ children }: AnimatedBackgroundProps
                 {floatingLights.map((light, i) => (
                     <div
                         key={i}
-                        className="absolute w-2 h-2 bg-blue-400 rounded-full animate-floating"
+                        className={`absolute w-2 h-2 rounded-full animate-floating transition-all duration-300 ${
+                            isDark ? 'bg-blue-400' : 'bg-blue-500'
+                        }`}
                         style={{
                             left: light.left,
                             top: light.top,
                             animationDelay: light.animationDelay,
-                            opacity: light.opacity
+                            opacity: isDark ? light.opacity : light.opacity * 0.7
                         }}
                     />
                 ))}
