@@ -30,13 +30,11 @@
 import { useTheme } from "next-themes";
 import Particles from "components/particles";
 import React, { useState, useEffect } from "react";
+import { IAnimatedBackgroundProps } from "types/IAnimatedBackgroundProps";
 
-interface AnimatedBackgroundProps {
-    children: React.ReactNode;
-}
-
-export default function AnimatedBackground({ children }: AnimatedBackgroundProps) {
+export default function AnimatedBackground({ children }: IAnimatedBackgroundProps) {
     const { theme } = useTheme();
+    const [mounted, setMounted] = useState(false);
     const [floatingLights, setFloatingLights] = useState<Array<{
         left: string;
         top: string;
@@ -45,7 +43,7 @@ export default function AnimatedBackground({ children }: AnimatedBackgroundProps
     }>>([]);
 
     useEffect(() => {
-        // Generate random values only on the client side
+        setMounted(true);
         const lights = [...Array(20)].map(() => ({
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
@@ -54,6 +52,16 @@ export default function AnimatedBackground({ children }: AnimatedBackgroundProps
         }));
         setFloatingLights(lights);
     }, []);
+
+    if (!mounted) {
+        return (
+            <div className="relative flex flex-col items-center justify-center w-screen min-h-screen overflow-hidden bg-slate-900">
+                <div className="relative z-10 w-full">
+                    {children}
+                </div>
+            </div>
+        );
+    }
 
     const isDark = theme === 'dark';
 
