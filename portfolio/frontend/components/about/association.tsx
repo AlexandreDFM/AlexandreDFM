@@ -32,7 +32,7 @@ export default function Association() {
     const { t } = useTranslation();
 
     return (
-        <div>
+        <div className="px-4">
             {t<any[]>('about.content.association.items', { returnObjects: true }).map((assoc, index) => (
                 <div key={index} className="flex flex-col">
                     <div className="flex justify-between items-center">

@@ -32,7 +32,7 @@ export default function Study() {
     const { t } = useTranslation();
 
     return (
-        <div>
+        <div className="px-4">
             {t<any[]>('about.content.formation.items', { returnObjects: true }).map((formation, index) => (
                 <div key={index} className="flex flex-col">
                     <div className="flex justify-between items-center">

@@ -32,7 +32,7 @@ export default function Work() {
     const { t } = useTranslation();
 
     return (
-        <div>
+        <div className="px-4">
             {t<any[]>('about.content.job.items', { returnObjects: true }).map((job, index) => (
                 <div key={index} className="flex flex-col">
                     <div className="flex justify-between items-center">
