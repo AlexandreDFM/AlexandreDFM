@@ -38,18 +38,19 @@ export default function AboutClient() {
     const { t } = useTranslation();
 
     return (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
             {/* Colonne de gauche - Informations personnelles */}
-            <Card className="border border-white/10 bg-black/10 p-4 text-white backdrop-blur-sm">
+            <Card className="border border-white/10 bg-black/10 p-4 backdrop-blur-sm">
                 <CardBody>
-                    <div className="mb-6 flex items-center gap-4">
+                    <div className="flex items-center gap-4 px-8">
                         <Avatar
+                            className="ml-4 h-20 w-20 flex-shrink-0 md:h-24 md:w-24 lg:h-28 lg:w-28"
                             isBordered
                             radius="full"
-                            size="lg"
                             src="/app/bio/alexandredfm.jpeg"
+                            alt="Alexandre De Freitas Martins profile picture"
                         />
-                        <div>
+                        <div className="flex-1 px-4">
                             <h4 className="text-xl font-semibold">
                                 {t("about.content.personnal_info.myname")}{" "}
                                 {t("about.content.personnal_info.mylastname")}
@@ -64,7 +65,7 @@ export default function AboutClient() {
                     <h5 className="my-4 text-lg font-semibold">
                         {t("about.content.bio.title")}
                     </h5>
-                    <div className="space-y-2">
+                    <div className="space-y-2 px-4">
                         {t<string[]>("about.content.bio.items", {
                             returnObjects: true,
                         }).map((text: string, index: number) => (
@@ -78,7 +79,7 @@ export default function AboutClient() {
                     <h5 className="my-4 text-lg font-semibold">
                         {t("about.content.language.title")}
                     </h5>
-                    <div className="space-y-2">
+                    <div className="space-y-2 px-4">
                         {t<{ name: string; level: string; pourcent: string }[]>(
                             "about.content.language.items",
                             { returnObjects: true },
@@ -89,9 +90,9 @@ export default function AboutClient() {
                             >
                                 <span>{name}</span>
                                 <span>{level}</span>
-                                <div className="h-2.5 w-full rounded-full bg-blue-950/50">
+                                <div className="h-2.5 w-full rounded-full bg-purple-900/30 dark:bg-blue-950/50">
                                     <div
-                                        className="h-2.5 rounded-full bg-blue-500"
+                                        className="h-2.5 rounded-full bg-purple-500 dark:bg-blue-500"
                                         style={{ width: pourcent }}
                                     />
                                 </div>
@@ -103,13 +104,13 @@ export default function AboutClient() {
                     <h5 className="my-4 text-lg font-semibold">
                         {t("about.content.skills.title")}
                     </h5>
-                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 px-4">
                         {t<string[]>("about.content.skills.items", {
                             returnObjects: true,
                         }).map((text: string, index: number) => (
                             <div
                                 key={index}
-                                className="rounded bg-blue-500/10 px-2 py-1 text-sm text-blue-200/80"
+                                className="text-center rounded bg-purple-900/30 px-2 py-1 text-sm text-purple-100 dark:bg-blue-500/10 dark:text-blue-200/80"
                             >
                                 {text}
                             </div>
@@ -119,9 +120,9 @@ export default function AboutClient() {
             </Card>
 
             {/* Colonne de droite - Expériences et formations */}
-            <Card className="border border-white/10 bg-black/10 p-4 text-white backdrop-blur-sm">
+            <Card className="border border-white/10 bg-black/10 p-4 backdrop-blur-sm">
                 <CardBody>
-                    <h5 className="my-4 text-xl font-semibold">
+                    <h5 className="mb-4 text-xl font-semibold">
                         {t("about.content.formation.title")}
                     </h5>
                     <Study />
