@@ -24,16 +24,24 @@
  * THE SOFTWARE.
  */
 
+"use client";
+
 import "./globals.css";
-import type { Metadata } from "next";
+import localFont from "next/font/local";
 import { Inter } from "next/font/google";
+import { HeroUIProvider } from "@heroui/react";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
+import AnimatedBackground from "components/layout/AnimatedBackground";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({
+    subsets: ["latin"],
+    variable: "--font-inter",
+});
 
-export const metadata: Metadata = {
-    title: "AlexandreDFM",
-    description: "Created with Next.js and TypeScript",
-};
+const calSans = localFont({
+    src: "../public/fonts/CalSans-SemiBold.ttf",
+    variable: "--font-calsans",
+});
 
 export default function RootLayout({
     children,
@@ -41,8 +49,25 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
-            <body className={inter.className}>{children}</body>
+        <html lang="en" className={[inter.variable, calSans.variable].join(" ")} suppressHydrationWarning>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <meta name="description" content="Alexandre De Freitas Martins - Portfolio" />
+            </head>
+            <body suppressHydrationWarning>
+                <HeroUIProvider>
+                    <NextThemesProvider
+                        attribute="class"
+                        defaultTheme="dark"
+                        enableSystem={true}
+                        disableTransitionOnChange={false}
+                    >
+                        <AnimatedBackground>
+                            {children}
+                        </AnimatedBackground>
+                    </NextThemesProvider>
+                </HeroUIProvider>
+            </body>
         </html>
     );
 }

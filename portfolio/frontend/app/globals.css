@@ -29,22 +29,32 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+  --navbar-size: 6rem;
+  --footer-size: 4rem;
+  --foreground-rgb: 41, 37, 36;
+  --background-start-rgb: 250, 245, 238;
+  --background-end-rgb: 245, 237, 227;
+  --background-gradient: linear-gradient(to bottom right, rgba(59, 130, 246, 0.05), rgba(147, 197, 253, 0.1));
+  --accent-blue: 29, 78, 216;
+  --accent-blue-light: 59, 130, 246;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.dark {
+  --navbar-size: 6rem;
+  --footer-size: 4rem;
+  --foreground-rgb: 248, 250, 252;
+  --background-start-rgb: 15, 23, 42;
+  --background-end-rgb: 2, 6, 23;
+  --background-gradient: linear-gradient(to bottom right, rgba(30, 58, 138, 0.2), rgba(59, 130, 246, 0.1));
+  --accent-blue: 59, 130, 246;
+  --accent-blue-light: 147, 197, 253;
 }
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
+  background: var(--background-gradient),
+              linear-gradient(to bottom,
+                rgba(var(--background-start-rgb), 1),
+                rgba(var(--background-end-rgb), 1));
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

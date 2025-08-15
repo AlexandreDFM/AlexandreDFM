@@ -1,8 +1,8 @@
 /**
- * File Name: study.tsx
+ * File Name: layout.tsx
  * Author: Alexandre Kévin DE FREITAS MARTINS
  * Creation Date: 2024
- * Description: study.tsx
+ * Description: layout.tsx
  * Copyright (c) 2024 Tux Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,25 +24,32 @@
  * THE SOFTWARE.
  */
 
-'use client';
+import { Metadata } from "next";
+import { Footer } from "components/footer";
+import { Navbar } from "components/navbar";
 
-import { useTranslation } from "hooks/useTranslation";
+// Since we can't reliably get the current route in the layout's generateMetadata,
+// let's create individual metadata for each page route by using template metadata
+export const metadata: Metadata = {
+    title: {
+        template: "AlexandreDFM - %s",
+        default: "AlexandreDFM",
+    },
+    description: "Alexandre De Freitas Martins - Portfolio",
+};
 
-export default function Study() {
-    const { t } = useTranslation();
-
+export default function ApplicationLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     return (
-        <div className="px-4">
-            {t<any[]>('about.content.formation.items', { returnObjects: true }).map((formation, index) => (
-                <div key={index} className="flex flex-col">
-                    <div className="flex justify-between items-center">
-                        <h3 className="flex-grow text-lg font-semibold text-default-600">{formation.degree}</h3>
-                        <span className="flex-shrink-0 align-middle text-sm text-default-400">{formation.date}</span>
-                    </div>
-                    <div className="text-sm text-default-500">{formation.school}</div>
-                    <p className="text-sm text-default-400">{formation.desc}</p>
-                </div>
-            ))}
-        </div>
+        <>
+            <Navbar />
+            <div className="m-auto min-h-[calc(100vh-var(--navbar-size))] px-12 pb-24 pt-36 md:px-24 content-center">
+                {children}
+            </div>
+            <Footer />
+        </>
     );
 }

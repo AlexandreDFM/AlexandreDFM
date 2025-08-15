@@ -1,8 +1,8 @@
 /**
- * File Name: study.tsx
+ * File Name: page.tsx
  * Author: Alexandre Kévin DE FREITAS MARTINS
  * Creation Date: 2024
- * Description: study.tsx
+ * Description: page.tsx
  * Copyright (c) 2024 Tux Inc.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,25 +24,14 @@
  * THE SOFTWARE.
  */
 
-'use client';
+import { Metadata } from 'next';
+import ProjectsClient from './projects-client';
 
-import { useTranslation } from "hooks/useTranslation";
+export const metadata: Metadata = {
+    title: 'Projects',
+    description: 'Discover my projects and work',
+};
 
-export default function Study() {
-    const { t } = useTranslation();
-
-    return (
-        <div className="px-4">
-            {t<any[]>('about.content.formation.items', { returnObjects: true }).map((formation, index) => (
-                <div key={index} className="flex flex-col">
-                    <div className="flex justify-between items-center">
-                        <h3 className="flex-grow text-lg font-semibold text-default-600">{formation.degree}</h3>
-                        <span className="flex-shrink-0 align-middle text-sm text-default-400">{formation.date}</span>
-                    </div>
-                    <div className="text-sm text-default-500">{formation.school}</div>
-                    <p className="text-sm text-default-400">{formation.desc}</p>
-                </div>
-            ))}
-        </div>
-    );
+export default function ProjectsPage() {
+    return <ProjectsClient />;
 }

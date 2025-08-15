@@ -1,9 +1,10 @@
 /**
- * File Name: layout.tsx
+ * File Name: IParticlesProps.ts
  * Author: Alexandre Kévin DE FREITAS MARTINS
- * Creation Date: 2024
- * Description: layout.tsx
- * Copyright (c) 2024 Tux Inc.
+ * Creation Date: 13/8/2025
+ * Description: This is the IParticlesProps.ts
+ * Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
+ * Version: 1.0.0
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the 'Software'), to deal
@@ -24,12 +25,11 @@
  * THE SOFTWARE.
  */
 
-export default function ProjectsLayout({
-	children,
-}: { children: React.ReactNode }) {
-	return (
-		<div className="relative min-h-screen bg-gradient-to-tl from-zinc-900 via-zinc-400/10 to-zinc-900 ">
-			{children}
-		</div>
-	);
+export interface IParticlesProps {
+    className?: string;
+    quantity?: number;
+    staticity?: number;
+    ease?: number;
+    refresh?: boolean;
+    color?: string;
 }

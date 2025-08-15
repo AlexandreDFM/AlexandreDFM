@@ -24,14 +24,16 @@
  * THE SOFTWARE.
  */
 
-export interface Project {
-    id: number;
+export interface IProject {
+    id: string;
     title: string;
-    date: string;
     description: string;
-    link?: string;
+    date?: string;
     github?: string;
-    body: {
-        code: string;
-    };
+    role?: string;
+    duration?: string;
+    skills?: string[];
+    technologies?: string[];
+    achievements?: string[];
+    category?: 'professional' | 'personal' | 'academic';
 }

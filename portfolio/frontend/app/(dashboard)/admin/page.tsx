@@ -36,17 +36,19 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
-} from "@nextui-org/react";
+} from "@heroui/react";
+
 import getConfig from "next/config";
 import { useRouter } from "next/navigation";
 import cookieCutter from "@boiseitguru/cookie-cutter";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useCallback, useEffect, useState } from "react";
 
 const { publicRuntimeConfig } = getConfig();
 
 export default function AdminPage() {
-    const [projects, setProjects] = useState([]);
     const [token, setToken] = useState("");
+    const [projects, setProjects] = useState([]);
+
     useEffect(() => {
         const token = cookieCutter.get("token");
         setToken(token || "");
@@ -54,50 +56,59 @@ export default function AdminPage() {
 
     const router = useRouter();
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    async function onSubmit(event: FormEvent<HTMLFormElement>) {
-        event.preventDefault();
 
-        const formData: FormData = new FormData(event.currentTarget);
-        const json: string = JSON.stringify(Object.fromEntries(formData));
-        const response: Response = await fetch(
-            `${publicRuntimeConfig.apiURL}/projects/`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: json,
-            },
-        );
-        if (response.ok) {
-            console.log("Success");
-            onOpenChange();
-        } else {
-            console.log("Error");
-        }
-    }
+    const onSubmit = useCallback(
+        async (event: FormEvent<HTMLFormElement>) => {
+            event.preventDefault();
 
-    async function deleteProject(id: number) {
-        const response: Response = await fetch(
-            `${publicRuntimeConfig.apiURL}/projects/${id}/`,
-            {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
+            const formData: FormData = new FormData(event.currentTarget);
+            const json: string = JSON.stringify(Object.fromEntries(formData));
+            const response: Response = await fetch(
+                `${publicRuntimeConfig.apiURL}/projects/`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: json,
                 },
-            },
-        );
-        if (response.ok) {
-            console.log("Success");
-        } else {
-            console.log("Error");
-        }
-    }
+            );
+            if (response.ok) {
+                console.log("Success");
+                onOpenChange();
+            } else {
+                console.log("Error");
+            }
+        },
+        [onOpenChange, token],
+    );
+
+    const deleteProject = useCallback(
+        async (id: number) => {
+            const response: Response = await fetch(
+                `${publicRuntimeConfig.apiURL}/projects/${id}/`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                },
+            );
+            if (response.ok) {
+                console.log("Success");
+            } else {
+                console.log("Error");
+            }
+        },
+        [token],
+    );
+
     function logout() {
         router.push("/admin/login");
     }
+
     useEffect(() => {
         async function fetchProjects() {
             const response = await fetch(
@@ -113,9 +124,10 @@ export default function AdminPage() {
         }
         fetchProjects();
     }, [deleteProject, onSubmit, token]);
+
     return (
-        <div className="flex flex-col items-center justify-center w-screen h-screen overflow-hidden bg-gradient-to-tl from-black via-zinc-600/20 to-black">
-            <div className="absolute top-0 p-4 text-sm text-white flex flex-row justify-between items-center w-full">
+        <div className="flex h-screen w-screen flex-col items-center justify-center overflow-hidden bg-gradient-to-tl from-black via-zinc-600/20 to-black">
+            <div className="absolute top-0 flex w-full flex-row items-center justify-between p-4 text-sm text-white">
                 <div>
                     Hello, <span className="font-bold">AlexandreDFM</span>
                 </div>
@@ -129,18 +141,18 @@ export default function AdminPage() {
                 </div>
             </div>
             {"Voici tout vos projets :"}
-            <div className="text-sm text-white flex flex-col gap-2 mt-2">
+            <div className="mt-2 flex flex-col gap-2 text-sm text-white">
                 {projects.map((project: any) => (
                     <Card
                         key={project.id}
-                        className="bg-black rounded-2xl p-4 flex flex-col gap-2 items-center justify-start"
+                        className="flex flex-col items-center justify-start gap-2 rounded-2xl bg-black p-4"
                     >
                         <CardHeader
-                            className={"text-white flex flex-col gap-2 w-full"}
+                            className={"flex w-full flex-col gap-2 text-white"}
                         >
                             <div
                                 className={
-                                    "flex flex-row w-full justify-between items-center"
+                                    "flex w-full flex-row items-center justify-between"
                                 }
                             >
                                 <span className={"text-2xl font-bold"}>
@@ -159,7 +171,7 @@ export default function AdminPage() {
                             </span>
                         </CardHeader>
                         <CardBody className={"w-full"}>
-                            <p className={"truncate line-clamp-1 text-white"}>
+                            <p className={"line-clamp-1 truncate text-white"}>
                                 {project.body}
                             </p>
                         </CardBody>
@@ -174,7 +186,7 @@ export default function AdminPage() {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1 text-white w-full">
+                            <ModalHeader className="flex w-full flex-col gap-1 text-white">
                                 New project
                             </ModalHeader>
                             <ModalBody className={"text-white"}>
@@ -183,36 +195,36 @@ export default function AdminPage() {
                                     onSubmit={onSubmit}
                                 >
                                     <input
-                                        className="p-2 rounded-lg bg-zinc-600/20 text-white w-full"
+                                        className="w-full rounded-lg bg-zinc-600/20 p-2 text-white"
                                         type={"text"}
                                         name={"title"}
                                         placeholder="Title"
                                     />
                                     <input
-                                        className="p-2 rounded-lg bg-zinc-600/20 text-white w-full"
+                                        className="w-full rounded-lg bg-zinc-600/20 p-2 text-white"
                                         type={"text"}
                                         name={"description"}
                                         placeholder="Description"
                                     />
                                     <input
-                                        className="p-2 rounded-lg bg-zinc-600/20 text-white w-full"
+                                        className="w-full rounded-lg bg-zinc-600/20 p-2 text-white"
                                         type={"text"}
                                         name={"link"}
                                         placeholder="Link"
                                     />
                                     <input
-                                        className="p-2 rounded-lg bg-zinc-600/20 text-white w-full"
+                                        className="w-full rounded-lg bg-zinc-600/20 p-2 text-white"
                                         type={"text"}
                                         name={"github"}
                                         placeholder="Github"
                                     />
                                     <textarea
-                                        className="p-2 rounded-lg bg-zinc-600/20 text-white w-full"
+                                        className="w-full rounded-lg bg-zinc-600/20 p-2 text-white"
                                         name={"body"}
                                         placeholder="Body"
                                     />
                                     <input
-                                        className="p-2 rounded-lg bg-zinc-600/20 text-white w-full"
+                                        className="w-full rounded-lg bg-zinc-600/20 p-2 text-white"
                                         type={"date"}
                                         name={"date"}
                                         placeholder="Date"
