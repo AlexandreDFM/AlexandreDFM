@@ -1,8 +1,9 @@
-# File Name: .env.database
-# Author : Alexandre Kévin DE FREITAS MARTINS
-# Creation Date: 15/7/2024
-# Description: This is the .env.database
-# Copyright (c) 2024 Alexandre Kévin DE FREITAS MARTINS
+#
+# File Name: service.yaml
+# Author: Alexandre Kévin DE FREITAS MARTINS
+# Creation Date: 14/8/2025
+# Description: This is the service.yaml
+# Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
 # Version: 1.0.0
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,7 +25,19 @@
 # THE SOFTWARE.
 #
 
-MYSQL_DATABASE=alexandredfm_db
-MYSQL_USER=alexandredfm
-MYSQL_PASSWORD=password
-MYSQL_ROOT_PASSWORD=root_password
+apiVersion: v1
+kind: Service
+metadata:
+    name: alexandredfm-service-dev
+    namespace: alexandredfm-dev
+    labels:
+        app: alexandredfm
+spec:
+    type: ClusterIP
+    selector:
+        app: alexandredfm
+    ports:
+        - name: http
+          protocol: TCP
+          port: 80
+          targetPort: 8055

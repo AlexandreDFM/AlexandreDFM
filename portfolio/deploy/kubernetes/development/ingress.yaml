@@ -1,8 +1,9 @@
-# File Name: .env.frontend
-# Author : Alexandre Kévin DE FREITAS MARTINS
-# Creation Date: 15/7/2024
-# Description: This is the .env.frontend
-# Copyright (c) 2024 Alexandre Kévin DE FREITAS MARTINS
+#
+# File Name: ingress.yaml
+# Author: Alexandre Kévin DE FREITAS MARTINS
+# Creation Date: 14/8/2025
+# Description: This is the ingress.yaml
+# Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
 # Version: 1.0.0
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,7 +25,20 @@
 # THE SOFTWARE.
 #
 
-API_BASE_URL="http://backend:8055"
-FRONT_BASE_URL="http://frontend:8080"
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: alexandredfm-ingress-dev
+  namespace: alexandredfm-dev
+spec:
+  entryPoints:
+    - websecure
+  tls:
+    certResolver: le
+  routes:
+    - match: Host(`dev.alexandredfm.fr`) || Host(`www.dev.alexandredfm.fr`)
+      kind: Rule
+      services:
+        - name: alexandredfm-service-dev
+          port: 80
 
-API_BEARER_TOKEN="DIRECTUS_BEARER_TOKEN"
