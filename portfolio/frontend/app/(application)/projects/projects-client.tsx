@@ -25,100 +25,94 @@
  * THE SOFTWARE.
  */
 
-'use client';
+"use client";
 
 import { Article } from "./article";
-import getConfig from "next/config";
 import { Card } from "components/card";
 import { IProject } from "types/IProject";
 import { useTranslation } from "hooks/useTranslation";
 
-// const { publicRuntimeConfig } = getConfig();
-
-// async function getProjects() {
-//     try {
-//         const res = await fetch(`http://backend:8055/items/projects/`, {
-//             method: "GET",
-//             headers: {
-//                 "Content-Type": "application/json",
-//                 Authorization: `Bearer ${publicRuntimeConfig.apiBearerToken}`,
-//             },
-//             next: { revalidate: 1 },
-//         });
-//         if (!res.ok) {
-//             return [];
-//         }
-//         const repo = await res.json();
-//         if (!repo.data) {
-//             return [];
-//         }
-//         return repo.data;
-//     } catch (error) {
-//         return [];
-//     }
-// }
-
 export default function ProjectsClient() {
-    // const projectsData = getProjects();
-    // const [projects]: [Project[]] = await Promise.all([projectsData]);
     const { t } = useTranslation();
-    const head_projects: IProject[] = t<IProject[]>('projects.content.head_projects', { returnObjects: true });
+    const head_projects: IProject[] = t<IProject[]>(
+        "projects.content.head_projects",
+        { returnObjects: true },
+    );
 
-    const projects: IProject[] = t<IProject[]>('projects.content.projects', { returnObjects: true });
+    const projects: IProject[] = t<IProject[]>("projects.content.projects", {
+        returnObjects: true,
+    });
 
     return (
-        <div className="space-y-8 max-w-7xl md:space-y-12">
-            <div className="max-w-2xl mx-auto lg:mx-0 space-y-2">
+        <main className="max-w-7xl space-y-8 md:space-y-12 mx-auto" role="main">
+            <header className="mx-auto max-w-2xl space-y-2 lg:mx-0">
                 <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                    {t('projects.title')}
+                    {t("projects.title")}
                 </h1>
-                <h2 className="text-xl text-default-400 font-bold tracking-tight sm:text-2xl">
-                    {t('projects.headline')}
+                <h2 className="text-xl font-bold tracking-tight text-default-400 sm:text-2xl">
+                    {t("projects.headline")}
                 </h2>
-                <p className="text-default-400">
-                    {t('projects.description')}
-                </p>
-            </div>
-            <div className="w-full h-px bg-default-400" />
+                <p className="text-default-400">{t("projects.description")}</p>
+            </header>
             {head_projects.length <= 0 && projects.length <= 0 && (
-                <div className="flex items-center justify-center h-96">
-                    <p className="text-default-400">No projects found.</p>
+                <div className="flex h-96 items-center justify-center">
+                    <p
+                        className="text-default-400"
+                        role="status"
+                        aria-live="polite"
+                    >
+                        {t("projects.no_projects")}
+                    </p>
                 </div>
             )}
-            {head_projects.length >= 0 && (
-                <div>
-                    <div className="grid grid-row-1 gap-4 mx-auto lg:grid-row-2 ">
-                        <div className="flex flex-col w-full gap-4 mx-auto border-t border-gray-900/10 lg:mx-0 lg:border-t-0">
-                            {projects
+            {head_projects.length > 0 && (
+                <section aria-labelledby="featured-projects">
+                    <h2 id="featured-projects" className="sr-only">
+                        Featured Projects
+                    </h2>
+                    <div className="grid-row-1 lg:grid-row-2 mx-auto grid gap-4">
+                        <div className="mx-auto flex w-full flex-col gap-4 border-t border-gray-900/10 lg:mx-0 lg:border-t-0">
+                            {head_projects
                                 .filter(
                                     (_: any, index: number) =>
                                         index === 0 ||
                                         index === 1 ||
                                         index === 2,
                                 )
-                                .map((project: IProject) => (
+                                .map((project: IProject, index: number) => (
                                     <Card key={project.id}>
-                                        <Article project={project} />
+                                        <Article
+                                            project={project}
+                                            aria-label={`Featured project: ${
+                                                project.title
+                                            }`}
+                                        />
                                     </Card>
                                 ))}
                         </div>
                     </div>
-                </div>
+                </section>
             )}
             {projects.length >= 3 && (
-                <div>
-                    <div className="grid grid-cols-1 gap-4 mx-auto lg:mx-0 md:grid-cols-3">
+                <section aria-labelledby="all-projects">
+                    <h2 id="all-projects" className="sr-only">
+                        All Projects
+                    </h2>
+                    <div className="mx-auto grid grid-cols-1 gap-4 md:grid-cols-3 lg:mx-0">
                         <div className="grid grid-cols-1 gap-4">
                             {projects
                                 .filter(
                                     (_: any, index: number) =>
-                                        index !== 0 &&
-                                        index !== 1 &&
-                                        index !== 2,
+                                        index % 3 === 0
                                 )
                                 .map((project: IProject) => (
                                     <Card key={project.id}>
-                                        <Article project={project} />
+                                        <Article
+                                            project={project}
+                                            aria-label={`Project: ${
+                                                project.title
+                                            }`}
+                                        />
                                     </Card>
                                 ))}
                         </div>
@@ -126,14 +120,16 @@ export default function ProjectsClient() {
                             {projects
                                 .filter(
                                     (_: any, index: number) =>
-                                        index !== 0 &&
-                                        index !== 1 &&
-                                        index !== 2 &&
-                                        index % 3 === 1,
+                                        index % 3 === 1
                                 )
                                 .map((project: IProject) => (
                                     <Card key={project.id}>
-                                        <Article project={project} />
+                                        <Article
+                                            project={project}
+                                            aria-label={`Project: ${
+                                                project.title
+                                            }`}
+                                        />
                                     </Card>
                                 ))}
                         </div>
@@ -141,20 +137,22 @@ export default function ProjectsClient() {
                             {projects
                                 .filter(
                                     (_: any, index: number) =>
-                                        index !== 0 &&
-                                        index !== 1 &&
-                                        index !== 2 &&
                                         index % 3 === 2,
                                 )
                                 .map((project: IProject) => (
                                     <Card key={project.id}>
-                                        <Article project={project} />
+                                        <Article
+                                            project={project}
+                                            aria-label={`Project: ${
+                                                project.title
+                                            }`}
+                                        />
                                     </Card>
                                 ))}
                         </div>
                     </div>
-                </div>
+                </section>
             )}
-        </div>
+        </main>
     );
 }

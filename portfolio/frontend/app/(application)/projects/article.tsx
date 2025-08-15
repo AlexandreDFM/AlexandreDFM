@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-'use client';
+"use client";
 
 import Link from "next/link";
 import { IProject } from "../../../types/IProject";
@@ -41,13 +41,17 @@ export const Article: React.FC<Props> = ({ project }) => {
         <Link href={project.github || "#"}>
             <article className="p-4 md:p-8">
                 <div className="flex flex-col gap-4">
-                    <div className="flex justify-between items-center">
-                        <div className="text-3xl font-bold text-zinc-200 group-hover:text-white">
+                    <div className="flex items-center justify-between">
+                        <div className="text-3xl font-bold">
                             {project.title}
                         </div>
-                        <div className="text-xs text-zinc-400">
+                        <div className="text-xs">
                             {project.date && (
-                                <time dateTime={new Date(project.date).toISOString()}>
+                                <time
+                                    dateTime={new Date(
+                                        project.date,
+                                    ).toISOString()}
+                                >
                                     {Intl.DateTimeFormat(undefined, {
                                         dateStyle: "medium",
                                     }).format(new Date(project.date))}
@@ -56,64 +60,78 @@ export const Article: React.FC<Props> = ({ project }) => {
                         </div>
                     </div>
 
-                    <div className="text-sm text-zinc-300">
-                        {project.description}
-                    </div>
+                    <div className="text-sm">{project.description}</div>
 
                     {project.role && (
-                        <div className="text-sm text-zinc-400">
-                            <span className="font-semibold">{t('projects.role')}:</span> {project.role}
+                        <div className="text-sm">
+                            <span className="font-semibold">
+                                {t("projects.role")}:
+                            </span>{" "}
+                            {project.role}
                         </div>
                     )}
 
                     {project.duration && (
-                        <div className="text-sm text-zinc-400">
-                            <span className="font-semibold">{t('projects.duration')}:</span> {project.duration}
+                        <div className="text-sm">
+                            <span className="font-semibold">
+                                {t("projects.duration")}:
+                            </span>{" "}
+                            {project.duration}
                         </div>
                     )}
 
-                    {/* {project.skills && project.skills.length > 0 && (
+                    {project.skills && project.skills.length > 0 && (
                         <div>
-                            <span className="text-sm font-semibold text-zinc-300">{t('projects.skills')}:</span>
-                            <div className="flex flex-wrap gap-2 mt-2">
+                            <span className="text-sm font-semibold">
+                                {t("projects.skills")}:
+                            </span>
+                            <div className="mt-2 flex flex-wrap gap-2">
                                 {project.skills.map((skill, index) => (
                                     <span
                                         key={index}
-                                        className="px-2 py-1 text-xs bg-blue-900/30 text-blue-100 rounded-full"
+                                        className="rounded-full bg-blue-900/30 px-2 py-1 text-xs text-blue-100"
                                     >
                                         {skill}
                                     </span>
                                 ))}
                             </div>
                         </div>
-                    )} */}
+                    )}
 
-                    {project.technologies && project.technologies.length > 0 && (
-                        <div>
-                            <span className="text-sm font-semibold text-zinc-300">{t('projects.technologies')}:</span>
-                            <div className="flex flex-wrap gap-2 mt-2">
-                                {project.technologies.map((tech, index) => (
-                                    <span
-                                        key={index}
-                                        className="px-2 py-1 text-xs bg-purple-900/30 text-purple-100 rounded-full"
-                                    >
-                                        {tech}
-                                    </span>
-                                ))}
+                    {project.technologies &&
+                        project.technologies.length > 0 && (
+                            <div>
+                                <span className="text-sm font-semibold">
+                                    {t("projects.technologies")}:
+                                </span>
+                                <div className="mt-2 flex flex-wrap gap-2">
+                                    {project.technologies.map((tech, index) => (
+                                        <span
+                                            key={index}
+                                            className="rounded-full bg-purple-900/30 px-2 py-1 text-xs text-purple-100"
+                                        >
+                                            {tech}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                    )}
+                        )}
 
-                    {project.achievements && project.achievements.length > 0 && (
-                        <div>
-                            <span className="text-sm font-semibold text-zinc-300">{t('projects.achievements')}:</span>
-                            <ul className="list-disc list-inside mt-2 text-sm text-zinc-300">
-                                {project.achievements.map((achievement, index) => (
-                                    <li key={index}>{achievement}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
+                    {project.achievements &&
+                        project.achievements.length > 0 && (
+                            <div>
+                                <span className="text-sm font-semibold">
+                                    {t("projects.achievements")}:
+                                </span>
+                                <ul className="mt-2 list-inside list-disc text-sm">
+                                    {project.achievements.map(
+                                        (achievement, index) => (
+                                            <li key={index}>{achievement}</li>
+                                        ),
+                                    )}
+                                </ul>
+                            </div>
+                        )}
                 </div>
             </article>
         </Link>
