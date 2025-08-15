@@ -68,7 +68,6 @@ jobs:
               uses: docker/build-push-action@v6
               with:
                   context: "./portfolio"
-                  file: Dockerfile
                   push: true
                   tags: |
                       ghcr.io/alexandredfm/alexandredfm:latest
