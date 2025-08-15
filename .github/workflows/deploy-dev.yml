@@ -111,9 +111,9 @@ jobs:
               with:
                   namespace: alexandredfm-dev
                   manifests: |
-                      deploy/kubernetes/development/deployment.yaml
-                      deploy/kubernetes/development/service.yaml
-                      deploy/kubernetes/development/ingress.yaml
+                      portfolio/deploy/kubernetes/development/deployment.yaml
+                      portfolio/deploy/kubernetes/development/service.yaml
+                      portfolio/deploy/kubernetes/development/ingress.yaml
                   images: |
                       ghcr.io/alexandredfm/alexandredfm:dev-${{ github.event.workflow_run.head_sha }}
 

@@ -111,9 +111,9 @@ jobs:
               with:
                   namespace: alexandredfm-prod
                   manifests: |
-                      deploy/kubernetes/production/deployment.yaml
-                      deploy/kubernetes/production/service.yaml
-                      deploy/kubernetes/production/ingress.yaml
+                      portfolio/deploy/kubernetes/production/deployment.yaml
+                      portfolio/deploy/kubernetes/production/service.yaml
+                      portfolio/deploy/kubernetes/production/ingress.yaml
                   images: |
                       ghcr.io/alexandredfm/alexandredfm:${{ github.sha }}
 
