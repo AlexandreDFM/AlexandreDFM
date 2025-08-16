@@ -63,6 +63,11 @@
     ts-pattern "^4.3.0"
     type-fest "^3.12.0"
 
+"@directus/sdk@^20.0.2":
+  version "20.0.2"
+  resolved "https://registry.yarnpkg.com/@directus/sdk/-/sdk-20.0.2.tgz#c101967847c5cfd73357b020ed9ae95ae9d60588"
+  integrity sha512-eZu61BdWN1R4h6A/K3jIiZfK8WMg3z5JLDPrdGPA8ZWpXjXlR0qtPOBJ0dZFJn25C2Huu0ND6UMrFlhDgkIwyw==
+
 "@effect-ts/core@^0.60.5":
   version "0.60.5"
   resolved "https://registry.yarnpkg.com/@effect-ts/core/-/core-0.60.5.tgz#df79049e1be4a576ab6b45abbe92c831bda62361"

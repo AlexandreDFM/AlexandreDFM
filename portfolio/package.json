@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@boiseitguru/cookie-cutter": "^0.2.3",
+    "@directus/sdk": "^20.0.2",
     "@heroui/react": "2.8.2",
     "@next/mdx": "^15.4.6",
     "@tailwindcss/typography": "^0.5.10",
