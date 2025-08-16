@@ -68,7 +68,7 @@ spec:
                         value: "my-visible-secret-value"
                   livenessProbe:
                       httpGet:
-                          path: /server/health
+                          path: /api/server/health
                           port: 3000
                       initialDelaySeconds: 60
                       periodSeconds: 30
@@ -77,7 +77,7 @@ spec:
                       failureThreshold: 3
                   readinessProbe:
                       httpGet:
-                          path: /server/health
+                          path: /api/server/health
                           port: 3000
                       initialDelaySeconds: 30
                       periodSeconds: 10
@@ -86,7 +86,7 @@ spec:
                       failureThreshold: 3
                   startupProbe:
                       httpGet:
-                          path: /server/health
+                          path: /api/server/health
                           port: 3000
                       initialDelaySeconds: 10
                       periodSeconds: 10
