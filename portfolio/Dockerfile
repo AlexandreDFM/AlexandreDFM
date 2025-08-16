@@ -1,9 +1,10 @@
-# File Name: Dockerfile
-# Author: Alexandre Kévin De Freitas Martins
-# Creation Date: 2024
-# Description: Dockerfile for the frontend of the application
 #
-# Copyright (c) 2024 Tux Inc.
+# File Name: Dockerfile
+# Author : Alexandre Kévin DE FREITAS MARTINS
+# Creation Date: 16/8/2025
+# Description: This is the Dockerfile
+# Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
+# Version: 1.0.0
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the 'Software'), to deal
@@ -22,11 +23,12 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+#
 
 ###############################################################################
 ### Build For Production
 
-FROM node:18-alpine AS build-stage
+FROM node:22-alpine AS build-stage
 
 # Create app directory
 RUN mkdir /app
@@ -46,7 +48,7 @@ RUN yarn run build
 ###############################################################################
 ### Production Stage
 
-FROM node:18-alpine AS production-stage
+FROM node:22-alpine AS production-stage
 
 WORKDIR /app
 
