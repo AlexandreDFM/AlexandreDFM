@@ -28,7 +28,7 @@
 ########################
 
 # Build stage
-FROM node:latest as build-stage
+FROM node:18-alpine AS build-stage
 
 # Create app directory
 RUN mkdir /app
@@ -50,7 +50,7 @@ RUN yarn run build
 ########################
 
 # Production stage
-FROM node:latest as production-stage
+FROM node:18-alpine AS production-stage
 
 WORKDIR /app
 
