@@ -86,11 +86,11 @@ export default function ContactClient() {
                         href={s.href}
                         target="_blank"
                         className="group relative flex flex-col items-center gap-2 p-4 duration-700 md:gap-4 md:p-8 md:py-9 lg:pb-12"
-                        >
+                    >
                         <span
                             className="absolute h-2/3 w-px bg-gradient-to-b from-zinc-500 via-zinc-500/50 to-transparent"
                             aria-hidden="true"
-                            />
+                        />
                         <span className="drop-shadow-orange relative z-10 flex h-12 w-12 items-center justify-center rounded-full border border-zinc-500 bg-zinc-900 text-sm text-zinc-200 duration-1000 group-hover:border-zinc-200 group-hover:bg-zinc-900 group-hover:text-white">
                             {s.icon}
                         </span>{" "}
