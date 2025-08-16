@@ -25,12 +25,10 @@
 # THE SOFTWARE.
 #
 
-########################
-# BUILD FOR PRODUCTION #
-########################
+###############################################################################
+### Build For Development
 
-# Build stage
-FROM node:latest as build-stage
+FROM node:18-alpine as build-stage
 
 # Create app directory
 RUN mkdir /app
@@ -47,12 +45,10 @@ COPY . .
 # Build app
 RUN yarn run build
 
-########################
-#      PRODUCTION      #
-########################
+###############################################################################
+### Development Stage
 
-# Production stage
-FROM node:latest as production-stage
+FROM node:18-alpine as development-stage
 
 WORKDIR /app
 
