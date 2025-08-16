@@ -25,18 +25,16 @@
 name: alexandredfm-dev
 
 services:
-  # MariaDB
+  # PostgreSQL Database
   database:
-    container_name: database
-    image: mariadb
+    container_name: alexandredfm-postgis
+    image: postgres:17
     restart: unless-stopped
     platform: linux/amd64
-    volumes:
-        - ./database/empty_directus_db.sql:/docker-entrypoint-initdb.d/empty_directus_db.sql
     ports:
-      - "3306:3306"
+      - "5432:5432"
     env_file:
-      - ./env/.env.database
+      - ./.env/.env.postgres
     networks:
       - alexandredfm-network
 
@@ -68,7 +66,7 @@ services:
         - cache
         - database
     env_file:
-        - ./env/.env.directus
+        - ./.env/.env.directus
     networks:
         - alexandredfm-network
 
@@ -80,14 +78,14 @@ services:
     command: bash -c "yarn dev"
     working_dir: /usr/src/app
     ports:
-      - "8080:3000"
+      - "3000:3000"
     volumes:
       - ./frontend:/usr/src/app
       - ./frontend/node_modules:/usr/src/app/node_modules
     networks:
       - alexandredfm-network
     env_file:
-      - ./env/.env.frontend
+      - ./.env/.env.frontend
 
 networks:
   alexandredfm-network:

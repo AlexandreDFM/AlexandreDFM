@@ -1,0 +1,137 @@
+#
+# File Name: deploy-dev.yml
+# Author : Alexandre Kévin DE FREITAS MARTINS
+# Creation Date: 14/8/2025
+# Description: This workflow will build and push the Directus image to GitHub container registry
+#              Next, it will deploy it to the development namespace in the Kubernetes cluster
+#              Triggered when the Test CI/CD workflow completes successfully
+# Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
+# Version: 1.0.0
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the 'Software'), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+#
+
+name: Deploy My API to Development
+
+env:
+    # Github Configuration
+    GITHUB_USERNAME: ${{ github.repository_owner }}
+    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # Kubernetes Configuration
+    KUBERNETES_URL: ${{ secrets.KUBERNETES_URL }}
+    KUBERNETES_SECRET: ${{ secrets.KUBERNETES_SECRET }}
+
+    # Next.js Configuration
+    API_BASE_URL: ${{ secrets.DEV_API_BASE_URL }}
+
+# Trigger the workflow when the Build and Push Docker Development Image to GitHub Container Registry workflow completes successfully
+on:
+    workflow_run:
+        workflows: ["Build and Push Docker Development Image to GitHub Container Registry"]
+        types: [completed]
+        branches: [dev]
+
+# Deploy the My API to the development Kubernetes cluster
+jobs:
+    on-failure:
+      runs-on: ubuntu-latest
+      if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+      steps:
+        - run: echo 'The triggering previous workflow failed'
+    deploy_to_kubernetes:
+        name: Deploy My API dev to Kubernetes
+        runs-on: ubuntu-latest
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        environment:
+            name: alexandredfm-dev
+        steps:
+            - name: Set the Kubernetes context
+              uses: azure/k8s-set-context@v4
+              with:
+                  method: service-account
+                  k8s-url: ${{ env.KUBERNETES_URL }}
+                  k8s-secret: ${{ env.KUBERNETES_SECRET }}
+
+            - name: Ensure namespace exists
+              run: |
+                kubectl get namespace alexandredfm-dev || kubectl create namespace alexandredfm-dev
+
+            - name: Create My API secrets
+              run: |
+                  kubectl delete secret alexandredfm-secret-env-dev -n alexandredfm-dev --ignore-not-found=true
+                  kubectl create secret generic alexandredfm-secret-env-dev -n alexandredfm-dev               \
+                    --from-literal=API_BASE_URL="${{ env.API_BASE_URL }}"                                     \
+
+            - name: Create GitHub Container Registry secret
+              run: |
+                  kubectl delete secret github-container-registry -n alexandredfm-dev --ignore-not-found=true
+                  kubectl create secret docker-registry github-container-registry -n alexandredfm-dev  \
+                    --docker-server=ghcr.io                                                                   \
+                    --docker-username=${{ env.GITHUB_USERNAME }}                                              \
+                    --docker-password=${{ env.GITHUB_TOKEN }}
+
+            - name: Checkout source code
+              uses: actions/checkout@v4
+
+            - name: Force clean deployment if needed
+              run: |
+                echo "=== Current deployment status ==="
+                kubectl -n alexandredfm-dev get pods -o wide || true
+                kubectl -n alexandredfm-dev get deployments || true
+                echo ""
+                echo "=== Checking for stuck deployments ==="
+                # Check if My API deployment is stuck
+                if kubectl -n alexandredfm-dev get deployment alexandredfm-deployment-dev -o jsonpath='{.status.replicas}' | grep -q "1" && \
+                   kubectl -n alexandredfm-dev get deployment alexandredfm-deployment-dev -o jsonpath='{.status.readyReplicas}' | grep -q "^$"; then
+                  echo "Deployment appears stuck, forcing restart..."
+                  kubectl -n alexandredfm-dev rollout restart deployment/alexandredfm-deployment-dev || true
+                  kubectl -n alexandredfm-dev delete pods -l app=alexandredfm --force --grace-period=0 || true
+                  sleep 30
+                fi
+
+            - name: Deploy to the Kubernetes cluster
+              uses: azure/k8s-deploy@v5
+              with:
+                  namespace: alexandredfm-dev
+                  manifests: |
+                      portfolio/deploy/kubernetes/development/deployment.yaml
+                      portfolio/deploy/kubernetes/development/service.yaml
+                      portfolio/deploy/kubernetes/development/ingress.yaml
+                  images: |
+                      ghcr.io/alexandredfm/alexandredfm:dev-${{ github.event.workflow_run.head_sha }}
+
+            - name: Debug deployment issues
+              if: failure()
+              run: |
+                echo "=== Deployment Status ==="
+                kubectl -n alexandredfm-dev get pods -o wide
+                kubectl -n alexandredfm-dev get deployments
+                kubectl -n alexandredfm-dev get services
+                kubectl -n alexandredfm-dev get secrets
+                echo ""
+                echo "=== Pod Details ==="
+                kubectl -n alexandredfm-dev describe pods
+                echo ""
+                echo "=== Recent Events ==="
+                kubectl -n alexandredfm-dev get events --sort-by=.metadata.creationTimestamp --field-selector type=Warning
+                echo ""
+                echo "=== My API Pod Logs ==="
+                kubectl -n alexandredfm-dev logs -l app=alexandredfm --tail=100 --previous=true || true
+                kubectl -n alexandredfm-dev logs -l app=alexandredfm --tail=100 || true

@@ -1,8 +1,10 @@
-# File Name: .env.template
+#
+# File Name: service.yaml
 # Author: Alexandre Kévin DE FREITAS MARTINS
-# Creation Date: 2024
-# Description: .env.template
-# Company: Tux Inc.
+# Creation Date: 14/8/2025
+# Description: This is the service.yaml
+# Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
+# Version: 1.0.0
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the 'Software'), to deal
@@ -23,18 +25,19 @@
 # THE SOFTWARE.
 #
 
-API_BASE_URL="http://localhost:3000"
-FRONT_BASE_URL="http://localhost:8080"
-
-# ============= Auth ==============
-
-# MariaDB
-MARIADB_TYPE="mariadb"
-MARIADB_HOST="db"
-MARIADB_PORT=3306
-MARIADB_DB="alexandredfm_db"
-MARIADB_USERNAME="alexandredfm"
-MARIADB_PASSWORD="password"
-JWT_SECRET="secret"
-
-# =================================
+apiVersion: v1
+kind: Service
+metadata:
+    name: alexandredfm-service-dev
+    namespace: alexandredfm-dev
+    labels:
+        app: alexandredfm
+spec:
+    type: ClusterIP
+    selector:
+        app: alexandredfm
+    ports:
+        - name: http
+          protocol: TCP
+          port: 80
+          targetPort: 3000

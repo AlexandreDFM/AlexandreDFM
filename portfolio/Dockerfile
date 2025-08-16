@@ -1,9 +1,9 @@
-#
-# File Name: .gitignore
-# Author: Alexandre DE FREITAS MARTINS
+# File Name: Dockerfile
+# Author: Alexandre Kévin De Freitas Martins
 # Creation Date: 2024
-# Description: .gitignore
-# Company: Tux Inc.
+# Description: Dockerfile for the frontend of the application
+#
+# Copyright (c) 2024 Tux Inc.
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the 'Software'), to deal
@@ -22,50 +22,44 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-#
 
-# Folders
-data/
-mysql/
-.env/
-.idea
-.vscode
+########################
+# BUILD FOR PRODUCTION #
+########################
 
-# Files
-*.env
+# Build stage
+FROM node:18-alpine AS build-stage
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
-.yarn/install-state.gz
+# Create app directory
+RUN mkdir /app
+WORKDIR /app
 
-# testing
-/coverage
+# Install app dependencies
+# COPY ./package.json /package.json
+COPY package.json ./
+RUN yarn install
 
-# next.js
-/.next/
-/next.lock/
-/out/
+# Bundle app source
+COPY . .
 
-# production
-/dist
+# Build app
+RUN yarn run build
 
-# misc
-.DS_Store
-*.pem
+########################
+#      PRODUCTION      #
+########################
 
-# debug
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Production stage
+FROM node:18-alpine AS production-stage
 
-# local env files
-.env*.local
+WORKDIR /app
 
-# vercel
-.vercel
+# Copy build from build-stage
+COPY --from=build-stage /app/public ./public
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=build-stage --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=build-stage --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# typescript
-*.tsbuildinfo
-next-env.d.ts
+# Run server
+CMD ["node", "/app/server.js"]
