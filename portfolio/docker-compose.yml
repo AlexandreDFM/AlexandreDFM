@@ -41,7 +41,7 @@ services:
   # Redis Cache
   cache:
     container_name: cache
-    image: redis:6
+    image: redis:8
     restart: unless-stopped
     ports:
         - 6379:6379
@@ -53,15 +53,13 @@ services:
   # Directus Backend
   backend:
     container_name: backend
-    image: directus/directus:latest
+    image: directus/directus:11.10.2
     restart: unless-stopped
     ports:
         - 8055:8055
     volumes:
         - ./backend/uploads:/directus/uploads
         - ./backend/extensions:/directus/extensions
-        - ./backend/templates:/directus/templates
-        - ./backend/snapshots/:/directus/snapshots
     depends_on:
         - cache
         - database
@@ -73,19 +71,19 @@ services:
   # Next Frontend
   frontend:
     container_name: alexandredfm-frontend
-    image: node:latest
+    image: node:18-alpine
     restart: unless-stopped
     command: bash -c "yarn dev"
     working_dir: /usr/src/app
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/usr/src/app
-      - ./frontend/node_modules:/usr/src/app/node_modules
-    networks:
-      - alexandredfm-network
+      - ./:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules
     env_file:
       - ./.env/.env.frontend
+    networks:
+      - alexandredfm-network
 
 networks:
   alexandredfm-network:
