@@ -51,10 +51,10 @@ export default function AboutClient() {
                             alt="Alexandre De Freitas Martins profile picture"
                         />
                         <div className="flex-1 px-4">
-                            <h4 className="text-xl font-semibold">
+                            <h1 className="text-xl font-semibold">
                                 {t("about.content.personnal_info.myname")}{" "}
                                 {t("about.content.personnal_info.mylastname")}
-                            </h4>
+                            </h1>
                             <p className="text-default-400">
                                 {t("about.content.personnal_info.mydesc")}
                             </p>
@@ -62,9 +62,9 @@ export default function AboutClient() {
                     </div>
 
                     {/* Bio */}
-                    <h5 className="my-4 text-lg font-semibold">
+                    <h1 className="my-4 text-lg font-semibold">
                         {t("about.content.bio.title")}
-                    </h5>
+                    </h1>
                     <div className="space-y-2 px-4">
                         {t<string[]>("about.content.bio.items", {
                             returnObjects: true,
@@ -76,9 +76,9 @@ export default function AboutClient() {
                     </div>
 
                     {/* Langues */}
-                    <h5 className="my-4 text-lg font-semibold">
+                    <h1 className="my-4 text-lg font-semibold">
                         {t("about.content.language.title")}
-                    </h5>
+                    </h1>
                     <div className="space-y-2 px-4">
                         {t<{ name: string; level: string; pourcent: string }[]>(
                             "about.content.language.items",
@@ -101,16 +101,16 @@ export default function AboutClient() {
                     </div>
 
                     {/* Compétences */}
-                    <h5 className="my-4 text-lg font-semibold">
+                    <h1 className="my-4 text-lg font-semibold">
                         {t("about.content.skills.title")}
-                    </h5>
-                    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 px-4">
+                    </h1>
+                    <div className="grid grid-cols-2 gap-2 px-4 sm:grid-cols-3">
                         {t<string[]>("about.content.skills.items", {
                             returnObjects: true,
                         }).map((text: string, index: number) => (
                             <div
                                 key={index}
-                                className="text-center rounded bg-purple-900/30 px-2 py-1 text-sm text-purple-100 dark:bg-blue-500/10 dark:text-blue-200/80"
+                                className="rounded bg-purple-900/30 px-2 py-1 text-center text-sm text-purple-100 dark:bg-blue-500/10 dark:text-blue-200/80"
                             >
                                 {text}
                             </div>
@@ -122,21 +122,21 @@ export default function AboutClient() {
             {/* Colonne de droite - Expériences et formations */}
             <Card className="border border-white/10 bg-black/10 p-4 backdrop-blur-sm">
                 <CardBody>
-                    <h5 className="mb-4 text-xl font-semibold">
+                    <h1 className="mb-4 text-xl font-semibold">
                         {t("about.content.formation.title")}
-                    </h5>
+                    </h1>
                     <Study />
-                    <h5 className="my-4 text-xl font-semibold">
+                    <h1 className="my-4 text-xl font-semibold">
                         {t("about.content.job.title")}
-                    </h5>
+                    </h1>
                     <Work />
-                    <h5 className="my-4 text-xl font-semibold">
+                    <h1 className="my-4 text-xl font-semibold">
                         {t("about.content.certification.title")}
-                    </h5>
+                    </h1>
                     <Certification />
-                    <h5 className="my-4 text-xl font-semibold">
+                    <h1 className="my-4 text-xl font-semibold">
                         {t("about.content.association.title")}
-                    </h5>
+                    </h1>
                     <Association />
                 </CardBody>
             </Card>

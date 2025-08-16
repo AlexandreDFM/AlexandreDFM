@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-'use client';
+"use client";
 
 import { useTranslation } from "hooks/useTranslation";
 
@@ -33,16 +33,24 @@ export default function Work() {
 
     return (
         <div className="px-4">
-            {t<any[]>('about.content.job.items', { returnObjects: true }).map((job, index) => (
-                <div key={index} className="flex flex-col">
-                    <div className="flex justify-between items-center">
-                        <h3 className="text-lg font-semibold text-default-600">{job.title}</h3>
-                        <span className="text-sm text-default-400">{job.date}</span>
+            {t<any[]>("about.content.job.items", { returnObjects: true }).map(
+                (job, index) => (
+                    <div key={index} className="flex flex-col">
+                        <div className="flex items-center justify-between">
+                            <h1 className="text-lg font-semibold text-default-600">
+                                {job.title}
+                            </h1>
+                            <span className="text-sm text-default-400">
+                                {job.date}
+                            </span>
+                        </div>
+                        <div className="text-sm text-default-500">
+                            {job.company}
+                        </div>
+                        <p className="text-sm text-default-400">{job.desc}</p>
                     </div>
-                    <div className="text-sm text-default-500">{job.company}</div>
-                    <p className="text-sm text-default-400">{job.desc}</p>
-                </div>
-            ))}
+                ),
+            )}
         </div>
     );
 }

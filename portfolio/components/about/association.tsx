@@ -24,7 +24,7 @@
  * THE SOFTWARE.
  */
 
-'use client';
+"use client";
 
 import { useTranslation } from "hooks/useTranslation";
 
@@ -33,13 +33,21 @@ export default function Association() {
 
     return (
         <div className="px-4">
-            {t<any[]>('about.content.association.items', { returnObjects: true }).map((assoc, index) => (
+            {t<any[]>("about.content.association.items", {
+                returnObjects: true,
+            }).map((assoc, index) => (
                 <div key={index} className="flex flex-col">
-                    <div className="flex justify-between items-center">
-                        <h3 className="text-lg font-semibold text-default-600">{assoc.title}</h3>
-                        <span className="text-sm text-default-400">{assoc.date}</span>
+                    <div className="flex items-center justify-between">
+                        <h1 className="text-lg font-semibold text-default-600">
+                            {assoc.title}
+                        </h1>
+                        <span className="text-sm text-default-400">
+                            {assoc.date}
+                        </span>
                     </div>
-                    <p className="text-sm text-default-400">{assoc.description}</p>
+                    <p className="text-sm text-default-400">
+                        {assoc.description}
+                    </p>
                 </div>
             ))}
         </div>
