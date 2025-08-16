@@ -94,7 +94,7 @@ export const Footer: React.FC = () => {
     return (
         <footer ref={ref}>
             <div className="bg-zinc-900/500 h-[var(--footer-size)] border-t border-zinc-800 backdrop-blur">
-                <div className="container m-auto px-4 flex h-full flex-row-reverse items-center">
+                <div className="container m-auto flex h-full flex-row-reverse items-center px-4">
                     <div className="flex space-x-2">
                         {socials.map((s) => (
                             <Link
@@ -103,7 +103,10 @@ export const Footer: React.FC = () => {
                                 target="_blank"
                                 className="items-center"
                             >
-                                <span className="drop-shadow-orange flex h-8 w-8 items-center justify-center rounded-full border border-zinc-500 bg-zinc-900 text-sm text-zinc-200 group-hover:border-zinc-200 group-hover:bg-zinc-900 group-hover:text-white">
+                                <span
+                                    className="drop-shadow-orange flex h-8 w-8 items-center justify-center rounded-full border border-zinc-500 bg-zinc-900 text-sm text-zinc-200 group-hover:border-zinc-200 group-hover:bg-zinc-900 group-hover:text-white"
+                                    aria-label={s.label}
+                                >
                                     {s.icon}
                                 </span>
                             </Link>
