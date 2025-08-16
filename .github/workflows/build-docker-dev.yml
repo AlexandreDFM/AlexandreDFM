@@ -67,8 +67,7 @@ jobs:
               id: docker_build
               uses: docker/build-push-action@v6
               with:
-                  context: "./portfolio"
-                  file: Dockerfile.dev
+                  file: "./portfolio/Dockerfile.dev"
                   push: true
                   tags: |
                       ghcr.io/alexandredfm/alexandredfm:dev-latest

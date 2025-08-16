@@ -23,11 +23,9 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-########################
-# BUILD FOR PRODUCTION #
-########################
+###############################################################################
+### Build For Production
 
-# Build stage
 FROM node:18-alpine AS build-stage
 
 # Create app directory
@@ -45,11 +43,9 @@ COPY . .
 # Build app
 RUN yarn run build
 
-########################
-#      PRODUCTION      #
-########################
+###############################################################################
+### Production Stage
 
-# Production stage
 FROM node:18-alpine AS production-stage
 
 WORKDIR /app
