@@ -28,18 +28,18 @@
 "use client";
 
 import {
-    Github,
-    InstagramIcon,
-    Linkedin,
     Mail,
     Phone,
     XIcon,
+    Github,
+    Linkedin,
+    InstagramIcon,
 } from "lucide-react";
 
 import Link from "next/link";
-import { ISocial } from "types/ISocial";
-import { useTranslation } from "../hooks/useTranslation";
-import React, { useEffect, useRef, useState } from "react";
+import { ISocial } from "@/types/ISocial";
+import { useTranslation } from "@/hooks/useTranslation";
+import { useEffect, useRef, useState } from "react";
 
 export const Footer: React.FC = () => {
     const { t } = useTranslation();

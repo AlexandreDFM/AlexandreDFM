@@ -27,12 +27,12 @@
 
 "use client";
 
-import Work from "components/about/work";
-import Study from "components/about/study";
-import { useTranslation } from "hooks/useTranslation";
-import Association from "components/about/association";
 import { Avatar, Card, CardBody } from "@heroui/react";
-import Certification from "components/about/certification";
+import { useTranslation } from "@/hooks/useTranslation";
+import Study from "@/components/about/study";
+import Work from "@/components/about/work";
+import Certification from "@/components/about/certification";
+import Association from "@/components/about/association";
 
 export default function AboutClient() {
     const { t } = useTranslation();
@@ -44,7 +44,7 @@ export default function AboutClient() {
                 <CardBody>
                     <div className="flex items-center gap-4 px-8">
                         <Avatar
-                            className="ml-4 h-20 w-20 flex-shrink-0 md:h-24 md:w-24 lg:h-28 lg:w-28"
+                            className="ml-4 h-20 w-20 shrink-0 md:h-24 md:w-24 lg:h-28 lg:w-28"
                             isBordered
                             radius="full"
                             src="/app/bio/alexandredfm.jpeg"

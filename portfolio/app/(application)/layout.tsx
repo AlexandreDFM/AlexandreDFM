@@ -25,8 +25,8 @@
  */
 
 import { Metadata } from "next";
-import { Footer } from "components/footer";
-import { Navbar } from "components/navbar";
+import { Footer } from "@/components/footer";
+import { Navbar } from "@/components/navbar";
 
 // Since we can't reliably get the current route in the layout's generateMetadata,
 // let's create individual metadata for each page route by using template metadata

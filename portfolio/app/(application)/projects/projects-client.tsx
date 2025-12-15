@@ -28,20 +28,82 @@
 "use client";
 
 import { Article } from "./article";
-import { Card } from "components/card";
-import { IProject } from "types/IProject";
-import { useTranslation } from "hooks/useTranslation";
+import { Card } from "@/components/card";
+import { IProject } from "@/types/IProject";
+import { useProjects } from "@/hooks/useProjects";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function ProjectsClient() {
-    const { t } = useTranslation();
-    const head_projects: IProject[] = t<IProject[]>(
-        "projects.content.head_projects",
-        { returnObjects: true },
+    const { t, locale } = useTranslation();
+
+    // Fetch featured projects and regular projects from Directus
+    const {
+        projects: headProjects,
+        loading: headLoading,
+        error: headError
+    } = useProjects({
+        language: locale as 'en' | 'fr',
+        featured: true
+    });
+
+    const {
+        projects: regularProjects,
+        loading: regularLoading,
+        error: regularError
+    } = useProjects({
+        language: locale as 'en' | 'fr',
+        featured: false
+    });
+
+    // Filter out featured projects from regular projects to avoid duplicates
+    const filteredRegularProjects = regularProjects.filter(
+        project => !headProjects.find(headProject => headProject.id === project.id)
     );
 
-    const projects: IProject[] = t<IProject[]>("projects.content.projects", {
-        returnObjects: true,
-    });
+    const isLoading = headLoading || regularLoading;
+    const hasError = headError || regularError;
+
+    if (isLoading) {
+        return (
+            <main className="max-w-7xl space-y-8 md:space-y-12 mx-auto" role="main">
+                <header className="mx-auto max-w-2xl space-y-2 lg:mx-0">
+                    <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                        {t("projects.title")}
+                    </h1>
+                    <h2 className="text-xl font-bold tracking-tight text-default-400 sm:text-2xl">
+                        {t("projects.headline")}
+                    </h2>
+                    <p className="text-default-400">{t("projects.description")}</p>
+                </header>
+                <div className="flex h-96 items-center justify-center">
+                    <p className="text-default-400" role="status" aria-live="polite">
+                        Loading projects...
+                    </p>
+                </div>
+            </main>
+        );
+    }
+
+    if (hasError) {
+        return (
+            <main className="max-w-7xl space-y-8 md:space-y-12 mx-auto" role="main">
+                <header className="mx-auto max-w-2xl space-y-2 lg:mx-0">
+                    <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                        {t("projects.title")}
+                    </h1>
+                    <h2 className="text-xl font-bold tracking-tight text-default-400 sm:text-2xl">
+                        {t("projects.headline")}
+                    </h2>
+                    <p className="text-default-400">{t("projects.description")}</p>
+                </header>
+                <div className="flex h-96 items-center justify-center">
+                    <p className="text-red-400" role="status" aria-live="polite">
+                        Error loading projects: {headError || regularError}
+                    </p>
+                </div>
+            </main>
+        );
+    }
 
     return (
         <main className="max-w-7xl space-y-8 md:space-y-12 mx-auto" role="main">
@@ -54,7 +116,7 @@ export default function ProjectsClient() {
                 </h2>
                 <p className="text-default-400">{t("projects.description")}</p>
             </header>
-            {head_projects.length <= 0 && projects.length <= 0 && (
+            {headProjects.length <= 0 && filteredRegularProjects.length <= 0 && (
                 <div className="flex h-96 items-center justify-center">
                     <p
                         className="text-default-400"
@@ -65,14 +127,14 @@ export default function ProjectsClient() {
                     </p>
                 </div>
             )}
-            {head_projects.length > 0 && (
+            {headProjects.length > 0 && (
                 <section aria-labelledby="featured-projects">
                     <h2 id="featured-projects" className="sr-only">
                         Featured Projects
                     </h2>
                     <div className="grid-row-1 lg:grid-row-2 mx-auto grid gap-4">
                         <div className="mx-auto flex w-full flex-col gap-4 border-t border-gray-900/10 lg:mx-0 lg:border-t-0">
-                            {head_projects
+                            {headProjects
                                 .filter(
                                     (_: any, index: number) =>
                                         index === 0 ||
@@ -93,14 +155,14 @@ export default function ProjectsClient() {
                     </div>
                 </section>
             )}
-            {projects.length >= 3 && (
+            {filteredRegularProjects.length >= 3 && (
                 <section aria-labelledby="all-projects">
                     <h2 id="all-projects" className="sr-only">
                         All Projects
                     </h2>
                     <div className="mx-auto grid grid-cols-1 gap-4 md:grid-cols-3 lg:mx-0">
                         <div className="grid grid-cols-1 gap-4">
-                            {projects
+                            {filteredRegularProjects
                                 .filter(
                                     (_: any, index: number) =>
                                         index % 3 === 0
@@ -117,7 +179,7 @@ export default function ProjectsClient() {
                                 ))}
                         </div>
                         <div className="grid grid-cols-1 gap-4">
-                            {projects
+                            {filteredRegularProjects
                                 .filter(
                                     (_: any, index: number) =>
                                         index % 3 === 1
@@ -134,7 +196,7 @@ export default function ProjectsClient() {
                                 ))}
                         </div>
                         <div className="grid grid-cols-1 gap-4">
-                            {projects
+                            {filteredRegularProjects
                                 .filter(
                                     (_: any, index: number) =>
                                         index % 3 === 2,

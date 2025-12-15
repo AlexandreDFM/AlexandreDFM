@@ -27,10 +27,10 @@
 
 "use client";
 
+import Particles from "../particles";
 import { useTheme } from "next-themes";
-import Particles from "components/particles";
 import React, { useState, useEffect } from "react";
-import { IAnimatedBackgroundProps } from "types/IAnimatedBackgroundProps";
+import { IAnimatedBackgroundProps } from "@/types/IAnimatedBackgroundProps";
 
 export default function AnimatedBackground({ children }: IAnimatedBackgroundProps) {
     const { theme } = useTheme();

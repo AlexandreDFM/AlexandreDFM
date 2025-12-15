@@ -26,7 +26,7 @@
 
 "use client";
 
-import { useTranslation } from "hooks/useTranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Work() {
     const { t } = useTranslation();

@@ -65,9 +65,9 @@ export const Card: React.FC<PropsWithChildren> = ({ children }) => {
             className="group relative overflow-hidden rounded-xl border border-zinc-600 duration-700 hover:border-zinc-400/50 hover:bg-zinc-800/10 md:gap-8"
         >
             <div className="pointer-events-none">
-                <div className="absolute inset-0 z-0 transition duration-1000 [mask-image:linear-gradient(black,transparent)]" />
+                <div className="absolute inset-0 z-0 transition duration-1000 [mask:linear-gradient(black,transparent)]" />
                 <motion.div
-                    className="absolute inset-0 z-10 bg-gradient-to-br via-zinc-100/10 opacity-100 transition duration-1000 group-hover:opacity-50"
+                    className="absolute inset-0 z-10 bg-linear-to-br via-zinc-100/10 opacity-100 transition duration-1000 group-hover:opacity-50"
                     style={style}
                 />
                 <motion.div

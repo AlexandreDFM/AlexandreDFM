@@ -24,9 +24,9 @@
  * THE SOFTWARE.
  */
 
+import { heroui } from "@heroui/react";
 import type { Config } from "tailwindcss";
-const defaultTheme = require("tailwindcss/defaultTheme");
-const { heroui } = require("@heroui/react");
+import defaultTheme from "tailwindcss/defaultTheme";
 
 const config: Config = {
     content: [
@@ -34,6 +34,7 @@ const config: Config = {
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
         "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
+        "./styles/**/*.css",
     ],
     darkMode: "class",
     theme: {

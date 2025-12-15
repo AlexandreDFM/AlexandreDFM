@@ -26,7 +26,7 @@
 
 "use client";
 
-import { useTranslation } from "hooks/useTranslation";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function Study() {
     const { t } = useTranslation();
@@ -38,10 +38,10 @@ export default function Study() {
             }).map((formation, index) => (
                 <div key={index} className="flex flex-col">
                     <div className="flex items-center justify-between">
-                        <h1 className="flex-grow text-lg font-semibold text-default-600">
+                        <h1 className="grow text-lg font-semibold text-default-600">
                             {formation.degree}
                         </h1>
-                        <span className="flex-shrink-0 align-middle text-sm text-default-400">
+                        <span className="shrink-0 align-middle text-sm text-default-400">
                             {formation.date}
                         </span>
                     </div>

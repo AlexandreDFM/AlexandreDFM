@@ -37,9 +37,9 @@ import {
 } from "lucide-react";
 
 import Link from "next/link";
-import { Card } from "components/card";
-import { ISocial } from "types/ISocial";
-import { useTranslation } from "hooks/useTranslation";
+import { ISocial } from "@/types/ISocial";
+import { useTranslation } from "@/hooks/useTranslation";
+import { Card } from "@/components/card";
 
 export default function ContactClient() {
     const { t } = useTranslation();
@@ -88,7 +88,7 @@ export default function ContactClient() {
                         className="group relative flex flex-col items-center gap-2 p-4 duration-700 md:gap-4 md:p-8 md:py-9 lg:pb-12"
                     >
                         <span
-                            className="absolute h-2/3 w-px bg-gradient-to-b from-zinc-500 via-zinc-500/50 to-transparent"
+                            className="absolute h-2/3 w-px bg-linear-to-b from-zinc-500 via-zinc-500/50 to-transparent"
                             aria-hidden="true"
                         />
                         <span className="drop-shadow-orange relative z-10 flex h-12 w-12 items-center justify-center rounded-full border border-zinc-500 bg-zinc-900 text-sm text-zinc-200 duration-1000 group-hover:border-zinc-200 group-hover:bg-zinc-900 group-hover:text-white">

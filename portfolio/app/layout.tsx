@@ -26,12 +26,12 @@
 
 "use client";
 
-import "./globals.css";
+import "@/styles/globals.css";
 import localFont from "next/font/local";
 import { Inter } from "next/font/google";
 import { HeroUIProvider } from "@heroui/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
-import AnimatedBackground from "components/layout/AnimatedBackground";
+import AnimatedBackground from "../components/layout/AnimatedBackground";
 
 const inter = Inter({
     subsets: ["latin"],

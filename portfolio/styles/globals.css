@@ -24,9 +24,7 @@
  * THE SOFTWARE.
  */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   --navbar-size: 6rem;
@@ -57,4 +55,8 @@ body {
                 rgba(var(--background-start-rgb), 1),
                 rgba(var(--background-end-rgb), 1));
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.data-\[loaded\=true\]\:opacity-100 {
+  opacity: 1;
 }
