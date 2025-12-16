@@ -32,14 +32,15 @@ import {
     useMotionTemplate,
 } from "framer-motion";
 
-import { PropsWithChildren, useRef, useEffect } from "react";
+import { PropsWithChildren, useRef, useEffect, useMemo } from "react";
 
 export const Card: React.FC<PropsWithChildren> = ({ children }) => {
     const cardRef = useRef<HTMLDivElement>(null);
 
-    const rect = cardRef.current ? cardRef.current.getBoundingClientRect() : null;
-    const mouseX = useSpring(rect === null ? 0 : rect.width / 2, { stiffness: 500, damping: 100 });
-    const mouseY = useSpring(rect === null ? 0 : rect.height / 2, { stiffness: 500, damping: 100 });
+    // Optimize spring configuration
+    const springConfig = useMemo(() => ({ stiffness: 500, damping: 100 }), []);
+    const mouseX = useSpring(0, springConfig);
+    const mouseY = useSpring(0, springConfig);
 
     useEffect(() => {
         if (cardRef.current) {

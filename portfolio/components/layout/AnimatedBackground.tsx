@@ -29,10 +29,10 @@
 
 import Particles from "../particles";
 import { useTheme } from "next-themes";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { IAnimatedBackgroundProps } from "@/types/IAnimatedBackgroundProps";
 
-export default function AnimatedBackground({ children }: IAnimatedBackgroundProps) {
+const AnimatedBackground = memo(function AnimatedBackground({ children }: IAnimatedBackgroundProps) {
     const { theme } = useTheme();
     const [mounted, setMounted] = useState(false);
     const [floatingLights, setFloatingLights] = useState<Array<{
@@ -44,7 +44,8 @@ export default function AnimatedBackground({ children }: IAnimatedBackgroundProp
 
     useEffect(() => {
         setMounted(true);
-        const lights = [...Array(20)].map(() => ({
+        // Reduce from 20 to 10 lights for better performance
+        const lights = [...Array(10)].map(() => ({
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
             animationDelay: `${Math.random() * 5}s`,
@@ -68,8 +69,8 @@ export default function AnimatedBackground({ children }: IAnimatedBackgroundProp
     return (
         <div className={`relative flex flex-col items-center justify-center w-screen min-h-screen overflow-hidden transition-all duration-300 ${
             isDark
-                ? 'bg-gradient-to-tl from-slate-900 via-blue-900/30 to-slate-900'
-                : 'bg-gradient-to-tl from-orange-50 via-blue-50/50 to-blue-100/30'
+                ? 'bg-linear-to-tl from-slate-900 via-blue-900/30 to-slate-900'
+                : 'bg-linear-to-tl from-orange-50 via-blue-50/50 to-blue-100/30'
         }`}>
             {/* Animated background effects */}
             {/* <div className={`absolute inset-0 animate-pulse-slow transition-all duration-300 ${
@@ -85,10 +86,10 @@ export default function AnimatedBackground({ children }: IAnimatedBackgroundProp
                 }`} />
             </div> */}
 
-            {/* Particles effect */}
+            {/* Particles effect - reduced quantity for better performance */}
             <Particles
                 className="absolute inset-0 -z-10 animate-fade-in"
-                quantity={150}
+                quantity={75}
                 staticity={30}
                 color={isDark ? "59, 130, 246" : "37, 99, 235"}
             />
@@ -117,4 +118,6 @@ export default function AnimatedBackground({ children }: IAnimatedBackgroundProp
             </div>
         </div>
     );
-}
+});
+
+export default AnimatedBackground;

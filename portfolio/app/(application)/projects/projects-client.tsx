@@ -27,6 +27,7 @@
 
 "use client";
 
+import { useMemo } from "react";
 import { Article } from "./article";
 import { Card } from "@/components/card";
 import { IProject } from "@/types/IProject";
@@ -55,9 +56,12 @@ export default function ProjectsClient() {
         featured: false
     });
 
-    // Filter out featured projects from regular projects to avoid duplicates
-    const filteredRegularProjects = regularProjects.filter(
-        project => !headProjects.find(headProject => headProject.id === project.id)
+    // Memoize filtered projects to prevent recalculation on every render
+    const filteredRegularProjects = useMemo(() =>
+        regularProjects.filter(
+            project => !headProjects.find(headProject => headProject.id === project.id)
+        ),
+        [regularProjects, headProjects]
     );
 
     const isLoading = headLoading || regularLoading;
