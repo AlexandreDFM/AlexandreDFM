@@ -41,27 +41,31 @@ export default function ProjectsClient() {
     const {
         projects: headProjects,
         loading: headLoading,
-        error: headError
+        error: headError,
     } = useProjects({
-        language: locale as 'en' | 'fr',
-        featured: true
+        language: locale as "en" | "fr",
+        featured: true,
     });
 
     const {
         projects: regularProjects,
         loading: regularLoading,
-        error: regularError
+        error: regularError,
     } = useProjects({
-        language: locale as 'en' | 'fr',
-        featured: false
+        language: locale as "en" | "fr",
+        featured: false,
     });
 
     // Memoize filtered projects to prevent recalculation on every render
-    const filteredRegularProjects = useMemo(() =>
-        regularProjects.filter(
-            project => !headProjects.find(headProject => headProject.id === project.id)
-        ),
-        [regularProjects, headProjects]
+    const filteredRegularProjects = useMemo(
+        () =>
+            regularProjects.filter(
+                (project) =>
+                    !headProjects.find(
+                        (headProject) => headProject.id === project.id,
+                    ),
+            ),
+        [regularProjects, headProjects],
     );
 
     const isLoading = headLoading || regularLoading;
@@ -69,18 +73,27 @@ export default function ProjectsClient() {
 
     if (isLoading) {
         return (
-            <main className="max-w-7xl space-y-8 md:space-y-12 mx-auto" role="main">
+            <main
+                className="mx-auto max-w-7xl space-y-8 md:space-y-12"
+                role="main"
+            >
                 <header className="mx-auto max-w-2xl space-y-2 lg:mx-0">
                     <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
                         {t("projects.title")}
                     </h1>
-                    <h2 className="text-xl font-bold tracking-tight text-default-400 sm:text-2xl">
+                    <h2 className="text-default-400 text-xl font-bold tracking-tight sm:text-2xl">
                         {t("projects.headline")}
                     </h2>
-                    <p className="text-default-400">{t("projects.description")}</p>
+                    <p className="text-default-400">
+                        {t("projects.description")}
+                    </p>
                 </header>
                 <div className="flex h-96 items-center justify-center">
-                    <p className="text-default-400" role="status" aria-live="polite">
+                    <p
+                        className="text-default-400"
+                        role="status"
+                        aria-live="polite"
+                    >
                         Loading projects...
                     </p>
                 </div>
@@ -90,18 +103,27 @@ export default function ProjectsClient() {
 
     if (hasError) {
         return (
-            <main className="max-w-7xl space-y-8 md:space-y-12 mx-auto" role="main">
+            <main
+                className="mx-auto max-w-7xl space-y-8 md:space-y-12"
+                role="main"
+            >
                 <header className="mx-auto max-w-2xl space-y-2 lg:mx-0">
                     <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
                         {t("projects.title")}
                     </h1>
-                    <h2 className="text-xl font-bold tracking-tight text-default-400 sm:text-2xl">
+                    <h2 className="text-default-400 text-xl font-bold tracking-tight sm:text-2xl">
                         {t("projects.headline")}
                     </h2>
-                    <p className="text-default-400">{t("projects.description")}</p>
+                    <p className="text-default-400">
+                        {t("projects.description")}
+                    </p>
                 </header>
                 <div className="flex h-96 items-center justify-center">
-                    <p className="text-red-400" role="status" aria-live="polite">
+                    <p
+                        className="text-red-400"
+                        role="status"
+                        aria-live="polite"
+                    >
                         Error loading projects: {headError || regularError}
                     </p>
                 </div>
@@ -110,27 +132,28 @@ export default function ProjectsClient() {
     }
 
     return (
-        <main className="max-w-7xl space-y-8 md:space-y-12 mx-auto" role="main">
+        <main className="mx-auto max-w-7xl space-y-8 md:space-y-12" role="main">
             <header className="mx-auto max-w-2xl space-y-2 lg:mx-0">
                 <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
                     {t("projects.title")}
                 </h1>
-                <h2 className="text-xl font-bold tracking-tight text-default-400 sm:text-2xl">
+                <h2 className="text-default-400 text-xl font-bold tracking-tight sm:text-2xl">
                     {t("projects.headline")}
                 </h2>
                 <p className="text-default-400">{t("projects.description")}</p>
             </header>
-            {headProjects.length <= 0 && filteredRegularProjects.length <= 0 && (
-                <div className="flex h-96 items-center justify-center">
-                    <p
-                        className="text-default-400"
-                        role="status"
-                        aria-live="polite"
-                    >
-                        {t("projects.no_projects")}
-                    </p>
-                </div>
-            )}
+            {headProjects.length <= 0 &&
+                filteredRegularProjects.length <= 0 && (
+                    <div className="flex h-96 items-center justify-center">
+                        <p
+                            className="text-default-400"
+                            role="status"
+                            aria-live="polite"
+                        >
+                            {t("projects.no_projects")}
+                        </p>
+                    </div>
+                )}
             {headProjects.length > 0 && (
                 <section aria-labelledby="featured-projects">
                     <h2 id="featured-projects" className="sr-only">
@@ -149,9 +172,7 @@ export default function ProjectsClient() {
                                     <Card key={project.id}>
                                         <Article
                                             project={project}
-                                            aria-label={`Featured project: ${
-                                                project.title
-                                            }`}
+                                            aria-label={`Featured project: ${project.title}`}
                                         />
                                     </Card>
                                 ))}
@@ -168,16 +189,13 @@ export default function ProjectsClient() {
                         <div className="grid grid-cols-1 gap-4">
                             {filteredRegularProjects
                                 .filter(
-                                    (_: any, index: number) =>
-                                        index % 3 === 0
+                                    (_: any, index: number) => index % 3 === 0,
                                 )
                                 .map((project: IProject) => (
                                     <Card key={project.id}>
                                         <Article
                                             project={project}
-                                            aria-label={`Project: ${
-                                                project.title
-                                            }`}
+                                            aria-label={`Project: ${project.title}`}
                                         />
                                     </Card>
                                 ))}
@@ -185,16 +203,13 @@ export default function ProjectsClient() {
                         <div className="grid grid-cols-1 gap-4">
                             {filteredRegularProjects
                                 .filter(
-                                    (_: any, index: number) =>
-                                        index % 3 === 1
+                                    (_: any, index: number) => index % 3 === 1,
                                 )
                                 .map((project: IProject) => (
                                     <Card key={project.id}>
                                         <Article
                                             project={project}
-                                            aria-label={`Project: ${
-                                                project.title
-                                            }`}
+                                            aria-label={`Project: ${project.title}`}
                                         />
                                     </Card>
                                 ))}
@@ -202,16 +217,13 @@ export default function ProjectsClient() {
                         <div className="grid grid-cols-1 gap-4">
                             {filteredRegularProjects
                                 .filter(
-                                    (_: any, index: number) =>
-                                        index % 3 === 2,
+                                    (_: any, index: number) => index % 3 === 2,
                                 )
                                 .map((project: IProject) => (
                                     <Card key={project.id}>
                                         <Article
                                             project={project}
-                                            aria-label={`Project: ${
-                                                project.title
-                                            }`}
+                                            aria-label={`Project: ${project.title}`}
                                         />
                                     </Card>
                                 ))}

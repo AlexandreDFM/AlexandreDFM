@@ -24,12 +24,12 @@
  * THE SOFTWARE.
  */
 
-import { Metadata } from 'next';
-import ContactClient from './contact-client';
+import { Metadata } from "next";
+import ContactClient from "./contact-client";
 
 export const metadata: Metadata = {
-    title: 'Contact',
-    description: 'Get in touch with Alexandre De Freitas Martins',
+    title: "Contact",
+    description: "Get in touch with Alexandre De Freitas Martins",
 };
 
 export default function ContactPage() {

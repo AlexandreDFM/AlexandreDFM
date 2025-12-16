@@ -38,14 +38,14 @@ export default function Certification() {
             }).map((cert, index) => (
                 <div key={index} className="flex flex-col">
                     <div className="flex items-center justify-between">
-                        <h1 className="text-lg font-semibold text-default-600">
+                        <h1 className="text-default-600 text-lg font-semibold">
                             {cert.certification}
                         </h1>
-                        <span className="text-sm text-default-400">
+                        <span className="text-default-400 text-sm">
                             {cert.date}
                         </span>
                     </div>
-                    <div className="text-sm text-default-500">
+                    <div className="text-default-500 text-sm">
                         {cert.deliveredBy}
                     </div>
                 </div>

@@ -38,14 +38,14 @@ export default function Association() {
             }).map((assoc, index) => (
                 <div key={index} className="flex flex-col">
                     <div className="flex items-center justify-between">
-                        <h1 className="text-lg font-semibold text-default-600">
+                        <h1 className="text-default-600 text-lg font-semibold">
                             {assoc.title}
                         </h1>
-                        <span className="text-sm text-default-400">
+                        <span className="text-default-400 text-sm">
                             {assoc.date}
                         </span>
                     </div>
-                    <p className="text-sm text-default-400">
+                    <p className="text-default-400 text-sm">
                         {assoc.description}
                     </p>
                 </div>

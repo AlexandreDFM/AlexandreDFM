@@ -95,7 +95,7 @@ export default function ContactClient() {
                             {s.icon}
                         </span>{" "}
                         <div className="z-10 flex flex-col items-center">
-                            <span className="text-center font-display font-medium duration-150 group-hover:text-white dark:group-hover:text-zinc-600 lg:text-xl xl:text-3xl">
+                            <span className="font-display text-center font-medium duration-150 group-hover:text-white lg:text-xl xl:text-3xl dark:group-hover:text-zinc-600">
                                 {s.handle}
                             </span>
                             <span className="mt-4 text-center text-sm text-zinc-400 duration-1000 group-hover:text-zinc-200">

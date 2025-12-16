@@ -26,11 +26,7 @@
 
 "use client";
 
-import {
-    motion,
-    useSpring,
-    useMotionTemplate,
-} from "framer-motion";
+import { motion, useSpring, useMotionTemplate } from "framer-motion";
 
 import { PropsWithChildren, useRef, useEffect, useMemo } from "react";
 

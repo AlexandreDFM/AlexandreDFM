@@ -24,12 +24,12 @@
  * THE SOFTWARE.
  */
 
-import { Metadata } from 'next';
-import ProjectsClient from './projects-client';
+import { Metadata } from "next";
+import ProjectsClient from "./projects-client";
 
 export const metadata: Metadata = {
-    title: 'Projects',
-    description: 'Discover my projects and work',
+    title: "Projects",
+    description: "Discover my projects and work",
 };
 
 export default function ProjectsPage() {

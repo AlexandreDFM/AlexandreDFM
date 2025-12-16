@@ -35,5 +35,5 @@ export interface IProject {
     skills?: string[];
     technologies?: string[];
     achievements?: string[];
-    category?: 'professional' | 'personal' | 'academic';
+    category?: "professional" | "personal" | "academic";
 }

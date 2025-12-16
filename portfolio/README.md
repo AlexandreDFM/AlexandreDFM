@@ -66,5 +66,5 @@ docker build -t frontend .
 
 ## Urls
 
-- Backend: http://localhost:3000
-- Frontend: http://localhost:8080
+-   Backend: http://localhost:3000
+-   Frontend: http://localhost:8080

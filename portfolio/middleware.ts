@@ -28,12 +28,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { protectedRoutes } from "./router/routes";
 
-let locales = ['fr', 'en']
+let locales = ["fr", "en"];
 
 // Get the preferred locale from browser
 function getLocale(request: NextRequest) {
-    const acceptLanguage = request.headers.get('accept-language')
-    return acceptLanguage?.split(',')[0].split('-')[0] || 'fr'
+    const acceptLanguage = request.headers.get("accept-language");
+    return acceptLanguage?.split(",")[0].split("-")[0] || "fr";
 }
 
 export function middleware(request: NextRequest) {
@@ -46,30 +46,31 @@ export function middleware(request: NextRequest) {
     }
 
     // Check if there is any supported locale in the pathname
-    const pathname = request.nextUrl.pathname
+    const pathname = request.nextUrl.pathname;
 
     // Skip if the request is for an API route, static files, or other special paths
     if (
-        pathname.startsWith('/_next') ||
-        pathname.startsWith('/api/') ||
-        pathname.startsWith('/static/') ||
-        pathname.includes('.')
+        pathname.startsWith("/_next") ||
+        pathname.startsWith("/api/") ||
+        pathname.startsWith("/static/") ||
+        pathname.includes(".")
     ) {
-        return NextResponse.next()
+        return NextResponse.next();
     }
 
     // Check if the pathname starts with a locale
     const pathnameHasLocale = locales.some(
-        locale => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
-    )
+        (locale) =>
+            pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
+    );
 
-    if (pathnameHasLocale) return NextResponse.next()
+    if (pathnameHasLocale) return NextResponse.next();
 
     // Redirect if there is no locale
-    const locale = getLocale(request)
-    request.nextUrl.pathname = `/${locale}${pathname}`
+    const locale = getLocale(request);
+    request.nextUrl.pathname = `/${locale}${pathname}`;
 
     // e.g. incoming request is /products
     // The new URL is now /fr/products
-    return NextResponse.redirect(request.nextUrl)
+    return NextResponse.redirect(request.nextUrl);
 }

@@ -25,11 +25,11 @@
  * THE SOFTWARE.
  */
 
-import { IProject } from '@/types/IProject';
-import { useState, useEffect, useCallback } from 'react';
+import { IProject } from "@/types/IProject";
+import { useState, useEffect, useCallback } from "react";
 
 interface UseProjectsOptions {
-    language?: 'en' | 'fr';
+    language?: "en" | "fr";
     featured?: boolean;
 }
 
@@ -40,8 +40,10 @@ interface UseProjectsReturn {
     refetch: () => void;
 }
 
-export function useProjects(options: UseProjectsOptions = {}): UseProjectsReturn {
-    const { language = 'en', featured = false } = options;
+export function useProjects(
+    options: UseProjectsOptions = {},
+): UseProjectsReturn {
+    const { language = "en", featured = false } = options;
     const [projects, setProjects] = useState<IProject[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -54,13 +56,15 @@ export function useProjects(options: UseProjectsOptions = {}): UseProjectsReturn
 
             const params = new URLSearchParams({
                 lang: language,
-                ...(featured && { featured: 'true' }),
+                ...(featured && { featured: "true" }),
             });
 
             const response = await fetch(`/api/projects?${params}`);
 
             if (!response.ok) {
-                throw new Error(`Failed to fetch projects: ${response.statusText}`);
+                throw new Error(
+                    `Failed to fetch projects: ${response.statusText}`,
+                );
             }
 
             const result = await response.json();
@@ -68,11 +72,15 @@ export function useProjects(options: UseProjectsOptions = {}): UseProjectsReturn
             if (result.success) {
                 setProjects(result.data || []);
             } else {
-                throw new Error(result.error || 'Failed to fetch projects');
+                throw new Error(result.error || "Failed to fetch projects");
             }
         } catch (err) {
-            console.error('Error fetching projects:', err);
-            setError(err instanceof Error ? err.message : 'An unknown error occurred');
+            console.error("Error fetching projects:", err);
+            setError(
+                err instanceof Error
+                    ? err.message
+                    : "An unknown error occurred",
+            );
             setProjects([]);
         } finally {
             setLoading(false);

@@ -40,11 +40,11 @@ export default function Home() {
     ];
 
     return (
-        <main className="flex flex-col items-center justify-center h-screen">
+        <main className="flex h-screen flex-col items-center justify-center">
             {/* Skip to main content link for screen readers */}
             <a
                 href="#main-content"
-                className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-primary text-white px-4 py-2 rounded-md z-50"
+                className="bg-primary sr-only z-50 rounded-md px-4 py-2 text-white focus:not-sr-only focus:absolute focus:top-4 focus:left-4"
                 aria-label="Skip to main content"
             >
                 Skip to main content
@@ -52,7 +52,7 @@ export default function Home() {
 
             {/* Navigation */}
             <nav
-                className="my-16 animate-fade-in"
+                className="animate-fade-in my-16"
                 role="navigation"
                 aria-label="Main navigation"
             >
@@ -61,7 +61,7 @@ export default function Home() {
                         <li key={item.href}>
                             <Link
                                 href={item.href}
-                                className="text-sm duration-500 text-blue-300/80 dark:text-blue-200/80 hover:text-white hover:scale-110 focus:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900 rounded-md px-3 py-2 transition-all"
+                                className="rounded-md px-3 py-2 text-sm text-blue-300/80 transition-all duration-500 hover:scale-110 hover:text-white focus:text-white focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900 focus:outline-none dark:text-blue-200/80"
                                 aria-label={`Navigate to ${item.name} page`}
                             >
                                 {item.name}
@@ -73,30 +73,30 @@ export default function Home() {
 
             {/* Decorative lines */}
             <div
-                className="hidden w-screen h-px md:block animate-fade-left bg-linear-to-r from-blue-500/0 via-blue-500/50 to-blue-500/0"
+                className="animate-fade-left hidden h-px w-screen bg-linear-to-r from-blue-500/0 via-blue-500/50 to-blue-500/0 md:block"
                 aria-hidden="true"
             />
 
             {/* Main title */}
             <div id="main-content">
-                <h1 className="z-10 text-4xl text-transparent duration-1000 cursor-default font-display sm:text-6xl md:text-9xl whitespace-nowrap bg-clip-text bg-linear-to-b from-blue-200 via-blue-400 to-blue-600 animate-title">
+                <h1 className="font-display animate-title z-10 cursor-default bg-linear-to-b from-blue-200 via-blue-400 to-blue-600 bg-clip-text text-4xl whitespace-nowrap text-transparent duration-1000 sm:text-6xl md:text-9xl">
                     AlexandreDFM
                 </h1>
             </div>
 
             <div
-                className="hidden w-screen h-px md:block animate-fade-right bg-linear-to-r from-blue-500/0 via-blue-500/50 to-blue-500/0"
+                className="animate-fade-right hidden h-px w-screen bg-linear-to-r from-blue-500/0 via-blue-500/50 to-blue-500/0 md:block"
                 aria-hidden="true"
             />
 
             {/* Subtitle */}
-            <div className="my-16 text-center animate-fade-in">
+            <div className="animate-fade-in my-16 text-center">
                 <h2 className="text-sm text-blue-300/80 dark:text-blue-200/80">
                     I{"'"}m a developer. I love{" "}
                     <Link
                         target="_blank"
                         href="https://hownee.com"
-                        className="underline duration-500 hover:text-white hover:scale-110 focus:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900 rounded-sm inline-block transition-all"
+                        className="inline-block rounded-sm underline transition-all duration-500 hover:scale-110 hover:text-white focus:text-white focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900 focus:outline-none"
                         aria-label="Visit hownee.com (opens in new tab)"
                         rel="noopener noreferrer"
                     >
@@ -106,7 +106,7 @@ export default function Home() {
                     <Link
                         target="_blank"
                         href="https://tux-inc.com"
-                        className="underline duration-500 hover:text-white hover:scale-110 focus:text-white focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900 rounded-sm inline-block transition-all"
+                        className="inline-block rounded-sm underline transition-all duration-500 hover:scale-110 hover:text-white focus:text-white focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900 focus:outline-none"
                         aria-label="Visit tux-inc.com (opens in new tab)"
                         rel="noopener noreferrer"
                     >

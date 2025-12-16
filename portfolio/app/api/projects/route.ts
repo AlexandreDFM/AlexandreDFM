@@ -25,14 +25,14 @@
  * THE SOFTWARE.
  */
 
-import { getProjects } from '@/util/directus';
-import { NextRequest, NextResponse } from 'next/server';
+import { getProjects } from "@/util/directus";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url);
-        const language = searchParams.get('lang') as 'en' | 'fr' || 'en';
-        const featured = searchParams.get('featured') === 'true';
+        const language = (searchParams.get("lang") as "en" | "fr") || "en";
+        const featured = searchParams.get("featured") === "true";
 
         const projects = await getProjects(language, featured);
 
@@ -42,16 +42,16 @@ export async function GET(request: NextRequest) {
             count: projects.length,
         });
     } catch (error) {
-        console.error('Error in projects API:', error);
+        console.error("Error in projects API:", error);
 
         return NextResponse.json(
             {
                 success: false,
-                error: 'Failed to fetch projects',
+                error: "Failed to fetch projects",
                 data: [],
                 count: 0,
             },
-            { status: 500 }
+            { status: 500 },
         );
     }
 }

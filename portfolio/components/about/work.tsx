@@ -37,17 +37,17 @@ export default function Work() {
                 (job, index) => (
                     <div key={index} className="flex flex-col">
                         <div className="flex items-center justify-between">
-                            <h1 className="text-lg font-semibold text-default-600">
+                            <h1 className="text-default-600 text-lg font-semibold">
                                 {job.title}
                             </h1>
-                            <span className="text-sm text-default-400">
+                            <span className="text-default-400 text-sm">
                                 {job.date}
                             </span>
                         </div>
-                        <div className="text-sm text-default-500">
+                        <div className="text-default-500 text-sm">
                             {job.company}
                         </div>
-                        <p className="text-sm text-default-400">{job.desc}</p>
+                        <p className="text-default-400 text-sm">{job.desc}</p>
                     </div>
                 ),
             )}

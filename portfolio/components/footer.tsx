@@ -93,7 +93,7 @@ export const Footer: React.FC = () => {
 
     return (
         <footer ref={ref}>
-            <div className="bg-zinc-900/500 h-[var(--footer-size)] border-t border-zinc-800 backdrop-blur">
+            <div className="h-[var(--footer-size)] border-t border-zinc-800 bg-zinc-900/500 backdrop-blur">
                 <div className="container m-auto flex h-full flex-row-reverse items-center px-4">
                     <div className="flex space-x-2">
                         {socials.map((s) => (

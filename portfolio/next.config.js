@@ -32,11 +32,8 @@ const nextConfig = {
         autoPrerender: false,
     },
     images: {
-        domains: [
-            'https://nextui.org/',
-            'https://flagcdn.com/'
-        ],
+        domains: ["https://nextui.org/", "https://flagcdn.com/"],
     },
-}
+};
 
 export default nextConfig;

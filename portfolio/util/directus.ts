@@ -25,12 +25,12 @@
  * THE SOFTWARE.
  */
 
-import { createDirectus, rest, readItems, staticToken } from '@directus/sdk';
+import { createDirectus, rest, readItems, staticToken } from "@directus/sdk";
 
 // Define the schema for your collections
 interface IProjectCollection {
     id: string;
-    status?: 'published' | 'draft' | 'archived';
+    status?: "published" | "draft" | "archived";
     sort?: number;
     user_created?: string;
     user_updated?: string;
@@ -47,7 +47,7 @@ interface IProjectCollection {
     skills?: string[];
     technologies?: string[];
     achievements?: string[];
-    category?: 'professional' | 'personal' | 'academic';
+    category?: "professional" | "personal" | "academic";
     is_featured?: boolean;
 
     // Translations fields
@@ -72,50 +72,80 @@ interface Schema {
 }
 
 // Create Directus client
-const directusUrl = process.env.NEXT_PUBLIC_DIRECTUS_URL || 'https://my-api.alexandredfm.fr/';
-const directusToken = process.env.DIRECTUS_WEBSITE_TOKEN || 'YOUR_DIRECTUS_STATIC_TOKEN';
+const directusUrl =
+    process.env.NEXT_PUBLIC_DIRECTUS_URL || "https://my-api.alexandredfm.fr/";
+const directusToken =
+    process.env.DIRECTUS_WEBSITE_TOKEN || "YOUR_DIRECTUS_STATIC_TOKEN";
 
 export const directus = createDirectus<Schema>(directusUrl)
     .with(rest())
     .with(staticToken(directusToken));
 
 // Helper function to get projects with language filtering
-export async function getProjects(language: 'en' | 'fr' = 'en', onlyFeatured = false) {
+export async function getProjects(
+    language: "en" | "fr" = "en",
+    onlyFeatured = false,
+) {
     try {
         const projects = await directus.request(
-            readItems('projects', {
+            readItems("projects", {
                 filter: {
-                    status: { _eq: 'published' },
+                    status: { _eq: "published" },
                     // ...(onlyFeatured && { is_featured: { _eq: true } })
                 },
-                sort: ['sort', 'date'],
-            })
+                sort: ["sort", "date"],
+            }),
         );
 
-        console.log('Fetched projects:', projects.length, 'projects found.');
+        console.log("Fetched projects:", projects.length, "projects found.");
 
         // Transform projects to match the expected format with language-specific fields
-        return projects.map(project => ({
+        return projects.map((project) => ({
             id: project.id,
-            title: language === 'fr' && project.title_fr ? project.title_fr : project.title,
-            description: language === 'fr' && project.description_fr ? project.description_fr : project.description,
+            title:
+                language === "fr" && project.title_fr
+                    ? project.title_fr
+                    : project.title,
+            description:
+                language === "fr" && project.description_fr
+                    ? project.description_fr
+                    : project.description,
             date: project.date,
             github: project.github,
-            role: language === 'fr' && project.role_fr ? project.role_fr : project.role,
-            duration: language === 'fr' && project.duration_fr ? project.duration_fr : project.duration,
-            skills: language === 'fr' && project.skills_fr ? project.skills_fr : project.skills,
-            technologies: language === 'fr' && project.technologies_fr ? project.technologies_fr : project.technologies,
-            achievements: language === 'fr' && project.achievements_fr ? project.achievements_fr : project.achievements,
+            role:
+                language === "fr" && project.role_fr
+                    ? project.role_fr
+                    : project.role,
+            duration:
+                language === "fr" && project.duration_fr
+                    ? project.duration_fr
+                    : project.duration,
+            skills:
+                language === "fr" && project.skills_fr
+                    ? project.skills_fr
+                    : project.skills,
+            technologies:
+                language === "fr" && project.technologies_fr
+                    ? project.technologies_fr
+                    : project.technologies,
+            achievements:
+                language === "fr" && project.achievements_fr
+                    ? project.achievements_fr
+                    : project.achievements,
             category: project.category,
         }));
     } catch (error) {
-        console.error('Error fetching projects from Directus:', error);
+        console.error("Error fetching projects from Directus:", error);
 
         if (error instanceof Error) {
-            if (error.message.includes('401')) {
-                console.error('Authentication failed: Check your DIRECTUS_WEBSITE_TOKEN');
-            } else if (error.message.includes('403')) {
-                console.error('Access forbidden: Check role permissions for projects collection');
+            if (error.message.includes("401")) {
+                console.error(
+                    "Authentication failed: Check your DIRECTUS_WEBSITE_TOKEN",
+                );
+            } else if (error.message.includes("403")) {
+                console.error(
+                    "Access forbidden: Check role permissions for projects collection",
+                );
             }
         }
 
@@ -126,15 +156,15 @@ export async function getProjects(language: 'en' | 'fr' = 'en', onlyFeatured = f
 export async function testDirectusConnection() {
     try {
         const projects = await directus.request(
-            readItems('projects', {
+            readItems("projects", {
                 limit: 1,
-                filter: { status: { _eq: 'published' } }
-            })
+                filter: { status: { _eq: "published" } },
+            }),
         );
-        console.log('Directus connection successful');
+        console.log("Directus connection successful");
         return true;
     } catch (error) {
-        console.error('Directus connection failed:', error);
+        console.error("Directus connection failed:", error);
         return false;
     }
 }

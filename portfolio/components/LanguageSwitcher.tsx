@@ -65,7 +65,7 @@ export const LanguageSwitcher = () => {
                     currentLang && (
                         <Avatar
                             alt={`${currentLang.label} flag`}
-                            className="w-5 h-5 md:w-6 md:h-6 shrink-0"
+                            className="h-5 w-5 shrink-0 md:h-6 md:w-6"
                             radius="full"
                             src={`https://flagcdn.com/${currentLang.flag}.svg`}
                         />
@@ -79,7 +79,7 @@ export const LanguageSwitcher = () => {
                         startContent={
                             <Avatar
                                 alt={`${lang.label} flag`}
-                                className="w-5 h-5 md:w-6 md:h-6 shrink-0"
+                                className="h-5 w-5 shrink-0 md:h-6 md:w-6"
                                 radius="full"
                                 src={`https://flagcdn.com/${lang.flag}.svg`}
                             />

@@ -49,10 +49,20 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className={[inter.variable, calSans.variable].join(" ")} suppressHydrationWarning>
+        <html
+            lang="en"
+            className={[inter.variable, calSans.variable].join(" ")}
+            suppressHydrationWarning
+        >
             <head>
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <meta name="description" content="Alexandre De Freitas Martins - Portfolio" />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                />
+                <meta
+                    name="description"
+                    content="Alexandre De Freitas Martins - Portfolio"
+                />
             </head>
             <body suppressHydrationWarning>
                 <HeroUIProvider>
@@ -62,9 +72,7 @@ export default function RootLayout({
                         enableSystem={true}
                         disableTransitionOnChange={false}
                     >
-                        <AnimatedBackground>
-                            {children}
-                        </AnimatedBackground>
+                        <AnimatedBackground>{children}</AnimatedBackground>
                     </NextThemesProvider>
                 </HeroUIProvider>
             </body>
