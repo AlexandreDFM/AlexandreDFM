@@ -32,12 +32,10 @@ const nextConfig = {
         autoPrerender: false,
     },
     images: {
-        domains: ['https://nextui.org/'],
-    },
-    publicRuntimeConfig: {
-        // Will be available on both server and client
-        apiURL: process.env.API_BASE_URL || 'http://backend:8055',
-        apiBearerToken: process.env.API_BEARER_TOKEN || "DIRECTUS_BEARER_TOKEN",
+        domains: [
+            'https://nextui.org/',
+            'https://flagcdn.com/'
+        ],
     },
 }
 

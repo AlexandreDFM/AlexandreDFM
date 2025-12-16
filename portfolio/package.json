@@ -13,7 +13,11 @@
   "dependencies": {
     "@boiseitguru/cookie-cutter": "^0.2.3",
     "@directus/sdk": "^20.3.0",
+    "@heroui/button": "^2.2.28",
+    "@heroui/link": "^2.2.24",
     "@heroui/react": "^2.8.6",
+    "@heroui/select": "^2.4.29",
+    "@heroui/system": "^2.4.24",
     "@heroui/theme": "^2.4.24",
     "@next/mdx": "^15.5.9",
     "@tailwindcss/postcss": "^4.1.18",

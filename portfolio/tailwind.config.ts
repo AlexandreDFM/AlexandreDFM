@@ -65,28 +65,6 @@ const config: Config = {
                     'blue-light': 'rgb(var(--accent-blue-light))',
                 },
             },
-            typography: {
-                DEFAULT: {
-                    css: {
-                        "code::before": {
-                            content: '""',
-                        },
-                        "code::after": {
-                            content: '""',
-                        },
-                    },
-                },
-                quoteless: {
-                    css: {
-                        "blockquote p:first-of-type::before": {
-                            content: "none",
-                        },
-                        "blockquote p:first-of-type::after": {
-                            content: "none",
-                        },
-                    },
-                },
-            },
             fontFamily: {
                 sans: ["var(--font-inter)", ...defaultTheme.fontFamily.sans],
                 display: ["var(--font-calsans)"],
@@ -189,8 +167,6 @@ const config: Config = {
         },
     },
     plugins: [
-        require("@tailwindcss/typography"),
-        require("tailwindcss-debug-screens"),
         heroui({
             themes: {
                 light: {
