@@ -37,9 +37,9 @@ import {
 } from "lucide-react";
 
 import Link from "next/link";
+import { Card } from "@/components/card";
 import { ISocial } from "@/types/ISocial";
 import { useTranslation } from "@/hooks/useTranslation";
-import { Card } from "@/components/card";
 
 export default function ContactClient() {
     const { t } = useTranslation();

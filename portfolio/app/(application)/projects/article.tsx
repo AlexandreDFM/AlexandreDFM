@@ -27,8 +27,8 @@
 "use client";
 
 import Link from "next/link";
-import { IProject } from "../../../types/IProject";
-import { useTranslation } from "../../../hooks/useTranslation";
+import { IProject } from "@/types/IProject";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type Props = {
     project: IProject;

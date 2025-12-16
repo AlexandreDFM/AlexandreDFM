@@ -73,19 +73,19 @@ export default function Home() {
 
             {/* Decorative lines */}
             <div
-                className="hidden w-screen h-px animate-glow md:block animate-fade-left bg-gradient-to-r from-blue-500/0 via-blue-500/50 to-blue-500/0"
+                className="hidden w-screen h-px md:block animate-fade-left bg-linear-to-r from-blue-500/0 via-blue-500/50 to-blue-500/0"
                 aria-hidden="true"
             />
 
             {/* Main title */}
             <div id="main-content">
-                <h1 className="z-10 text-4xl text-transparent duration-1000 cursor-default font-display sm:text-6xl md:text-9xl whitespace-nowrap bg-clip-text bg-gradient-to-b from-blue-200 via-blue-400 to-blue-600 animate-title">
+                <h1 className="z-10 text-4xl text-transparent duration-1000 cursor-default font-display sm:text-6xl md:text-9xl whitespace-nowrap bg-clip-text bg-linear-to-b from-blue-200 via-blue-400 to-blue-600 animate-title">
                     AlexandreDFM
                 </h1>
             </div>
 
             <div
-                className="hidden w-screen h-px animate-glow md:block animate-fade-right bg-gradient-to-r from-blue-500/0 via-blue-500/50 to-blue-500/0"
+                className="hidden w-screen h-px md:block animate-fade-right bg-linear-to-r from-blue-500/0 via-blue-500/50 to-blue-500/0"
                 aria-hidden="true"
             />
 

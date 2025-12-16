@@ -52,7 +52,7 @@ export const Navbar: React.FC = () => {
     return (
         <header ref={ref}>
             <div
-                className={`fixed inset-x-0 top-0 z-50 flex h-[var(--navbar-size)] flex-row-reverse items-center justify-center border-b px-24 backdrop-blur duration-200 ${
+                className={`fixed inset-x-0 top-0 z-50 flex h-(--navbar-size) flex-row-reverse items-center justify-center border-b px-24 backdrop-blur duration-200 ${
                     isIntersecting
                         ? "border-transparent bg-zinc-900/0"
                         : "bg-zinc-900/500 border-zinc-800"

@@ -27,12 +27,12 @@
 
 "use client";
 
+import Work from "@/components/about/work";
+import Study from "@/components/about/study";
 import { Avatar, Card, CardBody } from "@heroui/react";
 import { useTranslation } from "@/hooks/useTranslation";
-import Study from "@/components/about/study";
-import Work from "@/components/about/work";
-import Certification from "@/components/about/certification";
 import Association from "@/components/about/association";
+import Certification from "@/components/about/certification";
 
 export default function AboutClient() {
     const { t } = useTranslation();
