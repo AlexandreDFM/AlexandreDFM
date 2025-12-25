@@ -30,311 +30,7 @@
         "skills": "Compétences",
         "technologies": "Technologies",
         "achievements": "Réalisations clés",
-        "content": {
-            "head_projects": [
-                {
-                    "id": "0",
-                    "title": "AlexandreDFM",
-                    "description": "This is a portfolio project that showcases my skills and experience. I try to update it regularly to reflect my latest work and show my growth as a developer.",
-                    "date": "2023-11-12",
-                    "github": "https://github.com/AlexandreDFM/AlexandreDFM",
-                    "role": "Developer",
-                    "duration": "Ongoing (It's a continuous project)",
-                    "skills": [
-                        "Frontend",
-                        "Deployment",
-                        "Maintenance"
-                    ],
-                    "technologies": [
-                        "React",
-                        "Next.js",
-                        "Tailwind CSS",
-                        "TypeScript"
-                    ],
-                    "achievements": [
-                        "Création d'un portfolio en ligne",
-                        "Mise en place d'un système de gestion des utilisateurs"
-                    ],
-                    "category": "personal"
-                },
-                {
-                    "id": "1",
-                    "title": "Projects",
-                    "description": "Discover my work",
-                    "date": "2025-01-01",
-                    "github": "https://github.com/AlexandreDeFreitasMartins",
-                    "role": "Role",
-                    "duration": "Duration",
-                    "skills": "Skills",
-                    "technologies": [
-                        "React",
-                        "Next.js",
-                        "Tailwind CSS",
-                        "TypeScript",
-                        "Node.js",
-                        "Express",
-                        "MongoDB"
-                    ],
-                    "achievements": [
-                        "Réalisation de l'application de gestion de projets",
-                        "Réalisation de l'application de gestion de projets"
-                    ],
-                    "category": "professional"
-                },
-                {
-                    "id": "2",
-                    "title": "Hownee",
-                    "description": "This is a portfolio project that showcases my skills and experience. I try to update it regularly to reflect my latest work and show my growth as a developer.",
-                    "date": "2023-11-12",
-                    "github": "https://github.com/AlexandreDFM/AlexandreDFM",
-                    "role": "Developer",
-                    "duration": "Ongoing (It's a continuous project)",
-                    "skills": [
-                        "Frontend",
-                        "Deployment",
-                        "Maintenance"
-                    ],
-                    "technologies": [
-                        "React",
-                        "Next.js",
-                        "Tailwind CSS",
-                        "TypeScript"
-                    ],
-                    "achievements": [
-                        "Création d'un portfolio en ligne",
-                        "Mise en place d'un système de gestion des utilisateurs"
-                    ],
-                    "category": "personal"
-                }
-            ],
-            "projects": [
-                {
-                    "id": "3",
-                    "title": "Raytracer",
-                    "description": "Découvrez mes réalisations",
-                    "date": "2025-01-01",
-                    "github": "https://github.com/AlexandreDeFreitasMartins",
-                    "role": "Rôle",
-                    "duration": "Durée",
-                    "skills": [
-                        "Compétence 1",
-                        "Compétence 2",
-                        "Compétence 3"
-                    ],
-                    "technologies": [
-                        "React",
-                        "Next.js",
-                        "Tailwind CSS",
-                        "TypeScript"
-                    ],
-                    "achievements": [
-                        "Réalisation de l'application de gestion de projets",
-                        "Réalisation de l'application de gestion de projets"
-                    ],
-                    "category": "personal"
-                },
-                {
-                    "id": "4",
-                    "title": "MarioClone",
-                    "description": "Découvrez mes réalisations",
-                    "date": "2025-01-01",
-                    "github": "https://github.com/AlexandreDeFreitasMartins",
-                    "role": "Rôle",
-                    "duration": "Durée",
-                    "skills": [
-                        "Compétence 1",
-                        "Compétence 2",
-                        "Compétence 3"
-                    ],
-                    "technologies": [
-                        "React",
-                        "Next.js",
-                        "Tailwind CSS",
-                        "TypeScript"
-                    ],
-                    "achievements": [
-                        "Réalisation de l'application de gestion de projets",
-                        "Réalisation de l'application de gestion de projets"
-                    ],
-                    "category": "personal"
-                },
-                {
-                    "id": "5",
-                    "title": "Relay",
-                    "description": "Découvrez mes réalisations",
-                    "date": "2025-01-01",
-                    "github": "https://github.com/AlexandreDeFreitasMartins",
-                    "role": "Rôle",
-                    "duration": "Durée",
-                    "skills": [
-                        "Compétence 1",
-                        "Compétence 2",
-                        "Compétence 3"
-                    ],
-                    "technologies": [
-                        "React",
-                        "Next.js",
-                        "Tailwind CSS",
-                        "TypeScript"
-                    ],
-                    "achievements": [
-                        "Réalisation de l'application de gestion de projets",
-                        "Réalisation de l'application de gestion de projets"
-                    ],
-                    "category": "personal"
-                },
-                {
-                    "id": "6",
-                    "title": "Tuxify",
-                    "description": "Découvrez mes réalisations",
-                    "date": "2025-01-01",
-                    "github": "https://github.com/AlexandreDeFreitasMartins",
-                    "role": "Rôle",
-                    "duration": "Durée",
-                    "skills": [
-                        "Compétence 1",
-                        "Compétence 2",
-                        "Compétence 3"
-                    ],
-                    "technologies": [
-                        "React",
-                        "Next.js",
-                        "Tailwind CSS",
-                        "TypeScript"
-                    ],
-                    "achievements": [
-                        "Réalisation de l'application de gestion de projets",
-                        "Réalisation de l'application de gestion de projets"
-                    ],
-                    "category": "personal"
-                },
-                {
-                    "id": "7",
-                    "title": "Physical Fireworks",
-                    "description": "Découvrez mes réalisations",
-                    "date": "2025-01-01",
-                    "github": "https://github.com/AlexandreDeFreitasMartins",
-                    "role": "Rôle",
-                    "duration": "Durée",
-                    "skills": [
-                        "Compétence 1",
-                        "Compétence 2",
-                        "Compétence 3"
-                    ],
-                    "technologies": [
-                        "React",
-                        "Next.js",
-                        "Tailwind CSS",
-                        "TypeScript"
-                    ],
-                    "achievements": [
-                        "Réalisation de l'application de gestion de projets",
-                        "Réalisation de l'application de gestion de projets"
-                    ],
-                    "category": "personal"
-                },
-                {
-                    "id": "8",
-                    "title": "Physical Black Hole",
-                    "description": "Découvrez mes réalisations",
-                    "date": "2025-01-01",
-                    "github": "https://github.com/AlexandreDeFreitasMartins",
-                    "role": "Rôle",
-                    "duration": "Durée",
-                    "skills": [
-                        "Compétence 1",
-                        "Compétence 2",
-                        "Compétence 3"
-                    ],
-                    "technologies": [
-                        "React",
-                        "Next.js",
-                        "Tailwind CSS",
-                        "TypeScript"
-                    ],
-                    "achievements": [
-                        "Réalisation de l'application de gestion de projets",
-                        "Réalisation de l'application de gestion de projets"
-                    ],
-                    "category": "personal"
-                },
-                {
-                    "id": "9",
-                    "title": "GIF 2024",
-                    "description": "Découvrez mes réalisations",
-                    "date": "2025-01-01",
-                    "github": "https://github.com/AlexandreDeFreitasMartins",
-                    "role": "Rôle",
-                    "duration": "Durée",
-                    "skills": [
-                        "Compétence 1",
-                        "Compétence 2",
-                        "Compétence 3"
-                    ],
-                    "technologies": [
-                        "React",
-                        "Next.js",
-                        "Tailwind CSS",
-                        "TypeScript"
-                    ],
-                    "achievements": [
-                        "Réalisation de l'application de gestion de projets",
-                        "Réalisation de l'application de gestion de projets"
-                    ],
-                    "category": "personal"
-                },
-                {
-                    "id": "10",
-                    "title": "Corewar",
-                    "description": "Découvrez mes réalisations",
-                    "date": "2025-01-01",
-                    "github": "https://github.com/AlexandreDeFreitasMartins",
-                    "role": "Rôle",
-                    "duration": "Durée",
-                    "skills": [
-                        "Compétence 1",
-                        "Compétence 2",
-                        "Compétence 3"
-                    ],
-                    "technologies": [
-                        "React",
-                        "Next.js",
-                        "Tailwind CSS",
-                        "TypeScript"
-                    ],
-                    "achievements": [
-                        "Réalisation de l'application de gestion de projets",
-                        "Réalisation de l'application de gestion de projets"
-                    ],
-                    "category": "personal"
-                },
-                {
-                    "id": "11",
-                    "title": "RPG - Pokemon Mystery Dungeon Replica",
-                    "description": "Découvrez mes réalisations",
-                    "date": "2025-01-01",
-                    "github": "https://github.com/AlexandreDeFreitasMartins",
-                    "role": "Rôle",
-                    "duration": "Durée",
-                    "skills": [
-                        "Compétence 1",
-                        "Compétence 2",
-                        "Compétence 3"
-                    ],
-                    "technologies": [
-                        "React",
-                        "Next.js",
-                        "Tailwind CSS",
-                        "TypeScript"
-                    ],
-                    "achievements": [
-                        "Réalisation de l'application de gestion de projets",
-                        "Réalisation de l'application de gestion de projets"
-                    ],
-                    "category": "personal"
-                }
-            ]
-        }
+        "no_projects": "Aucun projet trouvé."
     },
     "about": {
         "title": "À propos de moi",
@@ -417,13 +113,13 @@
                 "items": [
                     {
                         "date": "09/2018 - 07/2021",
-                    "degree": "Baccalauréat Section Euro Allemande",
-                    "school": "Lycée Albert Calmette, 5 Av Marechal Foch 06000 Nice",
-                    "desc": "Spécialités NSI, Mathématiques et SVT"
+                        "degree": "Baccalauréat Section Euro Allemande",
+                        "school": "Lycée Albert Calmette, 5 Av Marechal Foch 06000 Nice",
+                        "desc": "Spécialités NSI, Mathématiques et SVT"
                     },
                     {
                         "date": "09/2021 - Aujourd'hui",
-                        "degree": "Titre d'Expert en Technologies de l’Information et ingénierie logicielle",
+                        "degree": "Titre d'Expert en Technologies de l'Information et ingénierie logicielle",
                         "school": "Epitech, 131 Bd René Cassin 06200 Nice",
                         "desc": "Epitech me permet d'étudier le développement informatique, en réalisant plusieurs projets contenant des algorithmes puissants, des sites internet à l'infrastructure complexe, ainsi que des jeux."
                     },
@@ -441,7 +137,7 @@
                     {
                         "date": "02/2024 - 06/2024",
                         "title": "Stage - Chef de Projet",
-                        "company": "Jeandet Peintures Refinishing (JPR) \newline 307 Bd de la Madeleine, 06000 Nice, France",
+                        "company": "Jeandet Peintures Refinishing (JPR) \\newline 307 Bd de la Madeleine, 06000 Nice, France",
                         "desc": "Mon stage à JPR constitait à mettre à jour le parc informatique et logiciel ainsi qu'au développement d'une plateforme d'E-Commerce."
                     },
                     {
@@ -463,8 +159,8 @@
                 "items": [
                     {
                         "date": "04/05/2023",
-                    "certification": "STORYTELLING DIGITAL",
-                    "deliveredBy": "IonisX"
+                        "certification": "STORYTELLING DIGITAL",
+                        "deliveredBy": "IonisX"
                     },
                     {
                         "date": "04/05/2023",
@@ -476,11 +172,11 @@
             "association": {
                 "title": "Associations",
                 "items": [
-                        {
-                            "date": "09/2022 - Aujourd'hui",
-                            "title": "Epitech - Ambassadeur",
-                            "description": "Promotion, et mise en avant de l'école EPITECH à travers différents évènements."
-                        },
+                    {
+                        "date": "09/2022 - Aujourd'hui",
+                        "title": "Epitech - Ambassadeur",
+                        "description": "Promotion, et mise en avant de l'école EPITECH à travers différents évènements."
+                    },
                     {
                         "date": "02/2023 - 08/2024",
                         "title": "Coding Club Nice - Coordinateur Coding Club",
