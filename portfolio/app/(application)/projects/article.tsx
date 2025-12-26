@@ -27,27 +27,118 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import { useState } from "react";
 import { IProject } from "@/types/IProject";
 import { useTranslation } from "@/hooks/useTranslation";
 
 type Props = {
     project: IProject;
+    featured?: boolean;
 };
 
-export const Article: React.FC<Props> = ({ project }) => {
+export const Article: React.FC<Props> = ({ project, featured = false }) => {
     const { t } = useTranslation();
+    const [imageError, setImageError] = useState(false);
+
+    const getCategoryColor = (category: string) => {
+        switch (category) {
+            case "professional":
+                return "bg-blue-500/20 text-blue-300 border-blue-500/30";
+            case "personal":
+                return "bg-purple-500/20 text-purple-300 border-purple-500/30";
+            case "academic":
+                return "bg-green-500/20 text-green-300 border-green-500/30";
+            default:
+                return "bg-gray-500/20 text-gray-300 border-gray-500/30";
+        }
+    };
 
     return (
         <Link href={project.github || "#"}>
-            <article className="p-4 md:p-8">
-                <div className="flex flex-col gap-4">
-                    <div className="flex items-center justify-between">
-                        <div className="text-3xl font-bold">
-                            {project.title}
+            <article
+                className={`group relative h-full overflow-hidden ${
+                    featured ? "md:flex" : "flex flex-col"
+                }`}
+            >
+                {/* Image Section */}
+                {project.imageUrl && !imageError ? (
+                    <div
+                        className={`relative overflow-hidden bg-gradient-to-br from-purple-900/20 to-blue-900/20 ${
+                            featured ? "h-64 md:h-auto md:w-2/5" : "h-48 w-full"
+                        }`}
+                    >
+                        <Image
+                            src={project.imageUrl}
+                            alt={project.title}
+                            fill
+                            className="object-cover transition-transform duration-500 group-hover:scale-110"
+                            onError={() => setImageError(true)}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                        {project.category && project.category.length > 0 && (
+                            <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                                {project.category.map((cat) => (
+                                    <span
+                                        key={cat}
+                                        className={`rounded-full border px-3 py-1 text-xs font-medium backdrop-blur-sm ${getCategoryColor(cat)}`}
+                                    >
+                                        {t(`projects.category.${cat}`)}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <div
+                        className={`relative flex items-center justify-center bg-gradient-to-br from-purple-900/20 to-blue-900/20 ${
+                            featured ? "h-64 md:h-auto md:w-2/5" : "h-48 w-full"
+                        }`}
+                    >
+                        <div className="text-6xl opacity-20">
+                            {project.category?.includes("professional")
+                                ? "💼"
+                                : project.category?.includes("personal")
+                                  ? "🚀"
+                                  : project.category?.includes("academic")
+                                    ? "🎓"
+                                    : "📁"}
                         </div>
-                        <div className="text-xs">
+                        {project.category && project.category.length > 0 && (
+                            <div className="absolute top-4 left-4 flex flex-wrap gap-2">
+                                {project.category.map((cat) => (
+                                    <span
+                                        key={cat}
+                                        className={`rounded-full border px-3 py-1 text-xs font-medium backdrop-blur-sm ${getCategoryColor(cat)}`}
+                                    >
+                                        {t(`projects.category.${cat}`)}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* Content Section */}
+                <div
+                    className={`flex flex-col justify-between p-6 ${
+                        featured ? "md:w-3/5" : "flex-1"
+                    }`}
+                >
+                    <div className="flex-1">
+                        <div className="mb-4 flex items-start justify-between gap-4">
+                            <h3
+                                className={`leading-tight font-bold ${
+                                    featured
+                                        ? "text-2xl md:text-3xl"
+                                        : "text-xl"
+                                }`}
+                            >
+                                {project.title}
+                            </h3>
                             {project.date && (
                                 <time
+                                    className="text-default-400 text-xs whitespace-nowrap"
                                     dateTime={new Date(
                                         project.date,
                                     ).toISOString()}
@@ -58,80 +149,104 @@ export const Article: React.FC<Props> = ({ project }) => {
                                 </time>
                             )}
                         </div>
+
+                        <p
+                            className={`text-default-400 mb-4 ${
+                                featured ? "text-base" : "text-sm"
+                            }`}
+                        >
+                            {project.description}
+                        </p>
+
+                        {project.role && (
+                            <div className="mb-3 text-sm">
+                                <span className="text-default-300 font-semibold">
+                                    {t("projects.role")}:
+                                </span>{" "}
+                                <span className="text-default-400">
+                                    {project.role}
+                                </span>
+                            </div>
+                        )}
+
+                        {project.duration && (
+                            <div className="mb-3 text-sm">
+                                <span className="text-default-300 font-semibold">
+                                    {t("projects.duration")}:
+                                </span>{" "}
+                                <span className="text-default-400">
+                                    {project.duration}
+                                </span>
+                            </div>
+                        )}
+
+                        {project.achievements &&
+                            project.achievements.length > 0 && (
+                                <div className="mb-4">
+                                    <span className="text-default-300 text-sm font-semibold">
+                                        {t("projects.achievements")}:
+                                    </span>
+                                    <ul className="text-default-400 mt-2 list-inside list-disc space-y-1 text-sm">
+                                        {project.achievements
+                                            .slice(0, featured ? 4 : 2)
+                                            .map((achievement, index) => (
+                                                <li key={index}>
+                                                    {achievement}
+                                                </li>
+                                            ))}
+                                    </ul>
+                                </div>
+                            )}
                     </div>
 
-                    <div className="text-sm">{project.description}</div>
+                    {/* Tags Section */}
+                    <div className="mt-4 space-y-3">
+                        {project.technologies &&
+                            project.technologies.length > 0 && (
+                                <div className="flex flex-wrap gap-2">
+                                    {project.technologies
+                                        .slice(0, featured ? 8 : 5)
+                                        .map((tech, index) => (
+                                            <span
+                                                key={index}
+                                                className="rounded-full bg-purple-900/30 px-2.5 py-1 text-xs font-medium text-purple-100 transition-colors hover:bg-purple-900/40"
+                                            >
+                                                {tech}
+                                            </span>
+                                        ))}
+                                    {project.technologies.length >
+                                        (featured ? 8 : 5) && (
+                                        <span className="rounded-full bg-purple-900/20 px-2.5 py-1 text-xs text-purple-200">
+                                            +
+                                            {project.technologies.length -
+                                                (featured ? 8 : 5)}
+                                        </span>
+                                    )}
+                                </div>
+                            )}
 
-                    {project.role && (
-                        <div className="text-sm">
-                            <span className="font-semibold">
-                                {t("projects.role")}:
-                            </span>{" "}
-                            {project.role}
-                        </div>
-                    )}
-
-                    {project.duration && (
-                        <div className="text-sm">
-                            <span className="font-semibold">
-                                {t("projects.duration")}:
-                            </span>{" "}
-                            {project.duration}
-                        </div>
-                    )}
-
-                    {project.skills && project.skills.length > 0 && (
-                        <div>
-                            <span className="text-sm font-semibold">
-                                {t("projects.skills")}:
-                            </span>
-                            <div className="mt-2 flex flex-wrap gap-2">
-                                {project.skills.map((skill, index) => (
-                                    <span
-                                        key={index}
-                                        className="rounded-full bg-blue-900/30 px-2 py-1 text-xs text-blue-100"
-                                    >
-                                        {skill}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {project.technologies &&
-                        project.technologies.length > 0 && (
-                            <div>
-                                <span className="text-sm font-semibold">
-                                    {t("projects.technologies")}:
-                                </span>
-                                <div className="mt-2 flex flex-wrap gap-2">
-                                    {project.technologies.map((tech, index) => (
+                        {project.skills && project.skills.length > 0 && (
+                            <div className="flex flex-wrap gap-2">
+                                {project.skills
+                                    .slice(0, featured ? 6 : 4)
+                                    .map((skill, index) => (
                                         <span
                                             key={index}
-                                            className="rounded-full bg-purple-900/30 px-2 py-1 text-xs text-purple-100"
+                                            className="rounded-full bg-blue-900/30 px-2.5 py-1 text-xs font-medium text-blue-100 transition-colors hover:bg-blue-900/40"
                                         >
-                                            {tech}
+                                            {skill}
                                         </span>
                                     ))}
-                                </div>
+                                {project.skills.length > (featured ? 6 : 4) && (
+                                    <span className="rounded-full bg-blue-900/20 px-2.5 py-1 text-xs text-blue-200">
+                                        +
+                                        {project.skills.length -
+                                            (featured ? 6 : 4)}
+                                    </span>
+                                )}
                             </div>
                         )}
-
-                    {project.achievements &&
-                        project.achievements.length > 0 && (
-                            <div>
-                                <span className="text-sm font-semibold">
-                                    {t("projects.achievements")}:
-                                </span>
-                                <ul className="mt-2 list-inside list-disc text-sm">
-                                    {project.achievements.map(
-                                        (achievement, index) => (
-                                            <li key={index}>{achievement}</li>
-                                        ),
-                                    )}
-                                </ul>
-                            </div>
-                        )}
+                    </div>
                 </div>
             </article>
         </Link>

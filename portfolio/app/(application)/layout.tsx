@@ -46,7 +46,7 @@ export default function ApplicationLayout({
     return (
         <>
             <Navbar />
-            <div className="m-auto min-h-[calc(100vh-var(--navbar-size))] content-center px-12 pt-36 pb-24 md:px-24">
+            <div className="m-auto min-h-[calc(100vh-var(--navbar-size))] content-center px-12 py-24 md:px-24">
                 {children}
             </div>
             <Footer />

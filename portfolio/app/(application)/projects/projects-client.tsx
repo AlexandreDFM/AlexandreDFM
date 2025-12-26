@@ -27,51 +27,49 @@
 
 "use client";
 
-import { useMemo } from "react";
 import { Article } from "./article";
 import { Card } from "@/components/card";
 import { IProject } from "@/types/IProject";
 import { useProjects } from "@/hooks/useProjects";
+import { useState, useMemo, useEffect } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
+import ProjectFilters from "@/components/projects/ProjectFilters";
+import { ArrowBigLeft, ArrowBigRight } from "lucide-react";
 
 export default function ProjectsClient() {
     const { t, locale } = useTranslation();
 
-    // Fetch featured projects and regular projects from Directus
+    // Fetch all projects from Directus
     const {
-        projects: headProjects,
-        loading: headLoading,
-        error: headError,
-    } = useProjects({
-        language: locale as "en" | "fr",
-        featured: true,
-    });
-
-    const {
-        projects: regularProjects,
-        loading: regularLoading,
-        error: regularError,
+        projects: allProjects,
+        loading,
+        error,
     } = useProjects({
         language: locale as "en" | "fr",
         featured: false,
     });
 
-    // Memoize filtered projects to prevent recalculation on every render
-    const filteredRegularProjects = useMemo(
-        () =>
-            regularProjects.filter(
-                (project) =>
-                    !headProjects.find(
-                        (headProject) => headProject.id === project.id,
-                    ),
-            ),
-        [regularProjects, headProjects],
-    );
+    // Separate featured and regular projects
+    const { featuredProjects, regularProjects } = useMemo(() => {
+        const featured = allProjects.filter((p) => p.is_featured);
+        const regular = allProjects.filter((p) => !p.is_featured);
+        return { featuredProjects: featured, regularProjects: regular };
+    }, [allProjects]);
 
-    const isLoading = headLoading || regularLoading;
-    const hasError = headError || regularError;
+    // Initialize filtered projects state
+    const [filteredProjects, setFilteredProjects] = useState<IProject[]>([]);
 
-    if (isLoading) {
+    // Update filtered projects when regularProjects change initially
+    useEffect(() => {
+        if (filteredProjects.length === 0 && regularProjects.length > 0) {
+            setFilteredProjects(regularProjects);
+        }
+    }, [regularProjects, filteredProjects.length]);
+
+    // Use filtered projects
+    const displayProjects = filteredProjects;
+
+    if (loading) {
         return (
             <main
                 className="mx-auto max-w-7xl space-y-8 md:space-y-12"
@@ -89,31 +87,28 @@ export default function ProjectsClient() {
                     </p>
                 </header>
                 <div className="flex h-96 items-center justify-center">
-                    <p
-                        className="text-default-400"
-                        role="status"
-                        aria-live="polite"
-                    >
-                        Loading projects...
-                    </p>
+                    <div className="h-12 w-12 animate-spin rounded-full border-4 border-purple-500/20 border-t-purple-500" />
                 </div>
             </main>
         );
     }
 
-    if (hasError) {
+    if (error) {
         return (
             <main
                 className="mx-auto max-w-7xl space-y-8 md:space-y-12"
                 role="main"
             >
                 <header className="mx-auto max-w-2xl space-y-2 lg:mx-0">
-                    <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                        {t("projects.title")}
-                    </h1>
-                    <h2 className="text-default-400 text-xl font-bold tracking-tight sm:text-2xl">
-                        {t("projects.headline")}
-                    </h2>
+                    <div className="flex flex-row gap-x-2">
+                        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                            {t("projects.title")}
+                        </h1>
+                        <ArrowBigRight className="mt-1 h-6 w-6 text-purple-500/50" />
+                        <h2 className="text-default-400 text-xl font-bold tracking-tight sm:text-2xl">
+                            {t("projects.headline")}
+                        </h2>
+                    </div>
                     <p className="text-default-400">
                         {t("projects.description")}
                     </p>
@@ -124,7 +119,7 @@ export default function ProjectsClient() {
                         role="status"
                         aria-live="polite"
                     >
-                        Error loading projects: {headError || regularError}
+                        Error loading projects: {error}
                     </p>
                 </div>
             </main>
@@ -132,19 +127,90 @@ export default function ProjectsClient() {
     }
 
     return (
-        <main className="mx-auto max-w-7xl space-y-8 md:space-y-12" role="main">
+        <main className="mx-auto max-w-7xl space-y-4 md:space-y-6" role="main">
+            {/* Header */}
             <header className="mx-auto max-w-2xl space-y-2 lg:mx-0">
-                <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                    {t("projects.title")}
-                </h1>
-                <h2 className="text-default-400 text-xl font-bold tracking-tight sm:text-2xl">
-                    {t("projects.headline")}
-                </h2>
+                <div className="flex flex-row items-end gap-x-2">
+                    <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                        {t("projects.title")}
+                    </h1>
+                    <div className="my-auto">
+                        <ArrowBigRight className="h-6 w-6 items-center text-purple-500/50" />
+                    </div>
+                    <h2 className="text-default-400 text-xl font-bold tracking-tight sm:text-2xl">
+                        {t("projects.headline")}
+                    </h2>
+                </div>
                 <p className="text-default-400">{t("projects.description")}</p>
             </header>
-            {headProjects.length <= 0 &&
-                filteredRegularProjects.length <= 0 && (
-                    <div className="flex h-96 items-center justify-center">
+            <div className="mx-auto max-w-7xl space-y-8 md:space-y-12">
+                {/* Pinned/Featured Projects Section */}
+                {featuredProjects.length > 0 && (
+                    <section aria-labelledby="featured-projects">
+                        <div className="mb-6 flex items-center gap-2">
+                            <h2
+                                id="featured-projects"
+                                className="text-2xl font-bold"
+                            >
+                                {t("projects.featured")}
+                            </h2>
+                        </div>
+                        <div className="space-y-6">
+                            {featuredProjects.map((project: IProject) => (
+                                <Card key={project.id}>
+                                    <Article
+                                        project={project}
+                                        featured={true}
+                                    />
+                                </Card>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Filters Section */}
+                {allProjects.length > 0 && (
+                    <section aria-labelledby="project-filters">
+                        <h2 id="project-filters" className="sr-only">
+                            Project Filters
+                        </h2>
+                        <ProjectFilters
+                            projects={regularProjects}
+                            onFilteredProjectsChange={setFilteredProjects}
+                        />
+                    </section>
+                )}
+
+                {/* All Projects Section */}
+                {displayProjects.length > 0 ? (
+                    <section aria-labelledby="all-projects">
+                        <div className="mb-6 flex items-center justify-between">
+                            <h2
+                                id="all-projects"
+                                className="text-2xl font-bold"
+                            >
+                                {t("projects.all_projects")}
+                            </h2>
+                            <span className="text-default-400 text-sm">
+                                {displayProjects.length}{" "}
+                                {displayProjects.length === 1
+                                    ? t("projects.project")
+                                    : t("projects.projects")}
+                            </span>
+                        </div>
+                        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+                            {displayProjects.map((project: IProject) => (
+                                <Card key={project.id}>
+                                    <Article
+                                        project={project}
+                                        featured={false}
+                                    />
+                                </Card>
+                            ))}
+                        </div>
+                    </section>
+                ) : (
+                    <div className="flex h-64 items-center justify-center rounded-lg border border-white/10 bg-black/10 backdrop-blur-sm">
                         <p
                             className="text-default-400"
                             role="status"
@@ -154,83 +220,7 @@ export default function ProjectsClient() {
                         </p>
                     </div>
                 )}
-            {headProjects.length > 0 && (
-                <section aria-labelledby="featured-projects">
-                    <h2 id="featured-projects" className="sr-only">
-                        Featured Projects
-                    </h2>
-                    <div className="grid-row-1 lg:grid-row-2 mx-auto grid gap-4">
-                        <div className="mx-auto flex w-full flex-col gap-4 border-t border-gray-900/10 lg:mx-0 lg:border-t-0">
-                            {headProjects
-                                .filter(
-                                    (_: any, index: number) =>
-                                        index === 0 ||
-                                        index === 1 ||
-                                        index === 2,
-                                )
-                                .map((project: IProject, index: number) => (
-                                    <Card key={project.id}>
-                                        <Article
-                                            project={project}
-                                            aria-label={`Featured project: ${project.title}`}
-                                        />
-                                    </Card>
-                                ))}
-                        </div>
-                    </div>
-                </section>
-            )}
-            {filteredRegularProjects.length >= 3 && (
-                <section aria-labelledby="all-projects">
-                    <h2 id="all-projects" className="sr-only">
-                        All Projects
-                    </h2>
-                    <div className="mx-auto grid grid-cols-1 gap-4 md:grid-cols-3 lg:mx-0">
-                        <div className="grid grid-cols-1 gap-4">
-                            {filteredRegularProjects
-                                .filter(
-                                    (_: any, index: number) => index % 3 === 0,
-                                )
-                                .map((project: IProject) => (
-                                    <Card key={project.id}>
-                                        <Article
-                                            project={project}
-                                            aria-label={`Project: ${project.title}`}
-                                        />
-                                    </Card>
-                                ))}
-                        </div>
-                        <div className="grid grid-cols-1 gap-4">
-                            {filteredRegularProjects
-                                .filter(
-                                    (_: any, index: number) => index % 3 === 1,
-                                )
-                                .map((project: IProject) => (
-                                    <Card key={project.id}>
-                                        <Article
-                                            project={project}
-                                            aria-label={`Project: ${project.title}`}
-                                        />
-                                    </Card>
-                                ))}
-                        </div>
-                        <div className="grid grid-cols-1 gap-4">
-                            {filteredRegularProjects
-                                .filter(
-                                    (_: any, index: number) => index % 3 === 2,
-                                )
-                                .map((project: IProject) => (
-                                    <Card key={project.id}>
-                                        <Article
-                                            project={project}
-                                            aria-label={`Project: ${project.title}`}
-                                        />
-                                    </Card>
-                                ))}
-                        </div>
-                    </div>
-                </section>
-            )}
+            </div>
         </main>
     );
 }

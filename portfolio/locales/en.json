@@ -30,7 +30,25 @@
         "skills": "Skills",
         "technologies": "Technologies",
         "achievements": "Key Achievements",
-        "no_projects": "No projects found."
+        "no_projects": "No projects found.",
+        "featured": "Featured Projects",
+        "all_projects": "All Projects",
+        "project": "project",
+        "projects": "projects",
+        "category": {
+            "professional": "Professional",
+            "personal": "Personal",
+            "academic": "Academic"
+        },
+        "filters": {
+            "search": "Search",
+            "search_placeholder": "Search projects...",
+            "category": "Category",
+            "technology": "Technology",
+            "skill": "Skill",
+            "all": "All",
+            "reset": "Reset Filters"
+        }
     },
     "about": {
         "title": "About Me",

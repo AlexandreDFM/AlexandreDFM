@@ -30,7 +30,25 @@
         "skills": "Compétences",
         "technologies": "Technologies",
         "achievements": "Réalisations clés",
-        "no_projects": "Aucun projet trouvé."
+        "no_projects": "Aucun projet trouvé.",
+        "featured": "Projets Épinglés",
+        "all_projects": "Tous les Projets",
+        "project": "projet",
+        "projects": "projets",
+        "category": {
+            "professional": "Professionnel",
+            "personal": "Personnel",
+            "academic": "Académique"
+        },
+        "filters": {
+            "search": "Rechercher",
+            "search_placeholder": "Rechercher des projets...",
+            "category": "Catégorie",
+            "technology": "Technologie",
+            "skill": "Compétence",
+            "all": "Tous",
+            "reset": "Réinitialiser les filtres"
+        }
     },
     "about": {
         "title": "À propos de moi",

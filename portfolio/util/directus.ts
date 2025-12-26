@@ -29,7 +29,6 @@ import {
     rest,
     readMe,
     readItems,
-    readFiles,
     staticToken,
     createDirectus,
 } from "@directus/sdk";
@@ -47,6 +46,7 @@ interface IProjectCollection {
     title: string;
     description: string;
     date?: string;
+    image?: string; // File ID for project image/thumbnail
 
     github?: string;
     role?: string;
@@ -54,7 +54,7 @@ interface IProjectCollection {
     skills?: string[];
     technologies?: string[];
     achievements?: string[];
-    category?: "professional" | "personal" | "academic";
+    category?: ("professional" | "personal" | "academic")[];
     is_featured?: boolean;
 
     // Translations fields
@@ -107,7 +107,9 @@ export async function getProjects(
         console.log("Fetched projects:", projects.length, "projects found.");
 
         // Transform projects to match the expected format with language-specific fields
-        return projects.map((project: IProjectCollection) => ({
+        return projects.map((project: IProjectCollection) => (
+            console.log("Processing project:", project.category, project.title),
+            {
             id: project.id,
             title:
                 language === "fr" && project.title_fr
@@ -119,6 +121,9 @@ export async function getProjects(
                     : project.description,
             date: project.date,
             github: project.github,
+            imageUrl: project.image
+                ? `/api/projects/image/${project.image}`
+                : null,
             role:
                 language === "fr" && project.role_fr
                     ? project.role_fr
@@ -140,6 +145,7 @@ export async function getProjects(
                     ? project.achievements_fr
                     : project.achievements,
             category: project.category,
+            is_featured: project.is_featured,
         }));
     } catch (error) {
         console.error("Error fetching projects from Directus:", error);

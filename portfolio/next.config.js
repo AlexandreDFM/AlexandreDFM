@@ -32,7 +32,20 @@ const nextConfig = {
         autoPrerender: false,
     },
     images: {
-        domains: ["https://nextui.org/", "https://flagcdn.com/"],
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "nextui.org",
+            },
+            {
+                protocol: "https",
+                hostname: "flagcdn.com",
+            },
+            {
+                protocol: "https",
+                hostname: "my-api.alexandredfm.fr",
+            },
+        ],
     },
 };
 
