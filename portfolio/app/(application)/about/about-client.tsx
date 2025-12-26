@@ -27,6 +27,7 @@
 
 "use client";
 
+import { useState } from "react";
 import Work from "@/components/about/work";
 import Study from "@/components/about/study";
 import { Avatar, Card, CardBody } from "@heroui/react";
@@ -36,6 +37,8 @@ import Certification from "@/components/about/certification";
 
 export default function AboutClient() {
     const { t } = useTranslation();
+    const [avatarUrl] = useState<string>("/api/avatar/image");
+    const [imageError, setImageError] = useState(false);
 
     return (
         <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
@@ -47,8 +50,13 @@ export default function AboutClient() {
                             className="ml-4 h-20 w-20 shrink-0 md:h-24 md:w-24 lg:h-28 lg:w-28"
                             isBordered
                             radius="full"
-                            src="/app/bio/alexandredfm.jpeg"
+                            src={imageError ? "/app/bio/alexandredfm.jpeg" : avatarUrl}
                             alt="Alexandre De Freitas Martins profile picture"
+                            showFallback={!imageError}
+                            onError={() => {
+                                console.warn("[Avatar] Failed to load from Directus, using fallback");
+                                setImageError(true);
+                            }}
                         />
                         <div className="flex-1 px-4">
                             <h1 className="text-xl font-semibold">

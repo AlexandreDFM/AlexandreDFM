@@ -25,7 +25,14 @@
  * THE SOFTWARE.
  */
 
-import { createDirectus, rest, readItems, staticToken } from "@directus/sdk";
+import {
+    rest,
+    readMe,
+    readItems,
+    readFiles,
+    staticToken,
+    createDirectus,
+} from "@directus/sdk";
 
 // Define the schema for your collections
 interface IProjectCollection {
@@ -100,7 +107,7 @@ export async function getProjects(
         console.log("Fetched projects:", projects.length, "projects found.");
 
         // Transform projects to match the expected format with language-specific fields
-        return projects.map((project) => ({
+        return projects.map((project: IProjectCollection) => ({
             id: project.id,
             title:
                 language === "fr" && project.title_fr
@@ -150,6 +157,83 @@ export async function getProjects(
         }
 
         return [];
+    }
+}
+
+export async function getAvatarUrl(): Promise<string | null> {
+    try {
+        const user = await directus.request(readMe({ fields: ["avatar"] }));
+
+        console.log("Fetched user data from Directus:", user);
+
+        if (user.avatar) {
+            console.log("User avatar file ID:", user.avatar);
+            return `${directusUrl.replace(/\/$/, "")}/assets/${user.avatar}`;
+        } else {
+            console.warn("User has no avatar set.");
+        }
+
+        return null;
+    } catch (error) {
+        console.error("Error fetching user avatar from Directus:", error);
+        return null;
+    }
+}
+
+// Service to fetch the avatar image as a stream and content type
+export async function fetchAvatarImage(): Promise<{
+    stream: ReadableStream<Uint8Array>;
+    contentType: string;
+} | null> {
+    try {
+        // Fetch the current user's data to get the avatar file ID
+        const user = await directus.request(readMe({ fields: ["avatar"] }));
+
+        if (!user.avatar) {
+            console.warn("[Directus] User has no avatar set");
+            return null;
+        }
+
+        console.log("[Directus] Fetching avatar with file ID:", user.avatar);
+
+        // Construct the file URL using the stored directusUrl
+        const fileUrl = `${directusUrl.replace(/\/$/, "")}/assets/${
+            user.avatar
+        }`;
+
+        // Fetch the actual image file with authentication
+        const assetRes = await fetch(fileUrl, {
+            headers: {
+                Authorization: `Bearer ${directusToken}`,
+            },
+        });
+
+        if (!assetRes.ok) {
+            console.error(
+                `[Directus] Failed to fetch avatar: ${assetRes.status} ${assetRes.statusText}`,
+            );
+            return null;
+        }
+
+        if (!assetRes.body) {
+            console.error("[Directus] Avatar response has no body");
+            return null;
+        }
+
+        const contentType =
+            assetRes.headers.get("Content-Type") || "image/jpeg";
+        console.log(
+            "[Directus] Avatar fetched successfully, content-type:",
+            contentType,
+        );
+
+        return {
+            stream: assetRes.body,
+            contentType,
+        };
+    } catch (error) {
+        console.error("[Directus] Error fetching avatar image:", error);
+        return null;
     }
 }
 
