@@ -78,6 +78,20 @@ export const Navbar: React.FC = () => {
                         {t("common.projects")}
                     </Link>
                     <Link
+                        href="/blog"
+                        className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:ring-2 focus:ring-offset-2 focus:outline-none"
+                        aria-label="Blog page"
+                    >
+                        {t("common.blog") || "Blog"}
+                    </Link>
+                    <Link
+                        href="/gallery"
+                        className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:ring-2 focus:ring-offset-2 focus:outline-none"
+                        aria-label="Gallery page"
+                    >
+                        {t("common.gallery") || "Gallery"}
+                    </Link>
+                    <Link
                         href="/contact"
                         className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                         aria-label="Contact page"
