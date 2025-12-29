@@ -33,49 +33,14 @@ import {
     createDirectus,
 } from "@directus/sdk";
 
-// Define the schema for your collections
-interface IProjectCollection {
-    id: string;
-    status?: "published" | "draft" | "archived";
-    sort?: number;
-    user_created?: string;
-    user_updated?: string;
-    date_created?: string;
-    date_updated?: string;
-
-    title: string;
-    description: string;
-    date?: string;
-    image?: string; // File ID for project image/thumbnail
-
-    github?: string;
-    role?: string;
-    duration?: string;
-    skills?: string[];
-    technologies?: string[];
-    achievements?: string[];
-    category?: ("professional" | "personal" | "academic")[];
-    is_featured?: boolean;
-
-    // Translations fields
-    title_en?: string;
-    title_fr?: string;
-    description_en?: string;
-    description_fr?: string;
-    role_en?: string;
-    role_fr?: string;
-    duration_en?: string;
-    duration_fr?: string;
-    skills_en?: string[];
-    skills_fr?: string[];
-    technologies_en?: string[];
-    technologies_fr?: string[];
-    achievements_en?: string[];
-    achievements_fr?: string[];
-}
+import { IProjectCollection } from "@/types/directus/IProjectCollection";
+import { IBlogPostCollection } from "@/types/directus/IBlogPostCollection";
+import { IMediaPostCollection } from "@/types/directus/IMediaPostCollection";
 
 interface Schema {
     projects: IProjectCollection[];
+    blog_posts: IBlogPostCollection[];
+    media_posts: IMediaPostCollection[];
 }
 
 // Create Directus client
@@ -256,5 +221,199 @@ export async function testDirectusConnection() {
     } catch (error) {
         console.error("Directus connection failed:", error);
         return false;
+    }
+}
+
+// Helper function to get blog posts with language filtering
+export async function getBlogPosts(
+    language: "en" | "fr" = "en",
+    onlyFeatured = false,
+    limit?: number,
+) {
+    try {
+        const posts = await directus.request(
+            readItems("blog_posts", {
+                filter: {
+                    status: { _eq: "published" },
+                    ...(onlyFeatured && { is_featured: { _eq: true } }),
+                },
+                sort: ["-date_created"],
+                ...(limit && { limit }),
+            }),
+        );
+
+        console.log("Fetched blog posts:", posts.length, "posts found.");
+
+        return posts.map((post: IBlogPostCollection) => ({
+            id: post.id,
+            title:
+                language === "fr" && post.title_fr
+                    ? post.title_fr
+                    : post.title,
+            slug: post.slug,
+            excerpt:
+                language === "fr" && post.excerpt_fr
+                    ? post.excerpt_fr
+                    : post.excerpt,
+            content:
+                language === "fr" && post.content_fr
+                    ? post.content_fr
+                    : post.content,
+            coverImageUrl: post.cover_image
+                ? `/api/blog/image/${post.cover_image}`
+                : null,
+            readingTime: post.reading_time || 5,
+            tags:
+                language === "fr" && post.tags_fr ? post.tags_fr : post.tags,
+            category:
+                language === "fr" && post.category_fr
+                    ? post.category_fr
+                    : post.category,
+            is_featured: post.is_featured,
+            date_created: post.date_created,
+            date_updated: post.date_updated,
+        }));
+    } catch (error) {
+        console.error("Error fetching blog posts from Directus:", error);
+        return [];
+    }
+}
+
+// Helper function to get a single blog post by slug
+export async function getBlogPostBySlug(slug: string, language: "en" | "fr" = "en") {
+    try {
+        const posts = await directus.request(
+            readItems("blog_posts", {
+                filter: {
+                    status: { _eq: "published" },
+                    slug: { _eq: slug },
+                },
+                limit: 1,
+            }),
+        );
+
+        if (posts.length === 0) return null;
+
+        const post = posts[0];
+        return {
+            id: post.id,
+            title:
+                language === "fr" && post.title_fr
+                    ? post.title_fr
+                    : post.title,
+            slug: post.slug,
+            excerpt:
+                language === "fr" && post.excerpt_fr
+                    ? post.excerpt_fr
+                    : post.excerpt,
+            content:
+                language === "fr" && post.content_fr
+                    ? post.content_fr
+                    : post.content,
+            coverImageUrl: post.cover_image
+                ? `/api/blog/image/${post.cover_image}`
+                : null,
+            readingTime: post.reading_time || 5,
+            tags:
+                language === "fr" && post.tags_fr ? post.tags_fr : post.tags,
+            category:
+                language === "fr" && post.category_fr
+                    ? post.category_fr
+                    : post.category,
+            is_featured: post.is_featured,
+            date_created: post.date_created,
+            date_updated: post.date_updated,
+        };
+    } catch (error) {
+        console.error("Error fetching blog post from Directus:", error);
+        return null;
+    }
+}
+
+// Helper function to get media posts with language filtering
+export async function getMediaPosts(
+    language: "en" | "fr" = "en",
+    limit?: number,
+) {
+    try {
+        const posts = await directus.request(
+            readItems("media_posts", {
+                filter: {
+                    status: { _eq: "published" },
+                },
+                sort: ["-date_created"],
+                ...(limit && { limit }),
+            }),
+        );
+
+        console.log("Fetched media posts:", posts.length, "posts found.");
+
+        return posts.map((post: IMediaPostCollection) => ({
+            id: post.id,
+            title:
+                language === "fr" && post.title_fr
+                    ? post.title_fr
+                    : post.title,
+            caption:
+                language === "fr" && post.caption_fr
+                    ? post.caption_fr
+                    : post.caption,
+            mediaUrl: `/api/media/file/${post.media}`,
+            mediaType: post.media_type,
+            thumbnailUrl: post.thumbnail
+                ? `/api/media/file/${post.thumbnail}`
+                : null,
+            tags:
+                language === "fr" && post.tags_fr ? post.tags_fr : post.tags,
+            likes: post.likes || 0,
+            date_created: post.date_created,
+        }));
+    } catch (error) {
+        console.error("Error fetching media posts from Directus:", error);
+        return [];
+    }
+}
+
+// Helper function to get a single media post by ID
+export async function getMediaPostById(id: string, language: "en" | "fr" = "en") {
+    try {
+        const post = await directus.request(
+            readItems("media_posts", {
+                filter: {
+                    status: { _eq: "published" },
+                    id: { _eq: id },
+                },
+                limit: 1,
+            }),
+        );
+
+        if (!post || post.length === 0) return null;
+
+        const mediaPost = post[0];
+        return {
+            id: mediaPost.id,
+            title:
+                language === "fr" && mediaPost.title_fr
+                    ? mediaPost.title_fr
+                    : mediaPost.title,
+            caption:
+                language === "fr" && mediaPost.caption_fr
+                    ? mediaPost.caption_fr
+                    : mediaPost.caption,
+            mediaUrl: `/api/media/file/${mediaPost.media}`,
+            mediaType: mediaPost.media_type,
+            thumbnailUrl: mediaPost.thumbnail
+                ? `/api/media/file/${mediaPost.thumbnail}`
+                : null,
+            tags:
+                language === "fr" && mediaPost.tags_fr
+                    ? mediaPost.tags_fr
+                    : mediaPost.tags,
+            likes: mediaPost.likes || 0,
+            date_created: mediaPost.date_created,
+        };
+    } catch (error) {
+        console.error("Error fetching media post from Directus:", error);
+        return null;
     }
 }
