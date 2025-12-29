@@ -1,8 +1,8 @@
 /**
  * File Name: route.ts
  * Author: Alexandre Kévin DE FREITAS MARTINS
- * Creation Date: 26/12/2025
- * Description: Proxy route for project images from Directus
+ * Creation Date: 2025
+ * Description: API route for fetching blog post images from Directus
  * Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
  * Version: 1.0.0
  *
@@ -25,15 +25,7 @@
  * THE SOFTWARE.
  */
 
-import { NextRequest } from "next/server";
-
-const directusUrl =
-    process.env.NEXT_PUBLIC_DIRECTUS_URL || "https://my-api.alexandredfm.fr/";
-const directusToken =
-    process.env.DIRECTUS_WEBSITE_TOKEN || "YOUR_DIRECTUS_STATIC_TOKEN";
-
-// Enable caching for project images (revalidate every hour)
-export const revalidate = 3600;
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
     request: NextRequest,
@@ -41,17 +33,14 @@ export async function GET(
 ) {
     try {
         const { id } = await params;
+        const directusUrl =
+            process.env.NEXT_PUBLIC_DIRECTUS_URL ||
+            "https://my-api.alexandredfm.fr/";
+        const directusToken =
+            process.env.DIRECTUS_WEBSITE_TOKEN || "YOUR_DIRECTUS_STATIC_TOKEN";
 
-        if (!id) {
-            return new Response("Missing image ID", { status: 400 });
-        }
-
-        // Construct the file URL
         const fileUrl = `${directusUrl.replace(/\/$/, "")}/assets/${id}`;
 
-        console.log(`[API/projects/image] Fetching image: ${fileUrl}`);
-
-        // Fetch the actual image file with authentication
         const assetRes = await fetch(fileUrl, {
             headers: {
                 Authorization: `Bearer ${directusToken}`,
@@ -60,29 +49,35 @@ export async function GET(
 
         if (!assetRes.ok) {
             console.error(
-                `[API/projects/image] Failed to fetch image: ${assetRes.status} ${assetRes.statusText}`,
+                `Failed to fetch blog image: ${assetRes.status} ${assetRes.statusText}`,
             );
-            return new Response("Image not found", { status: 404 });
+            return NextResponse.json(
+                { error: "Image not found" },
+                { status: 404 },
+            );
         }
 
         if (!assetRes.body) {
-            console.error("[API/projects/image] Image response has no body");
-            return new Response("Image not found", { status: 404 });
+            return NextResponse.json(
+                { error: "No image data" },
+                { status: 404 },
+            );
         }
 
         const contentType =
             assetRes.headers.get("Content-Type") || "image/jpeg";
 
-        return new Response(assetRes.body, {
-            status: 200,
+        return new NextResponse(assetRes.body, {
             headers: {
                 "Content-Type": contentType,
-                "Cache-Control":
-                    "public, s-maxage=3600, stale-while-revalidate=86400",
+                "Cache-Control": "public, max-age=31536000, immutable",
             },
         });
     } catch (error) {
-        console.error("[API/projects/image] Internal server error:", error);
-        return new Response("Internal server error", { status: 500 });
+        console.error("Error fetching blog image:", error);
+        return NextResponse.json(
+            { error: "Failed to fetch image" },
+            { status: 500 },
+        );
     }
 }
