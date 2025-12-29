@@ -149,9 +149,12 @@ export default function BlogClient() {
                                         <h3 className="text-xl font-bold group-hover:text-primary transition-colors">
                                             {post.title}
                                         </h3>
-                                        <p className="text-default-400 line-clamp-2">
-                                            {post.excerpt}
-                                        </p>
+                                        <p
+                                            className="text-default-400 line-clamp-2"
+                                            dangerouslySetInnerHTML={{
+                                                __html: post.excerpt,
+                                            }}
+                                        />
                                         <div className="flex flex-wrap items-center gap-4 text-sm text-default-400">
                                             <span className="flex items-center gap-1">
                                                 <Clock className="h-4 w-4" />
@@ -214,9 +217,12 @@ export default function BlogClient() {
                                     <h3 className="text-lg font-bold group-hover:text-primary transition-colors line-clamp-2">
                                         {post.title}
                                     </h3>
-                                    <p className="text-sm text-default-400 line-clamp-3">
-                                        {post.excerpt}
-                                    </p>
+                                    <p
+                                        className="text-sm text-default-400 line-clamp-3"
+                                        dangerouslySetInnerHTML={{
+                                            __html: post.excerpt,
+                                        }}
+                                    />
                                     <div className="flex items-center gap-3 text-xs text-default-400">
                                         <span className="flex items-center gap-1">
                                             <Clock className="h-3 w-3" />

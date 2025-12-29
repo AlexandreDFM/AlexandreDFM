@@ -149,7 +149,18 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
 
                 {/* Article Content */}
                 <div
-                    className="prose prose-invert prose-lg max-w-none prose-headings:font-bold prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg"
+                    className="prose prose-invert prose-lg max-w-none 
+                        prose-headings:font-bold prose-headings:tracking-tight
+                        prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl
+                        prose-p:text-default-300 prose-p:leading-relaxed
+                        prose-a:text-primary prose-a:no-underline hover:prose-a:underline
+                        prose-strong:text-default-100 prose-strong:font-semibold
+                        prose-code:text-primary prose-code:bg-default-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded
+                        prose-pre:bg-default-100 prose-pre:border prose-pre:border-default-200
+                        prose-blockquote:border-l-primary prose-blockquote:text-default-300
+                        prose-ul:text-default-300 prose-ol:text-default-300
+                        prose-li:text-default-300
+                        prose-img:rounded-lg prose-img:shadow-lg"
                     dangerouslySetInnerHTML={{ __html: post.content }}
                 />
 
