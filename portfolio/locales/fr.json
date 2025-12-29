@@ -19,7 +19,9 @@
         "home": "Accueil",
         "projects": "Projets",
         "about": "À propos",
-        "contact": "Contact"
+        "contact": "Contact",
+        "blog": "Blog",
+        "gallery": "Galerie"
     },
     "projects": {
         "title": "Projets",
@@ -49,6 +51,18 @@
             "all": "Tous",
             "reset": "Réinitialiser les filtres"
         }
+    },
+    "blog": {
+        "description": "Partage de mes expériences et réflexions en développement",
+        "noPosts": "Aucun article pour le moment. Revenez bientôt !",
+        "featured": "Articles Épinglés",
+        "allPosts": "Tous les Articles",
+        "backToBlog": "Retour au Blog",
+        "lastUpdated": "Dernière mise à jour"
+    },
+    "gallery": {
+        "description": "Explorez mon parcours visuel",
+        "noPosts": "Aucun média pour le moment. Revenez bientôt !"
     },
     "about": {
         "title": "À propos de moi",

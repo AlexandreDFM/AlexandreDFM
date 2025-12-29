@@ -19,7 +19,9 @@
         "home": "Home",
         "projects": "Projects",
         "about": "About",
-        "contact": "Contact"
+        "contact": "Contact",
+        "blog": "Blog",
+        "gallery": "Gallery"
     },
     "projects": {
         "title": "Projects",
@@ -49,6 +51,18 @@
             "all": "All",
             "reset": "Reset Filters"
         }
+    },
+    "blog": {
+        "description": "Sharing my coding experiences and insights",
+        "noPosts": "No blog posts yet. Check back soon!",
+        "featured": "Featured Posts",
+        "allPosts": "All Posts",
+        "backToBlog": "Back to Blog",
+        "lastUpdated": "Last updated"
+    },
+    "gallery": {
+        "description": "Explore my visual journey",
+        "noPosts": "No media yet. Check back soon!"
     },
     "about": {
         "title": "About Me",
