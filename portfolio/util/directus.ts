@@ -53,6 +53,18 @@ export const directus = createDirectus<Schema>(directusUrl)
     .with(rest())
     .with(staticToken(directusToken));
 
+// Helper function to get Directus client with user token (for API routes that need write access)
+export async function getDirectusClient(authToken?: string) {
+    if (authToken) {
+        // Create authenticated client with user's token
+        return createDirectus<Schema>(directusUrl)
+            .with(rest())
+            .with(staticToken(authToken));
+    }
+    // Fallback to static token for read-only operations
+    return directus;
+}
+
 // Helper function to get projects with language filtering
 export async function getProjects(
     language: "en" | "fr" = "en",

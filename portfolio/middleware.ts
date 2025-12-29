@@ -42,7 +42,7 @@ export function middleware(request: NextRequest) {
         return NextResponse.next();
     }
     if (!accessToken) {
-        return NextResponse.redirect(new URL("/admin/login", request.nextUrl));
+        return NextResponse.redirect(new URL("/admin-login", request.nextUrl));
     }
 
     // Check if there is any supported locale in the pathname

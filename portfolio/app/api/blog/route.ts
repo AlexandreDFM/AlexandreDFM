@@ -25,8 +25,10 @@
  * THE SOFTWARE.
  */
 
-import { getBlogPosts } from "@/util/directus";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
+import { createItem, uploadFiles } from "@directus/sdk";
+import { getBlogPosts, getDirectusClient } from "@/util/directus";
 
 export async function GET(request: NextRequest) {
     try {
@@ -44,6 +46,69 @@ export async function GET(request: NextRequest) {
         console.error("Error in blog API route:", error);
         return NextResponse.json(
             { error: "Failed to fetch blog posts" },
+            { status: 500 },
+        );
+    }
+}
+
+export async function POST(request: NextRequest) {
+    try {
+        // Get user's auth token from cookies
+        const cookieStore = await cookies();
+        const authToken = cookieStore.get("directus_admin_token")?.value;
+
+        if (!authToken) {
+            return NextResponse.json(
+                { error: "Unauthorized" },
+                { status: 401 },
+            );
+        }
+
+        const formData = await request.formData();
+        const directus = await getDirectusClient(authToken);
+
+        // Handle cover image upload
+        let coverImageId: string | undefined;
+        const coverImage = formData.get("cover_image") as File | null;
+
+        if (coverImage) {
+            const uploadFormData = new FormData();
+            uploadFormData.append("file", coverImage);
+
+            const uploadResult = await directus.request(
+                uploadFiles(uploadFormData as any),
+            );
+            coverImageId = uploadResult.id;
+        }
+
+        // Parse tags
+        const tags = JSON.parse(formData.get("tags") as string);
+
+        // Create blog post
+        const newPost = await directus.request(
+            createItem("blog_posts", {
+                title_en: formData.get("title_en") as string,
+                title_fr: formData.get("title_fr") as string,
+                slug: formData.get("slug") as string,
+                excerpt_en: formData.get("excerpt_en") as string,
+                excerpt_fr: formData.get("excerpt_fr") as string,
+                content_en: formData.get("content_en") as string,
+                content_fr: formData.get("content_fr") as string,
+                category: (formData.get("category") as string) || undefined,
+                tags: tags,
+                reading_time: parseInt(formData.get("reading_time") as string),
+                is_featured:
+                    formData.get("is_featured") === "true",
+                cover_image: coverImageId || undefined,
+                status: ((formData.get("status") as string) || "published") as "published" | "draft" | "archived",
+            }),
+        );
+
+        return NextResponse.json(newPost, { status: 201 });
+    } catch (error) {
+        console.error("Error creating blog post:", error);
+        return NextResponse.json(
+            { error: "Failed to create blog post" },
             { status: 500 },
         );
     }
