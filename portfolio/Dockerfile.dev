@@ -25,21 +25,18 @@
 # THE SOFTWARE.
 #
 
-FROM node:22-alpine
+FROM node:22-slim
+
+# Install dependencies for native modules
+RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
 
 RUN corepack enable
 
-WORKDIR /app
-
-COPY --chown=node:node package*.json /app/
-COPY --chown=node:node pnpm-lock.yaml /app/
-
-RUN corepack prepare pnpm@latest --activate && pnpm install
-
-COPY --chown=node:node . /app/
+WORKDIR /usr/src/app
 
 ENV NODE_ENV=development
 
 EXPOSE 3000
 
-CMD ["pnpm", "dev"]
+# Install dependencies on container start to ensure Linux binaries
+CMD corepack prepare pnpm@latest --activate && pnpm install --no-frozen-lockfile && pnpm dev
