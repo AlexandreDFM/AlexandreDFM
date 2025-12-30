@@ -29,7 +29,13 @@ import Link from "next/link";
 import { Plus } from "lucide-react";
 import BlogPostsList from "./blog-posts-list";
 
-export default function AdminBlogPage() {
+export default async function AdminBlogPage({
+    params,
+}: {
+    params: Promise<{ locale: string }>;
+}) {
+    const { locale } = await params;
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -40,7 +46,7 @@ export default function AdminBlogPage() {
                     </p>
                 </div>
                 <Link
-                    href="/admin/blog/new"
+                    href={`/${locale}/admin/blog/new`}
                     className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 font-medium text-white transition-colors hover:bg-primary/90"
                 >
                     <Plus className="h-5 w-5" />

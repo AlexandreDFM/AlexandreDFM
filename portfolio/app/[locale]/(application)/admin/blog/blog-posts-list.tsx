@@ -33,9 +33,11 @@ import Image from "next/image";
 import { Edit, Trash2, Eye, Star } from "lucide-react";
 import { useState } from "react";
 import { Card } from "@/components/card";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function BlogPostsList() {
-    const { posts, loading, error } = useBlog({ language: "en" });
+    const { locale } = useTranslation();
+    const { posts, loading, error } = useBlog({ language: locale as "en" | "fr" });
     const [deleting, setDeleting] = useState<string | null>(null);
 
     const handleDelete = async (id: string) => {
@@ -123,7 +125,7 @@ export default function BlogPostsList() {
 
                                 <div className="flex gap-2">
                                     <Link
-                                        href={`/blog/${post.slug}`}
+                                        href={`/${locale}/blog/${post.slug}`}
                                         target="_blank"
                                         className="rounded-lg p-2 text-default-600 transition-colors hover:bg-default-100 hover:text-default-900"
                                         title="View"
@@ -131,7 +133,7 @@ export default function BlogPostsList() {
                                         <Eye className="h-4 w-4" />
                                     </Link>
                                     <Link
-                                        href={`/admin/blog/edit/${post.slug}`}
+                                        href={`/${locale}/admin/blog/edit/${post.slug}`}
                                         className="rounded-lg p-2 text-default-600 transition-colors hover:bg-default-100 hover:text-default-900"
                                         title="Edit"
                                     >

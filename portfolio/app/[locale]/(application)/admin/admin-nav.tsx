@@ -29,7 +29,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { FileText, Home, LogOut, Image } from "lucide-react";
+import { FileText, Home, LogOut, Image, Briefcase } from "lucide-react";
 import { logout } from "./auth";
 import { useTranslation } from "@/hooks/useTranslation";
 
@@ -45,6 +45,7 @@ export default function AdminNav() {
     };
 
     const navItems = [
+        { href: `/${locale}/admin/projects`, label: "Projects", icon: Briefcase },
         { href: `/${locale}/admin/blog`, label: "Blog Posts", icon: FileText },
         { href: `/${locale}/admin/media`, label: "Media Gallery", icon: Image },
     ];

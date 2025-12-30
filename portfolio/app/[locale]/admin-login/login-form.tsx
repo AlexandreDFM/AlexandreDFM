@@ -28,8 +28,8 @@
 "use client";
 
 import { useState } from "react";
-import { login } from "../(application)/admin/auth";
 import { useRouter } from "next/navigation";
+import { login } from "../(application)/admin/auth";
 
 export default function LoginForm() {
     const [email, setEmail] = useState("");
@@ -105,7 +105,7 @@ export default function LoginForm() {
             <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-lg bg-primary px-4 py-3 font-medium text-white transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+                className="w-full rounded-lg bg-primary px-4 py-3 font-medium transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
             >
                 {loading ? "Signing in..." : "Sign in with Directus"}
             </button>
