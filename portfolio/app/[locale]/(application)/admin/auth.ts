@@ -118,8 +118,8 @@ export async function isAuthenticated(): Promise<boolean> {
 
         return true;
     } catch (error) {
-        // Token is invalid or expired
-        await logout();
+        // Token is invalid or expired, but don't call logout here
+        // since this might be called from a non-Server Action context
         return false;
     }
 }

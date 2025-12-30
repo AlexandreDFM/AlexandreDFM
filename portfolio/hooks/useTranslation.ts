@@ -47,9 +47,16 @@ const translations: Record<string, TranslationType> = {
     fr,
 };
 
-// Get the user's preferred language - server-safe
-const getInitialLanguage = (): "en" | "fr" => {
-    // Always default to English to avoid hydration mismatch
+// Get the user's preferred language from URL pathname
+const getInitialLanguage = (pathname: string): "en" | "fr" => {
+    // Check if pathname starts with a locale
+    if (pathname.startsWith("/fr/") || pathname === "/fr") {
+        return "fr";
+    }
+    if (pathname.startsWith("/en/") || pathname === "/en") {
+        return "en";
+    }
+    // Default to English if no locale in path
     return "en";
 };
 
@@ -73,8 +80,8 @@ const getClientLanguage = (): "en" | "fr" => {
 
 export const useTranslation = () => {
     const pathname = usePathname();
-    const [locale, setLocaleState] = useState<"en" | "fr">(
-        getInitialLanguage(),
+    const [locale, setLocaleState] = useState<"en" | "fr">(() =>
+        getInitialLanguage(pathname),
     );
 
     const t = <T = string>(
@@ -107,7 +114,24 @@ export const useTranslation = () => {
         // Store for 1 year
         Cookies.set("locale", newLocale, { expires: 365 });
         setLocaleState(newLocale);
-        window.location.reload();
+        
+        // Navigate to the new locale by replacing the locale in the pathname
+        const currentPath = pathname;
+        let newPath: string;
+        
+        // Remove the current locale prefix if it exists
+        if (currentPath.startsWith("/fr/")) {
+            newPath = currentPath.replace("/fr/", `/${newLocale}/`);
+        } else if (currentPath.startsWith("/en/")) {
+            newPath = currentPath.replace("/en/", `/${newLocale}/`);
+        } else if (currentPath === "/fr" || currentPath === "/en") {
+            newPath = `/${newLocale}`;
+        } else {
+            // No locale in path, add it
+            newPath = `/${newLocale}${currentPath}`;
+        }
+        
+        window.location.href = newPath;
     };
 
     return {

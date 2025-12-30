@@ -28,7 +28,7 @@
 "use client";
 
 import { useState } from "react";
-import { login } from "../admin/auth";
+import { login } from "../(application)/admin/auth";
 import { useRouter } from "next/navigation";
 
 export default function LoginForm() {

@@ -30,21 +30,23 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FileText, Home, LogOut, Image } from "lucide-react";
-import { logout } from "../admin/auth";
+import { logout } from "./auth";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function AdminNav() {
     const pathname = usePathname();
     const router = useRouter();
+    const { locale } = useTranslation();
 
     const handleLogout = async () => {
         await logout();
-        router.push("/admin-login");
+        router.push(`/${locale}/admin-login`);
         router.refresh();
     };
 
     const navItems = [
-        { href: "/admin/blog", label: "Blog Posts", icon: FileText },
-        { href: "/admin/media", label: "Media Gallery", icon: Image },
+        { href: `/${locale}/admin/blog`, label: "Blog Posts", icon: FileText },
+        { href: `/${locale}/admin/media`, label: "Media Gallery", icon: Image },
     ];
 
     return (
@@ -53,7 +55,7 @@ export default function AdminNav() {
                 <div className="flex h-16 items-center justify-between">
                     <div className="flex items-center gap-8">
                         <Link
-                            href="/"
+                            href={`/${locale}`}
                             className="flex items-center gap-2 text-lg font-bold"
                         >
                             <Home className="h-5 w-5" />

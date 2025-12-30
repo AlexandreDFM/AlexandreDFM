@@ -35,7 +35,7 @@ import { useTranslation } from "../hooks/useTranslation";
 import React, { useEffect, useRef, useState } from "react";
 
 export const Navbar: React.FC = () => {
-    const { t } = useTranslation();
+    const { t, locale } = useTranslation();
     const ref = useRef<HTMLElement>(null);
     const [isIntersecting, setIntersecting] = useState(true);
 
@@ -64,35 +64,35 @@ export const Navbar: React.FC = () => {
                     aria-label="Main navigation"
                 >
                     <Link
-                        href="/about"
+                        href={`/${locale}/about`}
                         className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                         aria-label="About page"
                     >
                         {t("common.about")}
                     </Link>
                     <Link
-                        href="/projects"
+                        href={`/${locale}/projects`}
                         className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                         aria-label="Projects page"
                     >
                         {t("common.projects")}
                     </Link>
                     <Link
-                        href="/blog"
+                        href={`/${locale}/blog`}
                         className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                         aria-label="Blog page"
                     >
                         {t("common.blog") || "Blog"}
                     </Link>
                     <Link
-                        href="/gallery"
+                        href={`/${locale}/gallery`}
                         className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                         aria-label="Gallery page"
                     >
                         {t("common.gallery") || "Gallery"}
                     </Link>
                     <Link
-                        href="/contact"
+                        href={`/${locale}/contact`}
                         className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                         aria-label="Contact page"
                     >
@@ -102,7 +102,7 @@ export const Navbar: React.FC = () => {
                     <LanguageSwitcher />
                 </nav>
                 <Link
-                    href="/"
+                    href={`/${locale}`}
                     className="focus:ring-primary rounded-md p-1 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                     aria-label="Go back to home page"
                 >

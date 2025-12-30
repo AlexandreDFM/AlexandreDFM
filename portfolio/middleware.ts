@@ -37,17 +37,8 @@ function getLocale(request: NextRequest) {
 }
 
 export function middleware(request: NextRequest) {
-    const accessToken = request.cookies.get("token")?.value;
-    if (!protectedRoutes.includes(request.nextUrl.pathname)) {
-        return NextResponse.next();
-    }
-    if (!accessToken) {
-        return NextResponse.redirect(new URL("/admin-login", request.nextUrl));
-    }
-
-    // Check if there is any supported locale in the pathname
     const pathname = request.nextUrl.pathname;
-
+    
     // Skip if the request is for an API route, static files, or other special paths
     if (
         pathname.startsWith("/_next") ||
@@ -64,13 +55,24 @@ export function middleware(request: NextRequest) {
             pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
     );
 
-    if (pathnameHasLocale) return NextResponse.next();
-
     // Redirect if there is no locale
-    const locale = getLocale(request);
-    request.nextUrl.pathname = `/${locale}${pathname}`;
+    if (!pathnameHasLocale) {
+        const locale = getLocale(request);
+        request.nextUrl.pathname = `/${locale}${pathname}`;
+        return NextResponse.redirect(request.nextUrl);
+    }
 
-    // e.g. incoming request is /products
-    // The new URL is now /fr/products
-    return NextResponse.redirect(request.nextUrl);
+    // Check protected routes (admin panel)
+    // Extract the path without locale for route matching
+    const pathWithoutLocale = pathname.replace(/^\/(fr|en)/, '');
+    if (protectedRoutes.includes(pathWithoutLocale)) {
+        const accessToken = request.cookies.get("directus_admin_token")?.value;
+        if (!accessToken) {
+            // Extract the current locale from the pathname
+            const currentLocale = pathname.startsWith('/fr') ? 'fr' : pathname.startsWith('/en') ? 'en' : locales[0];
+            return NextResponse.redirect(new URL(`/${currentLocale}/admin-login`, request.nextUrl));
+        }
+    }
+
+    return NextResponse.next();
 }

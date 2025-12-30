@@ -131,7 +131,7 @@ export default function BlogClient() {
                         {featuredPosts.map((post) => (
                             <Link
                                 key={post.id}
-                                href={`/blog/${post.slug}`}
+                                href={`/${locale}/blog/${post.slug}`}
                                 className="group block h-full transition-all hover:scale-[1.02]"
                             >
                                 <Card>
@@ -199,7 +199,7 @@ export default function BlogClient() {
                     {regularPosts.map((post) => (
                         <Link
                             key={post.id}
-                            href={`/blog/${post.slug}`}
+                            href={`/${locale}/blog/${post.slug}`}
                             className="group block h-full transition-all hover:scale-[1.02]"
                         >
                             <Card>

@@ -27,13 +27,18 @@
 
 import LoginForm from "./login-form";
 import { redirect } from "next/navigation";
-import { isAuthenticated } from "../admin/auth";
+import { isAuthenticated } from "../(application)/admin/auth";
 
-export default async function AdminLoginPage() {
+export default async function AdminLoginPage({
+    params,
+}: {
+    params: Promise<{ locale: string }>;
+}) {
+    const { locale } = await params;
     const authenticated = await isAuthenticated();
-    
+
     if (authenticated) {
-        redirect("/admin/blog");
+        redirect(`/${locale}/admin/blog`);
     }
 
     return (

@@ -65,7 +65,7 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
                         {error?.message || "Blog post not found"}
                     </p>
                     <Link
-                        href="/blog"
+                        href={`/${locale}/blog`}
                         className="inline-flex items-center gap-2 text-primary hover:underline"
                     >
                         <ArrowLeft className="h-4 w-4" />
@@ -80,7 +80,7 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
         <main className="mx-auto max-w-4xl space-y-8" role="main">
             {/* Back button */}
             <Link
-                href="/blog"
+                href={`/${locale}/blog`}
                 className="inline-flex items-center gap-2 text-sm text-default-400 hover:text-primary transition-colors"
             >
                 <ArrowLeft className="h-4 w-4" />
@@ -168,7 +168,7 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
                 <footer className="mt-12 pt-6 border-t border-default-200">
                     <div className="flex items-center justify-between">
                         <Link
-                            href="/blog"
+                            href={`/${locale}/blog`}
                             className="inline-flex items-center gap-2 text-primary hover:underline"
                         >
                             <ArrowLeft className="h-4 w-4" />
