@@ -29,11 +29,13 @@ export interface IProject {
     title: string;
     description: string;
     date?: string;
+    imageUrl?: string | null;
     github?: string;
     role?: string;
     duration?: string;
     skills?: string[];
     technologies?: string[];
     achievements?: string[];
-    category?: 'professional' | 'personal' | 'academic';
+    category?: ("professional" | "personal" | "academic")[];
+    is_featured?: boolean;
 }

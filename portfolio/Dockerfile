@@ -28,27 +28,37 @@
 ###############################################################################
 ### Build For Production
 
-FROM node:22-alpine AS build-stage
+
+FROM node:22-slim AS build-stage
+
+# Install dependencies for native modules
+RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
+
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # Create app directory
 RUN mkdir /app
 WORKDIR /app
 
 # Install app dependencies
-# COPY ./package.json /package.json
 COPY package.json ./
-RUN yarn install
+COPY pnpm-lock.yaml ./
+RUN pnpm install --no-frozen-lockfile
 
 # Bundle app source
 COPY . .
 
 # Build app
-RUN yarn run build
+RUN pnpm run build
 
 ###############################################################################
 ### Production Stage
 
 FROM node:22-alpine AS production-stage
+
+# Install pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /app
 

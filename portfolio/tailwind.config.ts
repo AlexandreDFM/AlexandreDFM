@@ -24,9 +24,9 @@
  * THE SOFTWARE.
  */
 
+import { heroui } from "@heroui/react";
 import type { Config } from "tailwindcss";
-const defaultTheme = require("tailwindcss/defaultTheme");
-const { heroui } = require("@heroui/react");
+import defaultTheme from "tailwindcss/defaultTheme";
 
 const config: Config = {
     content: [
@@ -34,56 +34,35 @@ const config: Config = {
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
         "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
+        "./styles/**/*.css",
     ],
     darkMode: "class",
     theme: {
         extend: {
             colors: {
                 primary: {
-                    50: '#eff6ff',
-                    100: '#dbeafe',
-                    200: '#bfdbfe',
-                    300: '#93c5fd',
-                    400: '#60a5fa',
-                    500: '#3b82f6',
-                    600: '#2563eb',
-                    700: '#1d4ed8',
-                    800: '#1e40af',
-                    900: '#1e3a8a',
-                    950: '#172554',
+                    50: "#eff6ff",
+                    100: "#dbeafe",
+                    200: "#bfdbfe",
+                    300: "#93c5fd",
+                    400: "#60a5fa",
+                    500: "#3b82f6",
+                    600: "#2563eb",
+                    700: "#1d4ed8",
+                    800: "#1e40af",
+                    900: "#1e3a8a",
+                    950: "#172554",
                 },
                 background: {
-                    light: 'rgb(var(--background-start-rgb))',
-                    dark: 'rgb(var(--background-end-rgb))',
+                    light: "rgb(var(--background-start-rgb))",
+                    dark: "rgb(var(--background-end-rgb))",
                 },
                 foreground: {
-                    DEFAULT: 'rgb(var(--foreground-rgb))',
+                    DEFAULT: "rgb(var(--foreground-rgb))",
                 },
                 accent: {
-                    blue: 'rgb(var(--accent-blue))',
-                    'blue-light': 'rgb(var(--accent-blue-light))',
-                },
-            },
-            typography: {
-                DEFAULT: {
-                    css: {
-                        "code::before": {
-                            content: '""',
-                        },
-                        "code::after": {
-                            content: '""',
-                        },
-                    },
-                },
-                quoteless: {
-                    css: {
-                        "blockquote p:first-of-type::before": {
-                            content: "none",
-                        },
-                        "blockquote p:first-of-type::after": {
-                            content: "none",
-                        },
-                    },
+                    blue: "rgb(var(--accent-blue))",
+                    "blue-light": "rgb(var(--accent-blue-light))",
                 },
             },
             fontFamily: {
@@ -188,8 +167,6 @@ const config: Config = {
         },
     },
     plugins: [
-        require("@tailwindcss/typography"),
-        require("tailwindcss-debug-screens"),
         heroui({
             themes: {
                 light: {

@@ -27,21 +27,29 @@ name: alexandredfm-dev
 services:
   # PostgreSQL Database
   database:
-    container_name: alexandredfm-postgis
     image: postgres:17
+    container_name: alexandredfm-portfolio-database-postgres
     restart: unless-stopped
-    platform: linux/amd64
     ports:
       - "5432:5432"
+    # Required when running on platform other than amd64, like Apple M1/M2:
+    platform: linux/amd64
+    volumes:
+      - alexandredfm-portfolio-db:/var/lib/postgresql/data
     env_file:
-      - ./.env/.env.postgres
+      - ./.env/.env.database.template
     networks:
       - alexandredfm-network
+    healthcheck:
+      test: [ "CMD", "pg_isready", "--host=localhost", "--username=${POSTGRES_USER}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # Redis Cache
   cache:
-    container_name: cache
     image: redis:8
+    container_name: alexandredfm-portfolio-redis-cache
     restart: unless-stopped
     ports:
         - 6379:6379
@@ -49,42 +57,54 @@ services:
         - database
     networks:
         - alexandredfm-network
+    healthcheck:
+      test: [ "CMD-SHELL", "[ $$(redis-cli ping) = 'PONG' ]" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   # Directus Backend
   backend:
-    container_name: backend
+    container_name: alexandredfm-portfolio-backend
     image: directus/directus:11.10.2
     restart: unless-stopped
+    depends_on:
+      database:
+        condition: service_healthy
+      cache:
+        condition: service_healthy
     ports:
         - 8055:8055
     volumes:
         - ./backend/uploads:/directus/uploads
         - ./backend/extensions:/directus/extensions
-    depends_on:
-        - cache
-        - database
     env_file:
-        - ./.env/.env.directus
+        - ./.env/.env.directus.template
     networks:
         - alexandredfm-network
 
   # Next Frontend
   frontend:
-    container_name: alexandredfm-frontend
-    image: node:22-alpine
+    container_name: alexandredfm-portfolio-frontend
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
     restart: unless-stopped
-    command: bash -c "yarn dev"
     working_dir: /usr/src/app
     ports:
       - "3000:3000"
     volumes:
       - ./:/usr/src/app
-      - ./node_modules:/usr/src/app/node_modules
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
     env_file:
-      - ./.env/.env.frontend
+      - ./.env/.env.frontend.template
     networks:
       - alexandredfm-network
 
 networks:
   alexandredfm-network:
     driver: bridge
+
+volumes:
+    alexandredfm-portfolio-db:

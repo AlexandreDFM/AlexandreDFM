@@ -26,20 +26,17 @@
 
 "use client";
 
-import {
-    motion,
-    useSpring,
-    useMotionTemplate,
-} from "framer-motion";
+import { motion, useSpring, useMotionTemplate } from "framer-motion";
 
-import { PropsWithChildren, useRef, useEffect } from "react";
+import { PropsWithChildren, useRef, useEffect, useMemo } from "react";
 
 export const Card: React.FC<PropsWithChildren> = ({ children }) => {
     const cardRef = useRef<HTMLDivElement>(null);
 
-    const rect = cardRef.current ? cardRef.current.getBoundingClientRect() : null;
-    const mouseX = useSpring(rect === null ? 0 : rect.width / 2, { stiffness: 500, damping: 100 });
-    const mouseY = useSpring(rect === null ? 0 : rect.height / 2, { stiffness: 500, damping: 100 });
+    // Optimize spring configuration
+    const springConfig = useMemo(() => ({ stiffness: 500, damping: 100 }), []);
+    const mouseX = useSpring(0, springConfig);
+    const mouseY = useSpring(0, springConfig);
 
     useEffect(() => {
         if (cardRef.current) {
@@ -65,9 +62,9 @@ export const Card: React.FC<PropsWithChildren> = ({ children }) => {
             className="group relative overflow-hidden rounded-xl border border-zinc-600 duration-700 hover:border-zinc-400/50 hover:bg-zinc-800/10 md:gap-8"
         >
             <div className="pointer-events-none">
-                <div className="absolute inset-0 z-0 transition duration-1000 [mask-image:linear-gradient(black,transparent)]" />
+                <div className="absolute inset-0 z-0 transition duration-1000 [mask:linear-gradient(black,transparent)]" />
                 <motion.div
-                    className="absolute inset-0 z-10 bg-gradient-to-br via-zinc-100/10 opacity-100 transition duration-1000 group-hover:opacity-50"
+                    className="absolute inset-0 z-10 bg-linear-to-br via-zinc-100/10 opacity-100 transition duration-1000 group-hover:opacity-50"
                     style={style}
                 />
                 <motion.div

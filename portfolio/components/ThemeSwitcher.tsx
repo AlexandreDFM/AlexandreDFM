@@ -27,13 +27,18 @@
 
 "use client";
 
-import { ChangeEvent } from "react";
 import { useTheme } from "next-themes";
 import { MoonIcon, SunIcon } from "lucide-react";
 import { Button, PressEvent } from "@heroui/react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 export const ThemeSwitcher = () => {
     const { theme, setTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const handleThemeChange = (
         e?:
@@ -42,17 +47,30 @@ export const ThemeSwitcher = () => {
             | React.KeyboardEvent
             | PressEvent,
     ) => {
-        // if (e && typeof (e as any).preventDefault === "function") {
-        //     (e as any).preventDefault();
-        // }
-        // if (e && typeof (e as any).stopPropagation === "function") {
-        //     (e as any).stopPropagation();
-        // }
+        if (e && typeof (e as any).preventDefault === "function")
+            (e as any).preventDefault();
+
+        if (e && typeof (e as any).stopPropagation === "function")
+            (e as any).stopPropagation();
 
         const newTheme = theme === "light" ? "dark" : "light";
 
         setTheme(newTheme);
     };
+
+    if (!mounted) {
+        return (
+            <Button
+                isIconOnly
+                aria-label="Change Theme"
+                variant="bordered"
+                radius="full"
+                disabled
+            >
+                <SunIcon size={22} />
+            </Button>
+        );
+    }
 
     return (
         <>

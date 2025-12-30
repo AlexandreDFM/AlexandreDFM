@@ -1,0 +1,195 @@
+/**
+ * File Name: globals.css
+ * Author: Alexandre Kévin DE FREITAS MARTINS
+ * Creation Date: 2024
+ * Description: globals.css
+ * Copyright (c) 2024 Tux Inc.
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the 'Software'), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ */
+
+@import "tailwindcss";
+
+@config "../tailwind.config.ts";
+
+@theme {
+    /* Custom animations */
+    --animate-fade-in: fade-in 3s ease-in-out forwards;
+    --animate-title: title 3s ease-out forwards;
+    --animate-fade-left: fade-left 3s ease-in-out forwards;
+    --animate-fade-right: fade-right 3s ease-in-out forwards;
+    --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    --animate-aurora: aurora 15s ease infinite;
+    --animate-floating: floating 3s ease-in-out infinite;
+    --animate-glow: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    75% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fade-left {
+    0% {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    30% {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fade-right {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    30% {
+        transform: translateX(0%);
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes title {
+    0% {
+        line-height: 0%;
+        letter-spacing: 0.25em;
+        opacity: 0;
+    }
+    25% {
+        line-height: 0%;
+        opacity: 0%;
+    }
+    80% {
+        opacity: 100%;
+    }
+    100% {
+        line-height: 100%;
+        opacity: 100%;
+    }
+}
+
+@keyframes aurora {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes floating {
+    0% {
+        transform: translateY(0px) scale(1);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translateY(-20px) scale(1.1);
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(0px) scale(1);
+        opacity: 0.3;
+    }
+}
+
+@keyframes glow {
+    0% {
+        opacity: 0.3;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+:root {
+    --navbar-size: 6rem;
+    --footer-size: 4rem;
+    --foreground-rgb: 41, 37, 36;
+    --background-start-rgb: 250, 245, 238;
+    --background-end-rgb: 245, 237, 227;
+    --background-gradient: linear-gradient(
+        to bottom right,
+        rgba(59, 130, 246, 0.05),
+        rgba(147, 197, 253, 0.1)
+    );
+    --accent-blue: 29, 78, 216;
+    --accent-blue-light: 59, 130, 246;
+}
+
+.dark {
+    --navbar-size: 6rem;
+    --footer-size: 4rem;
+    --foreground-rgb: 248, 250, 252;
+    --background-start-rgb: 15, 23, 42;
+    --background-end-rgb: 2, 6, 23;
+    --background-gradient: linear-gradient(
+        to bottom right,
+        rgba(30, 58, 138, 0.2),
+        rgba(59, 130, 246, 0.1)
+    );
+    --accent-blue: 59, 130, 246;
+    --accent-blue-light: 147, 197, 253;
+}
+
+body {
+    color: rgb(var(--foreground-rgb));
+    background: var(--background-gradient),
+        linear-gradient(
+            to bottom,
+            rgba(var(--background-start-rgb), 1),
+            rgba(var(--background-end-rgb), 1)
+        );
+    transition:
+        background-color 0.3s ease,
+        color 0.3s ease;
+    /* Enable GPU acceleration for smoother performance */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Performance optimization: GPU acceleration for animated elements */
+.animate-floating,
+.animate-aurora,
+.animate-pulse-slow {
+    will-change: transform, opacity;
+}
+
+/* Optimize framer-motion animations */
+[data-framer-motion] {
+    will-change: transform;
+}
+
+.data-\[loaded\=true\]\:opacity-100 {
+    opacity: 1;
+}

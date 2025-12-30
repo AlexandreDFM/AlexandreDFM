@@ -35,7 +35,7 @@ import { useTranslation } from "../hooks/useTranslation";
 import React, { useEffect, useRef, useState } from "react";
 
 export const Navbar: React.FC = () => {
-    const { t } = useTranslation();
+    const { t, locale } = useTranslation();
     const ref = useRef<HTMLElement>(null);
     const [isIntersecting, setIntersecting] = useState(true);
 
@@ -52,10 +52,10 @@ export const Navbar: React.FC = () => {
     return (
         <header ref={ref}>
             <div
-                className={`fixed inset-x-0 top-0 z-50 flex h-[var(--navbar-size)] flex-row-reverse items-center justify-center border-b px-24 backdrop-blur duration-200 ${
+                className={`fixed inset-x-0 top-0 z-50 flex h-(--navbar-size) flex-row-reverse items-center justify-center border-b px-24 backdrop-blur duration-200 ${
                     isIntersecting
                         ? "border-transparent bg-zinc-900/0"
-                        : "bg-zinc-900/500 border-zinc-800"
+                        : "border-zinc-800 bg-zinc-900/500"
                 }`}
             >
                 <nav
@@ -64,22 +64,36 @@ export const Navbar: React.FC = () => {
                     aria-label="Main navigation"
                 >
                     <Link
-                        href="/about"
-                        className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                        href={`/${locale}/about`}
+                        className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                         aria-label="About page"
                     >
                         {t("common.about")}
                     </Link>
                     <Link
-                        href="/projects"
-                        className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                        href={`/${locale}/projects`}
+                        className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                         aria-label="Projects page"
                     >
                         {t("common.projects")}
                     </Link>
                     <Link
-                        href="/contact"
-                        className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                        href={`/${locale}/blog`}
+                        className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:ring-2 focus:ring-offset-2 focus:outline-none"
+                        aria-label="Blog page"
+                    >
+                        {t("common.blog") || "Blog"}
+                    </Link>
+                    <Link
+                        href={`/${locale}/gallery`}
+                        className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:ring-2 focus:ring-offset-2 focus:outline-none"
+                        aria-label="Gallery page"
+                    >
+                        {t("common.gallery") || "Gallery"}
+                    </Link>
+                    <Link
+                        href={`/${locale}/contact`}
+                        className="hover:text-primary focus:text-primary focus:ring-primary text-sm transition-all duration-500 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                         aria-label="Contact page"
                     >
                         {t("common.contact")}
@@ -88,8 +102,8 @@ export const Navbar: React.FC = () => {
                     <LanguageSwitcher />
                 </nav>
                 <Link
-                    href="/"
-                    className="focus:ring-primary rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                    href={`/${locale}`}
+                    className="focus:ring-primary rounded-md p-1 focus:ring-2 focus:ring-offset-2 focus:outline-none"
                     aria-label="Go back to home page"
                 >
                     <ArrowLeft className="h-6 w-6" aria-hidden="true" />
