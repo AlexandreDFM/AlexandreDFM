@@ -1,8 +1,8 @@
 /**
  * File Name: route.ts
  * Author: Alexandre Kévin DE FREITAS MARTINS
- * Creation Date: 2025
- * Description: API route for fetching projects from Directus
+ * Creation Date: 30/12/2025
+ * Description: API route for individual project operations
  * Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
  * Version: 1.0.0
  *
@@ -25,41 +25,47 @@
  * THE SOFTWARE.
  */
 
-import { getProjects } from "@/util/directus";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { createItem, uploadFiles } from "@directus/sdk";
+import { getProjectBySlug } from "@/util/directus";
 
-export async function GET(request: NextRequest) {
+interface RouteParams {
+    params: Promise<{
+        id: string;
+    }>;
+}
+
+export async function GET(request: NextRequest, { params }: RouteParams) {
     try {
+        const { id } = await params;
         const { searchParams } = new URL(request.url);
         const language = (searchParams.get("lang") as "en" | "fr") || "en";
-        const featured = searchParams.get("featured") === "true";
 
-        const projects = await getProjects(language, featured);
+        const project = await getProjectBySlug(id, language);
+
+        if (!project) {
+            return NextResponse.json(
+                { error: "Project not found" },
+                { status: 404 },
+            );
+        }
 
         return NextResponse.json({
             success: true,
-            data: projects,
-            count: projects.length,
+            data: project,
         });
     } catch (error) {
-        console.error("Error in projects API:", error);
-
+        console.error("Error fetching project:", error);
         return NextResponse.json(
-            {
-                success: false,
-                error: "Failed to fetch projects",
-                data: [],
-                count: 0,
-            },
+            { error: "Failed to fetch project" },
             { status: 500 },
         );
     }
 }
 
-export async function POST(request: NextRequest) {
+export async function PATCH(request: NextRequest, { params }: RouteParams) {
     try {
+        const { id } = await params;
         const cookieStore = await cookies();
         const token = cookieStore.get("directus_admin_token");
 
@@ -136,9 +142,9 @@ export async function POST(request: NextRequest) {
         };
 
         const response = await fetch(
-            `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/projects`,
+            `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/projects/${id}`,
             {
-                method: "POST",
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token.value}`,
@@ -150,7 +156,7 @@ export async function POST(request: NextRequest) {
         if (!response.ok) {
             const errorData = await response.json();
             return NextResponse.json(
-                { error: errorData.errors?.[0]?.message || "Failed to create project" },
+                { error: errorData.errors?.[0]?.message || "Failed to update project" },
                 { status: response.status },
             );
         }
@@ -158,9 +164,50 @@ export async function POST(request: NextRequest) {
         const data = await response.json();
         return NextResponse.json({ success: true, data: data.data });
     } catch (error) {
-        console.error("Error creating project:", error);
+        console.error("Error updating project:", error);
         return NextResponse.json(
-            { error: "Failed to create project" },
+            { error: "Failed to update project" },
+            { status: 500 },
+        );
+    }
+}
+
+export async function DELETE(request: NextRequest, { params }: RouteParams) {
+    try {
+        const { id } = await params;
+        const cookieStore = await cookies();
+        const token = cookieStore.get("directus_admin_token");
+
+        if (!token) {
+            return NextResponse.json(
+                { error: "Unauthorized" },
+                { status: 401 },
+            );
+        }
+
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/projects/${id}`,
+            {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token.value}`,
+                },
+            },
+        );
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            return NextResponse.json(
+                { error: errorData.errors?.[0]?.message || "Failed to delete project" },
+                { status: response.status },
+            );
+        }
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        console.error("Error deleting project:", error);
+        return NextResponse.json(
+            { error: "Failed to delete project" },
             { status: 500 },
         );
     }
