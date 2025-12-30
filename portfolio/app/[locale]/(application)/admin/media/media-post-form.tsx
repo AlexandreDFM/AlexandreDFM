@@ -52,9 +52,7 @@ interface FormData {
 export default function MediaPostForm({ id }: MediaPostFormProps) {
     const router = useRouter();
     const { locale } = useTranslation();
-    const { post: existingPost, loading: loadingPost } = id
-        ? useMediaPost(id, locale as "en" | "fr")
-        : { post: null, loading: false };
+    const { post: existingPost, loading: loadingPost } = useMediaPost(id || "", locale as "en" | "fr");
 
     const [formData, setFormData] = useState<FormData>({
         title_en: "",

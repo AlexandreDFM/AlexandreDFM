@@ -27,7 +27,6 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
-import { getProjectBySlug } from "@/util/directus";
 
 interface RouteParams {
     params: Promise<{
@@ -41,18 +40,45 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         const { searchParams } = new URL(request.url);
         const language = (searchParams.get("lang") as "en" | "fr") || "en";
 
-        const project = await getProjectBySlug(id, language);
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/projects/${id}`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
 
-        if (!project) {
+        if (!response.ok) {
             return NextResponse.json(
                 { error: "Project not found" },
                 { status: 404 },
             );
         }
 
+        const data = await response.json();
+        const project = data.data;
+
+        // Transform to match expected format
+        const transformedProject = {
+            id: project.id,
+            title: language === "fr" && project.title_fr ? project.title_fr : project.title,
+            description: language === "fr" && project.description_fr ? project.description_fr : project.description,
+            date: project.date,
+            github: project.github,
+            imageUrl: project.image ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${project.image}` : null,
+            role: language === "fr" && project.role_fr ? project.role_fr : project.role,
+            duration: language === "fr" && project.duration_fr ? project.duration_fr : project.duration,
+            skills: language === "fr" && project.skills_fr ? project.skills_fr : project.skills,
+            technologies: language === "fr" && project.technologies_fr ? project.technologies_fr : project.technologies,
+            achievements: language === "fr" && project.achievements_fr ? project.achievements_fr : project.achievements,
+            category: project.category,
+            is_featured: project.is_featured,
+        };
+
         return NextResponse.json({
             success: true,
-            data: project,
+            data: transformedProject,
         });
     } catch (error) {
         console.error("Error fetching project:", error);

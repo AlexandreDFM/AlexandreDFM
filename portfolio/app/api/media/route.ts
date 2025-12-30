@@ -96,7 +96,7 @@ export async function POST(request: NextRequest) {
                 caption_en: formData.get("caption_en") as string,
                 caption_fr: formData.get("caption_fr") as string,
                 media_type: formData.get("media_type") as "image" | "video",
-                media_file: mediaId,
+                media: mediaId,
                 tags: tags,
                 likes: 0,
             }),

@@ -55,9 +55,7 @@ interface FormData {
 
 export default function BlogPostForm({ slug }: BlogPostFormProps) {
     const router = useRouter();
-    const { post: existingPost, loading: loadingPost } = slug
-        ? useBlogPost(slug, "en")
-        : { post: null, loading: false };
+    const { post: existingPost, loading: loadingPost } = useBlogPost(slug || "", "en");
 
     const [formData, setFormData] = useState<FormData>({
         title_en: "",

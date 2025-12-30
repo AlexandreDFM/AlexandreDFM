@@ -80,7 +80,7 @@ export default function ProjectsList() {
     if (error) {
         return (
             <div className="rounded-lg bg-red-500/10 px-4 py-3 text-red-500">
-                Error loading projects: {error.message}
+                Error loading projects: {error}
             </div>
         );
     }

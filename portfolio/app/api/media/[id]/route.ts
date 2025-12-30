@@ -108,7 +108,7 @@ export async function PATCH(
         };
 
         if (mediaId) {
-            updateData.media_file = mediaId;
+            updateData.media = mediaId;
         }
 
         const updatedPost = await directus.request(
