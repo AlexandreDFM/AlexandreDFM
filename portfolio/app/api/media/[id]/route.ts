@@ -27,6 +27,9 @@
 
 import { getMediaPostById } from "@/util/directus";
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { getDirectusClient } from "@/util/directus";
+import { updateItem, deleteItem, uploadFiles } from "@directus/sdk";
 
 export async function GET(
     request: NextRequest,
@@ -51,6 +54,105 @@ export async function GET(
         console.error("Error in media post API route:", error);
         return NextResponse.json(
             { error: "Failed to fetch media post" },
+            { status: 500 },
+        );
+    }
+}
+
+export async function PATCH(
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> },
+) {
+    try {
+        const { id } = await params;
+
+        // Get user's auth token from cookies
+        const cookieStore = await cookies();
+        const authToken = cookieStore.get("directus_admin_token")?.value;
+
+        if (!authToken) {
+            return NextResponse.json(
+                { error: "Unauthorized" },
+                { status: 401 },
+            );
+        }
+
+        const formData = await request.formData();
+        const directus = await getDirectusClient(authToken);
+
+        // Handle media file upload if provided
+        let mediaId: string | undefined;
+        const mediaFile = formData.get("media_file") as File | null;
+
+        if (mediaFile && mediaFile.size > 0) {
+            const uploadFormData = new FormData();
+            uploadFormData.append("file", mediaFile);
+
+            const uploadResult = await directus.request(
+                uploadFiles(uploadFormData as any),
+            );
+            mediaId = uploadResult.id;
+        }
+
+        // Parse tags
+        const tags = JSON.parse(formData.get("tags") as string);
+
+        // Update media post
+        const updateData: any = {
+            title_en: formData.get("title_en"),
+            title_fr: formData.get("title_fr"),
+            caption_en: formData.get("caption_en"),
+            caption_fr: formData.get("caption_fr"),
+            media_type: formData.get("media_type"),
+            tags: tags,
+        };
+
+        if (mediaId) {
+            updateData.media_file = mediaId;
+        }
+
+        const updatedPost = await directus.request(
+            updateItem("media_posts", id, updateData),
+        );
+
+        return NextResponse.json(updatedPost);
+    } catch (error) {
+        console.error("Error updating media post:", error);
+        return NextResponse.json(
+            { error: "Failed to update media post" },
+            { status: 500 },
+        );
+    }
+}
+
+export async function DELETE(
+    request: NextRequest,
+    { params }: { params: Promise<{ id: string }> },
+) {
+    try {
+        const { id } = await params;
+
+        // Get user's auth token from cookies
+        const cookieStore = await cookies();
+        const authToken = cookieStore.get("directus_admin_token")?.value;
+
+        if (!authToken) {
+            return NextResponse.json(
+                { error: "Unauthorized" },
+                { status: 401 },
+            );
+        }
+
+        const directus = await getDirectusClient(authToken);
+
+        // Delete the media post
+        await directus.request(deleteItem("media_posts", id));
+
+        return NextResponse.json({ success: true });
+    } catch (error) {
+        console.error("Error deleting media post:", error);
+        return NextResponse.json(
+            { error: "Failed to delete media post" },
             { status: 500 },
         );
     }

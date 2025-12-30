@@ -27,6 +27,9 @@
 
 import { getMediaPosts } from "@/util/directus";
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from "next/headers";
+import { getDirectusClient } from "@/util/directus";
+import { createItem, uploadFiles } from "@directus/sdk";
 
 export async function GET(request: NextRequest) {
     try {
@@ -43,6 +46,67 @@ export async function GET(request: NextRequest) {
         console.error("Error in media API route:", error);
         return NextResponse.json(
             { error: "Failed to fetch media posts" },
+            { status: 500 },
+        );
+    }
+}
+
+export async function POST(request: NextRequest) {
+    try {
+        // Get user's auth token from cookies
+        const cookieStore = await cookies();
+        const authToken = cookieStore.get("directus_admin_token")?.value;
+
+        if (!authToken) {
+            return NextResponse.json(
+                { error: "Unauthorized" },
+                { status: 401 },
+            );
+        }
+
+        const formData = await request.formData();
+        const directus = await getDirectusClient(authToken);
+
+        // Handle media file upload
+        const mediaFile = formData.get("media_file") as File | null;
+
+        if (!mediaFile) {
+            return NextResponse.json(
+                { error: "Media file is required" },
+                { status: 400 },
+            );
+        }
+
+        const uploadFormData = new FormData();
+        uploadFormData.append("file", mediaFile);
+
+        const uploadResult = await directus.request(
+            uploadFiles(uploadFormData as any),
+        );
+        const mediaId = uploadResult.id;
+
+        // Parse tags
+        const tags = JSON.parse(formData.get("tags") as string);
+
+        // Create media post
+        const newPost = await directus.request(
+            createItem("media_posts", {
+                title_en: formData.get("title_en") as string,
+                title_fr: formData.get("title_fr") as string,
+                caption_en: formData.get("caption_en") as string,
+                caption_fr: formData.get("caption_fr") as string,
+                media_type: formData.get("media_type") as "image" | "video",
+                media_file: mediaId,
+                tags: tags,
+                likes: 0,
+            }),
+        );
+
+        return NextResponse.json(newPost, { status: 201 });
+    } catch (error) {
+        console.error("Error creating media post:", error);
+        return NextResponse.json(
+            { error: "Failed to create media post" },
             { status: 500 },
         );
     }
