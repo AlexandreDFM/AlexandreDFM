@@ -84,46 +84,53 @@ export async function getProjects(
         console.log("Fetched projects:", projects.length, "projects found.");
 
         // Transform projects to match the expected format with language-specific fields
-        return projects.map((project: IProjectCollection) => (
-            console.log("Processing project:", project.category, project.title),
-            {
-            id: project.id,
-            title:
-                language === "fr" && project.title_fr
-                    ? project.title_fr
-                    : project.title,
-            description:
-                language === "fr" && project.description_fr
-                    ? project.description_fr
-                    : project.description,
-            date: project.date,
-            github: project.github,
-            imageUrl: project.image
-                ? `/api/projects/image/${project.image}`
-                : null,
-            role:
-                language === "fr" && project.role_fr
-                    ? project.role_fr
-                    : project.role,
-            duration:
-                language === "fr" && project.duration_fr
-                    ? project.duration_fr
-                    : project.duration,
-            skills:
-                language === "fr" && project.skills_fr
-                    ? project.skills_fr
-                    : project.skills,
-            technologies:
-                language === "fr" && project.technologies_fr
-                    ? project.technologies_fr
-                    : project.technologies,
-            achievements:
-                language === "fr" && project.achievements_fr
-                    ? project.achievements_fr
-                    : project.achievements,
-            category: project.category,
-            is_featured: project.is_featured,
-        }));
+        return projects.map(
+            (project: IProjectCollection) => (
+                console.log(
+                    "Processing project:",
+                    project.category,
+                    project.title,
+                ),
+                {
+                    id: project.id,
+                    title:
+                        language === "fr" && project.title_fr
+                            ? project.title_fr
+                            : project.title,
+                    description:
+                        language === "fr" && project.description_fr
+                            ? project.description_fr
+                            : project.description,
+                    date: project.date,
+                    github: project.github,
+                    imageUrl: project.image
+                        ? `/api/projects/image/${project.image}`
+                        : null,
+                    role:
+                        language === "fr" && project.role_fr
+                            ? project.role_fr
+                            : project.role,
+                    duration:
+                        language === "fr" && project.duration_fr
+                            ? project.duration_fr
+                            : project.duration,
+                    skills:
+                        language === "fr" && project.skills_fr
+                            ? project.skills_fr
+                            : project.skills,
+                    technologies:
+                        language === "fr" && project.technologies_fr
+                            ? project.technologies_fr
+                            : project.technologies,
+                    achievements:
+                        language === "fr" && project.achievements_fr
+                            ? project.achievements_fr
+                            : project.achievements,
+                    category: project.category,
+                    is_featured: project.is_featured,
+                }
+            ),
+        );
     } catch (error) {
         console.error("Error fetching projects from Directus:", error);
 
@@ -259,9 +266,7 @@ export async function getBlogPosts(
         return posts.map((post: IBlogPostCollection) => ({
             id: post.id,
             title:
-                language === "fr" && post.title_fr
-                    ? post.title_fr
-                    : post.title,
+                language === "fr" && post.title_fr ? post.title_fr : post.title,
             slug: post.slug,
             excerpt:
                 language === "fr" && post.excerpt_fr
@@ -275,8 +280,7 @@ export async function getBlogPosts(
                 ? `/api/blog/image/${post.cover_image}`
                 : null,
             readingTime: post.reading_time || 5,
-            tags:
-                language === "fr" && post.tags_fr ? post.tags_fr : post.tags,
+            tags: language === "fr" && post.tags_fr ? post.tags_fr : post.tags,
             category:
                 language === "fr" && post.category_fr
                     ? post.category_fr
@@ -292,7 +296,10 @@ export async function getBlogPosts(
 }
 
 // Helper function to get a single blog post by slug
-export async function getBlogPostBySlug(slug: string, language: "en" | "fr" = "en") {
+export async function getBlogPostBySlug(
+    slug: string,
+    language: "en" | "fr" = "en",
+) {
     try {
         const posts = await directus.request(
             readItems("blog_posts", {
@@ -310,9 +317,7 @@ export async function getBlogPostBySlug(slug: string, language: "en" | "fr" = "e
         return {
             id: post.id,
             title:
-                language === "fr" && post.title_fr
-                    ? post.title_fr
-                    : post.title,
+                language === "fr" && post.title_fr ? post.title_fr : post.title,
             slug: post.slug,
             excerpt:
                 language === "fr" && post.excerpt_fr
@@ -326,8 +331,7 @@ export async function getBlogPostBySlug(slug: string, language: "en" | "fr" = "e
                 ? `/api/blog/image/${post.cover_image}`
                 : null,
             readingTime: post.reading_time || 5,
-            tags:
-                language === "fr" && post.tags_fr ? post.tags_fr : post.tags,
+            tags: language === "fr" && post.tags_fr ? post.tags_fr : post.tags,
             category:
                 language === "fr" && post.category_fr
                     ? post.category_fr
@@ -363,9 +367,7 @@ export async function getMediaPosts(
         return posts.map((post: IMediaPostCollection) => ({
             id: post.id,
             title:
-                language === "fr" && post.title_fr
-                    ? post.title_fr
-                    : post.title,
+                language === "fr" && post.title_fr ? post.title_fr : post.title,
             caption:
                 language === "fr" && post.caption_fr
                     ? post.caption_fr
@@ -375,8 +377,7 @@ export async function getMediaPosts(
             thumbnailUrl: post.thumbnail
                 ? `/api/media/file/${post.thumbnail}`
                 : null,
-            tags:
-                language === "fr" && post.tags_fr ? post.tags_fr : post.tags,
+            tags: language === "fr" && post.tags_fr ? post.tags_fr : post.tags,
             likes: post.likes || 0,
             date_created: post.date_created,
         }));
@@ -387,7 +388,10 @@ export async function getMediaPosts(
 }
 
 // Helper function to get a single media post by ID
-export async function getMediaPostById(id: string, language: "en" | "fr" = "en") {
+export async function getMediaPostById(
+    id: string,
+    language: "en" | "fr" = "en",
+) {
     try {
         const post = await directus.request(
             readItems("media_posts", {

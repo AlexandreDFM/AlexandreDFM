@@ -30,18 +30,28 @@
 import { useMedia } from "@/hooks/useMedia";
 import Link from "next/link";
 import Image from "next/image";
-import { Edit, Trash2, Eye, Heart, Video, Image as ImageIcon } from "lucide-react";
+import {
+    Edit,
+    Trash2,
+    Eye,
+    Heart,
+    Video,
+    Image as ImageIcon,
+} from "lucide-react";
 import { useState } from "react";
 import { Card } from "@/components/card";
 import { useTranslation } from "@/hooks/useTranslation";
 
 export default function MediaPostsList() {
     const { locale } = useTranslation();
-    const { posts, loading, error } = useMedia({ language: locale as "en" | "fr" });
+    const { posts, loading, error } = useMedia({
+        language: locale as "en" | "fr",
+    });
     const [deleting, setDeleting] = useState<string | null>(null);
 
     const handleDelete = async (id: string) => {
-        if (!confirm("Are you sure you want to delete this media post?")) return;
+        if (!confirm("Are you sure you want to delete this media post?"))
+            return;
 
         setDeleting(id);
         try {
@@ -95,7 +105,7 @@ export default function MediaPostsList() {
             {posts.map((post) => (
                 <Card key={post.id}>
                     <div className="space-y-3 p-4">
-                        <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-default-100">
+                        <div className="bg-default-100 relative aspect-square w-full overflow-hidden rounded-lg">
                             {post.mediaType === "image" ? (
                                 <Image
                                     src={post.mediaUrl}
@@ -120,19 +130,23 @@ export default function MediaPostsList() {
                         </div>
 
                         <div className="space-y-2">
-                            <h3 className="font-semibold line-clamp-1">{post.title}</h3>
-                            <p className="text-sm text-default-400 line-clamp-2">
+                            <h3 className="line-clamp-1 font-semibold">
+                                {post.title}
+                            </h3>
+                            <p className="text-default-400 line-clamp-2 text-sm">
                                 {post.caption}
                             </p>
 
-                            <div className="flex items-center justify-between text-xs text-default-400">
+                            <div className="text-default-400 flex items-center justify-between text-xs">
                                 <div className="flex items-center gap-1">
                                     <Heart className="h-3 w-3" />
                                     <span>{post.likes || 0}</span>
                                 </div>
                                 {post.date_created && (
                                     <span>
-                                        {new Date(post.date_created).toLocaleDateString()}
+                                        {new Date(
+                                            post.date_created,
+                                        ).toLocaleDateString()}
                                     </span>
                                 )}
                             </div>
@@ -142,7 +156,7 @@ export default function MediaPostsList() {
                                     {post.tags.slice(0, 3).map((tag) => (
                                         <span
                                             key={tag}
-                                            className="rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary"
+                                            className="bg-primary/10 text-primary rounded-full px-2 py-0.5 text-xs"
                                         >
                                             {tag}
                                         </span>
@@ -154,14 +168,14 @@ export default function MediaPostsList() {
                                 <Link
                                     href={`/${locale}/gallery`}
                                     target="_blank"
-                                    className="flex-1 rounded-lg bg-default-100 p-2 text-center text-sm text-default-600 transition-colors hover:bg-default-200"
+                                    className="bg-default-100 text-default-600 hover:bg-default-200 flex-1 rounded-lg p-2 text-center text-sm transition-colors"
                                     title="View in gallery"
                                 >
                                     <Eye className="mx-auto h-4 w-4" />
                                 </Link>
                                 <Link
                                     href={`/${locale}/admin/media/edit/${post.id}`}
-                                    className="flex-1 rounded-lg bg-default-100 p-2 text-center text-sm text-default-600 transition-colors hover:bg-default-200"
+                                    className="bg-default-100 text-default-600 hover:bg-default-200 flex-1 rounded-lg p-2 text-center text-sm transition-colors"
                                     title="Edit"
                                 >
                                     <Edit className="mx-auto h-4 w-4" />

@@ -60,13 +60,13 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
                 className="mx-auto max-w-4xl space-y-8 md:space-y-12"
                 role="main"
             >
-                <div className="text-center space-y-4">
+                <div className="space-y-4 text-center">
                     <p className="text-red-500">
                         {error?.message || "Blog post not found"}
                     </p>
                     <Link
                         href={`/${locale}/blog`}
-                        className="inline-flex items-center gap-2 text-primary hover:underline"
+                        className="text-primary inline-flex items-center gap-2 hover:underline"
                     >
                         <ArrowLeft className="h-4 w-4" />
                         Back to Blog
@@ -81,7 +81,7 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
             {/* Back button */}
             <Link
                 href={`/${locale}/blog`}
-                className="inline-flex items-center gap-2 text-sm text-default-400 hover:text-primary transition-colors"
+                className="text-default-400 hover:text-primary inline-flex items-center gap-2 text-sm transition-colors"
             >
                 <ArrowLeft className="h-4 w-4" />
                 {t("blog.backToBlog") || "Back to Blog"}
@@ -94,7 +94,7 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
                         {post.title}
                     </h1>
 
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-default-400">
+                    <div className="text-default-400 flex flex-wrap items-center gap-4 text-sm">
                         <span className="flex items-center gap-1">
                             <Clock className="h-4 w-4" />
                             {post.readingTime} min read
@@ -113,7 +113,7 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
                             </span>
                         )}
                         {post.category && (
-                            <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                            <span className="bg-primary/10 text-primary rounded-full px-3 py-1 text-xs font-medium">
                                 {post.category}
                             </span>
                         )}
@@ -124,7 +124,7 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
                             {post.tags.map((tag) => (
                                 <span
                                     key={tag}
-                                    className="inline-flex items-center gap-1 rounded-full border border-default-200 px-3 py-1 text-xs font-medium"
+                                    className="border-default-200 inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-medium"
                                 >
                                     <Tag className="h-3 w-3" />
                                     {tag}
@@ -149,34 +149,23 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
 
                 {/* Article Content */}
                 <div
-                    className="prose prose-invert prose-lg max-w-none 
-                        prose-headings:font-bold prose-headings:tracking-tight
-                        prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl
-                        prose-p:text-default-300 prose-p:leading-relaxed
-                        prose-a:text-primary prose-a:no-underline hover:prose-a:underline
-                        prose-strong:text-default-100 prose-strong:font-semibold
-                        prose-code:text-primary prose-code:bg-default-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded
-                        prose-pre:bg-default-100 prose-pre:border prose-pre:border-default-200
-                        prose-blockquote:border-l-primary prose-blockquote:text-default-300
-                        prose-ul:text-default-300 prose-ol:text-default-300
-                        prose-li:text-default-300
-                        prose-img:rounded-lg prose-img:shadow-lg"
+                    className="prose prose-invert prose-lg prose-headings:font-bold prose-headings:tracking-tight prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl prose-p:text-default-300 prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-default-100 prose-strong:font-semibold prose-code:text-primary prose-code:bg-default-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-default-100 prose-pre:border prose-pre:border-default-200 prose-blockquote:border-l-primary prose-blockquote:text-default-300 prose-ul:text-default-300 prose-ol:text-default-300 prose-li:text-default-300 prose-img:rounded-lg prose-img:shadow-lg max-w-none"
                     dangerouslySetInnerHTML={{ __html: post.content }}
                 />
 
                 {/* Article Footer */}
-                <footer className="mt-12 pt-6 border-t border-default-200">
+                <footer className="border-default-200 mt-12 border-t pt-6">
                     <div className="flex items-center justify-between">
                         <Link
                             href={`/${locale}/blog`}
-                            className="inline-flex items-center gap-2 text-primary hover:underline"
+                            className="text-primary inline-flex items-center gap-2 hover:underline"
                         >
                             <ArrowLeft className="h-4 w-4" />
                             {t("blog.backToBlog") || "Back to Blog"}
                         </Link>
                         {post.date_updated &&
                             post.date_updated !== post.date_created && (
-                                <p className="text-sm text-default-400">
+                                <p className="text-default-400 text-sm">
                                     {t("blog.lastUpdated") || "Last updated"}:{" "}
                                     {new Date(
                                         post.date_updated,

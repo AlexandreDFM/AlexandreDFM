@@ -73,7 +73,7 @@ export default function LoginForm() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-3 text-default-900 placeholder-default-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    className="border-default-200 bg-default-100 text-default-900 placeholder-default-400 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-3 focus:ring-2 focus:outline-none"
                     placeholder="Enter your Directus email"
                     disabled={loading}
                 />
@@ -90,7 +90,7 @@ export default function LoginForm() {
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-3 text-default-900 placeholder-default-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    className="border-default-200 bg-default-100 text-default-900 placeholder-default-400 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-3 focus:ring-2 focus:outline-none"
                     placeholder="Enter your Directus password"
                     disabled={loading}
                 />
@@ -105,7 +105,7 @@ export default function LoginForm() {
             <button
                 type="submit"
                 disabled={loading}
-                className="w-full rounded-lg bg-primary px-4 py-3 font-medium transition-colors hover:bg-primary/90 disabled:cursor-not-allowed disabled:opacity-50"
+                className="bg-primary hover:bg-primary/90 w-full rounded-lg px-4 py-3 font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50"
             >
                 {loading ? "Signing in..." : "Sign in with Directus"}
             </button>

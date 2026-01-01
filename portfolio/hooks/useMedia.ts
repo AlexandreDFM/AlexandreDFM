@@ -48,9 +48,7 @@ export function useMedia(options: UseMediaOptions = {}) {
                     ...(limit && { limit: limit.toString() }),
                 });
 
-                const response = await fetch(
-                    `/api/media?${params.toString()}`,
-                );
+                const response = await fetch(`/api/media?${params.toString()}`);
 
                 if (!response.ok) {
                     throw new Error("Failed to fetch media posts");

@@ -95,7 +95,7 @@ export default function ProjectForm({ id }: ProjectFormProps) {
             if (response.ok) {
                 const data = await response.json();
                 const project = data.data;
-                
+
                 setFormData({
                     title_en: project.title || "",
                     title_fr: project.title || "",
@@ -125,7 +125,7 @@ export default function ProjectForm({ id }: ProjectFormProps) {
     };
 
     const handleInputChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     ) => {
         const { name, value, type } = e.target;
         setFormData((prev) => ({
@@ -137,7 +137,9 @@ export default function ProjectForm({ id }: ProjectFormProps) {
         }));
     };
 
-    const handleCategoryChange = (cat: "professional" | "personal" | "academic") => {
+    const handleCategoryChange = (
+        cat: "professional" | "personal" | "academic",
+    ) => {
         setFormData((prev) => ({
             ...prev,
             category: prev.category.includes(cat)
@@ -168,12 +170,15 @@ export default function ProjectForm({ id }: ProjectFormProps) {
             data.append("title_en", formData.title_en);
             data.append("title_fr", formData.title_fr || formData.title_en);
             data.append("description_en", formData.description_en);
-            data.append("description_fr", formData.description_fr || formData.description_en);
+            data.append(
+                "description_fr",
+                formData.description_fr || formData.description_en,
+            );
             data.append("role", formData.role);
             data.append("duration", formData.duration);
             data.append("date", formData.date);
             data.append("github", formData.github);
-            
+
             const skillsArray = formData.skills
                 .split(",")
                 .map((s) => s.trim())
@@ -240,7 +245,7 @@ export default function ProjectForm({ id }: ProjectFormProps) {
 
             {/* Language Tabs */}
             <Card>
-                <div className="border-b border-default-200">
+                <div className="border-default-200 border-b">
                     <div className="flex gap-1 p-2">
                         <button
                             type="button"
@@ -283,7 +288,7 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                             value={formData[`title_${activeTab}`]}
                             onChange={handleInputChange}
                             required
-                            className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                             placeholder="Enter project title"
                         />
                     </div>
@@ -303,7 +308,7 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                             onChange={handleInputChange}
                             required
                             rows={6}
-                            className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                             placeholder="Describe the project"
                         />
                     </div>
@@ -318,7 +323,10 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                     <div className="grid gap-4 md:grid-cols-2">
                         {/* Role */}
                         <div>
-                            <label htmlFor="role" className="mb-2 block text-sm font-medium">
+                            <label
+                                htmlFor="role"
+                                className="mb-2 block text-sm font-medium"
+                            >
                                 Your Role
                             </label>
                             <input
@@ -327,14 +335,17 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                                 name="role"
                                 value={formData.role}
                                 onChange={handleInputChange}
-                                className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                                className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                                 placeholder="e.g., Full Stack Developer"
                             />
                         </div>
 
                         {/* Duration */}
                         <div>
-                            <label htmlFor="duration" className="mb-2 block text-sm font-medium">
+                            <label
+                                htmlFor="duration"
+                                className="mb-2 block text-sm font-medium"
+                            >
                                 Duration
                             </label>
                             <input
@@ -343,14 +354,17 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                                 name="duration"
                                 value={formData.duration}
                                 onChange={handleInputChange}
-                                className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                                className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                                 placeholder="e.g., 6 months"
                             />
                         </div>
 
                         {/* Date */}
                         <div>
-                            <label htmlFor="date" className="mb-2 block text-sm font-medium">
+                            <label
+                                htmlFor="date"
+                                className="mb-2 block text-sm font-medium"
+                            >
                                 Date
                             </label>
                             <input
@@ -359,13 +373,16 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                                 name="date"
                                 value={formData.date}
                                 onChange={handleInputChange}
-                                className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                                className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                             />
                         </div>
 
                         {/* GitHub */}
                         <div>
-                            <label htmlFor="github" className="mb-2 block text-sm font-medium">
+                            <label
+                                htmlFor="github"
+                                className="mb-2 block text-sm font-medium"
+                            >
                                 GitHub URL
                             </label>
                             <input
@@ -374,7 +391,7 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                                 name="github"
                                 value={formData.github}
                                 onChange={handleInputChange}
-                                className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                                className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                                 placeholder="https://github.com/..."
                             />
                         </div>
@@ -386,7 +403,13 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                             Category *
                         </label>
                         <div className="flex flex-wrap gap-2">
-                            {(["professional", "personal", "academic"] as const).map((cat) => (
+                            {(
+                                [
+                                    "professional",
+                                    "personal",
+                                    "academic",
+                                ] as const
+                            ).map((cat) => (
                                 <button
                                     key={cat}
                                     type="button"
@@ -405,7 +428,10 @@ export default function ProjectForm({ id }: ProjectFormProps) {
 
                     {/* Technologies */}
                     <div>
-                        <label htmlFor="technologies" className="mb-2 block text-sm font-medium">
+                        <label
+                            htmlFor="technologies"
+                            className="mb-2 block text-sm font-medium"
+                        >
                             Technologies
                         </label>
                         <input
@@ -414,14 +440,17 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                             name="technologies"
                             value={formData.technologies}
                             onChange={handleInputChange}
-                            className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                             placeholder="React, Node.js, PostgreSQL (comma-separated)"
                         />
                     </div>
 
                     {/* Skills */}
                     <div>
-                        <label htmlFor="skills" className="mb-2 block text-sm font-medium">
+                        <label
+                            htmlFor="skills"
+                            className="mb-2 block text-sm font-medium"
+                        >
                             Skills
                         </label>
                         <input
@@ -430,14 +459,17 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                             name="skills"
                             value={formData.skills}
                             onChange={handleInputChange}
-                            className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                             placeholder="UI/UX Design, API Development (comma-separated)"
                         />
                     </div>
 
                     {/* Achievements */}
                     <div>
-                        <label htmlFor="achievements" className="mb-2 block text-sm font-medium">
+                        <label
+                            htmlFor="achievements"
+                            className="mb-2 block text-sm font-medium"
+                        >
                             Achievements
                         </label>
                         <textarea
@@ -446,7 +478,7 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                             value={formData.achievements}
                             onChange={handleInputChange}
                             rows={4}
-                            className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                             placeholder="One achievement per line"
                         />
                     </div>
@@ -458,7 +490,7 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                         </label>
                         <div className="space-y-4">
                             {preview && (
-                                <div className="relative aspect-video w-full max-w-md overflow-hidden rounded-lg bg-default-100">
+                                <div className="bg-default-100 relative aspect-video w-full max-w-md overflow-hidden rounded-lg">
                                     <Image
                                         src={preview}
                                         alt="Preview"
@@ -467,16 +499,16 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                                     />
                                 </div>
                             )}
-                            <label className="flex cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-default-200 bg-default-100 px-4 py-8 transition-colors hover:border-primary hover:bg-default-200">
+                            <label className="border-default-200 bg-default-100 hover:border-primary hover:bg-default-200 flex cursor-pointer items-center justify-center rounded-lg border-2 border-dashed px-4 py-8 transition-colors">
                                 <div className="space-y-2 text-center">
-                                    <Upload className="mx-auto h-8 w-8 text-default-400" />
-                                    <div className="text-sm text-default-600">
-                                        <span className="font-medium text-primary">
+                                    <Upload className="text-default-400 mx-auto h-8 w-8" />
+                                    <div className="text-default-600 text-sm">
+                                        <span className="text-primary font-medium">
                                             Click to upload
                                         </span>{" "}
                                         or drag and drop
                                     </div>
-                                    <p className="text-xs text-default-400">
+                                    <p className="text-default-400 text-xs">
                                         PNG, JPG, GIF up to 10MB
                                     </p>
                                 </div>
@@ -498,9 +530,12 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                             name="is_featured"
                             checked={formData.is_featured}
                             onChange={handleInputChange}
-                            className="h-4 w-4 rounded border-default-200 text-primary focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 text-primary focus:ring-primary/20 h-4 w-4 rounded focus:ring-2"
                         />
-                        <label htmlFor="is_featured" className="flex items-center gap-2 text-sm font-medium">
+                        <label
+                            htmlFor="is_featured"
+                            className="flex items-center gap-2 text-sm font-medium"
+                        >
                             <Star className="h-4 w-4" />
                             Featured Project
                         </label>
@@ -513,7 +548,7 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                 <button
                     type="button"
                     onClick={() => router.back()}
-                    className="flex items-center gap-2 rounded-lg border border-default-200 px-4 py-2 font-medium transition-colors hover:bg-default-100"
+                    className="border-default-200 hover:bg-default-100 flex items-center gap-2 rounded-lg border px-4 py-2 font-medium transition-colors"
                 >
                     <X className="h-5 w-5" />
                     Cancel
@@ -521,7 +556,7 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 font-medium text-white transition-colors hover:bg-primary/90 disabled:opacity-50"
+                    className="bg-primary hover:bg-primary/90 flex items-center gap-2 rounded-lg px-4 py-2 font-medium text-white transition-colors disabled:opacity-50"
                 >
                     <Save className="h-5 w-5" />
                     {loading ? "Saving..." : id ? "Update" : "Create"} Project

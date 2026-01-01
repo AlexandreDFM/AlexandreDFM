@@ -38,8 +38,8 @@ env:
     KUBERNETES_URL: ${{ secrets.KUBERNETES_URL }}
     KUBERNETES_SECRET: ${{ secrets.KUBERNETES_SECRET }}
 
-    # Next.js Configuration
-    API_BASE_URL: ${{ secrets.API_BASE_URL }}
+    # Kubernetes Secrets YAML (entire secrets.yaml file content)
+    K8S_SECRETS_YAML: ${{ secrets.K8S_SECRETS_YAML }}
 
 # Trigger the workflow when the Build and Push Docker Production Image to GitHub Container Registry workflow completes successfully
 on:
@@ -73,11 +73,19 @@ jobs:
               run: |
                   kubectl get namespace alexandredfm-prod || kubectl create namespace alexandredfm-prod
 
-            - name: Create My API secrets
+            - name: Create My API secrets from YAML
               run: |
-                  kubectl delete secret alexandredfm-secret-env-prod -n alexandredfm-prod --ignore-not-found=true
-                  kubectl create secret generic alexandredfm-secret-env-prod -n alexandredfm-prod               \
-                    --from-literal=API_BASE_URL="${{ env.API_BASE_URL }}"
+                  # Write the secrets YAML to a temporary file
+                  echo "${{ env.K8S_SECRETS_YAML }}" > /tmp/secrets.yaml
+
+                  # Update the namespace in the YAML file to match production
+                  sed -i 's/namespace:.*/namespace: alexandredfm-prod/' /tmp/secrets.yaml || true
+
+                  # Apply the secrets to the cluster
+                  kubectl apply -f /tmp/secrets.yaml -n alexandredfm-prod
+
+                  # Clean up
+                  rm -f /tmp/secrets.yaml
 
             - name: Create GitHub Container Registry secret
               run: |

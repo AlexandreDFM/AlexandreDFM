@@ -32,7 +32,7 @@ export default function NewBlogPostPage() {
         <div className="space-y-6">
             <div>
                 <h1 className="text-3xl font-bold">Create New Post</h1>
-                <p className="mt-1 text-default-400">
+                <p className="text-default-400 mt-1">
                     Write and publish a new blog post
                 </p>
             </div>

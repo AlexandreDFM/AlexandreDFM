@@ -102,7 +102,8 @@ export default function BlogClient() {
                 </header>
                 <div className="text-center">
                     <p className="text-default-400">
-                        {t("blog.noPosts") || "No blog posts yet. Check back soon!"}
+                        {t("blog.noPosts") ||
+                            "No blog posts yet. Check back soon!"}
                     </p>
                 </div>
             </main>
@@ -145,8 +146,8 @@ export default function BlogClient() {
                                             />
                                         </div>
                                     )}
-                                    <div className="p-6 space-y-3">
-                                        <h3 className="text-xl font-bold group-hover:text-primary transition-colors">
+                                    <div className="space-y-3 p-6">
+                                        <h3 className="group-hover:text-primary text-xl font-bold transition-colors">
                                             {post.title}
                                         </h3>
                                         <p
@@ -155,7 +156,7 @@ export default function BlogClient() {
                                                 __html: post.excerpt,
                                             }}
                                         />
-                                        <div className="flex flex-wrap items-center gap-4 text-sm text-default-400">
+                                        <div className="text-default-400 flex flex-wrap items-center gap-4 text-sm">
                                             <span className="flex items-center gap-1">
                                                 <Clock className="h-4 w-4" />
                                                 {post.readingTime} min read
@@ -174,7 +175,7 @@ export default function BlogClient() {
                                                 {post.tags.map((tag) => (
                                                     <span
                                                         key={tag}
-                                                        className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-3 py-1 text-xs font-medium text-primary"
+                                                        className="bg-primary/10 text-primary inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-medium"
                                                     >
                                                         <Tag className="h-3 w-3" />
                                                         {tag}
@@ -213,17 +214,17 @@ export default function BlogClient() {
                                         />
                                     </div>
                                 )}
-                                <div className="p-4 space-y-2">
-                                    <h3 className="text-lg font-bold group-hover:text-primary transition-colors line-clamp-2">
+                                <div className="space-y-2 p-4">
+                                    <h3 className="group-hover:text-primary line-clamp-2 text-lg font-bold transition-colors">
                                         {post.title}
                                     </h3>
                                     <p
-                                        className="text-sm text-default-400 line-clamp-3"
+                                        className="text-default-400 line-clamp-3 text-sm"
                                         dangerouslySetInnerHTML={{
                                             __html: post.excerpt,
                                         }}
                                     />
-                                    <div className="flex items-center gap-3 text-xs text-default-400">
+                                    <div className="text-default-400 flex items-center gap-3 text-xs">
                                         <span className="flex items-center gap-1">
                                             <Clock className="h-3 w-3" />
                                             {post.readingTime} min

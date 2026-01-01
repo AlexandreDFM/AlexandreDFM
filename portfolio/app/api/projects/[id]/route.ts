@@ -62,16 +62,39 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
         // Transform to match expected format
         const transformedProject = {
             id: project.id,
-            title: language === "fr" && project.title_fr ? project.title_fr : project.title,
-            description: language === "fr" && project.description_fr ? project.description_fr : project.description,
+            title:
+                language === "fr" && project.title_fr
+                    ? project.title_fr
+                    : project.title,
+            description:
+                language === "fr" && project.description_fr
+                    ? project.description_fr
+                    : project.description,
             date: project.date,
             github: project.github,
-            imageUrl: project.image ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${project.image}` : null,
-            role: language === "fr" && project.role_fr ? project.role_fr : project.role,
-            duration: language === "fr" && project.duration_fr ? project.duration_fr : project.duration,
-            skills: language === "fr" && project.skills_fr ? project.skills_fr : project.skills,
-            technologies: language === "fr" && project.technologies_fr ? project.technologies_fr : project.technologies,
-            achievements: language === "fr" && project.achievements_fr ? project.achievements_fr : project.achievements,
+            imageUrl: project.image
+                ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${project.image}`
+                : null,
+            role:
+                language === "fr" && project.role_fr
+                    ? project.role_fr
+                    : project.role,
+            duration:
+                language === "fr" && project.duration_fr
+                    ? project.duration_fr
+                    : project.duration,
+            skills:
+                language === "fr" && project.skills_fr
+                    ? project.skills_fr
+                    : project.skills,
+            technologies:
+                language === "fr" && project.technologies_fr
+                    ? project.technologies_fr
+                    : project.technologies,
+            achievements:
+                language === "fr" && project.achievements_fr
+                    ? project.achievements_fr
+                    : project.achievements,
             category: project.category,
             is_featured: project.is_featured,
         };
@@ -182,7 +205,11 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         if (!response.ok) {
             const errorData = await response.json();
             return NextResponse.json(
-                { error: errorData.errors?.[0]?.message || "Failed to update project" },
+                {
+                    error:
+                        errorData.errors?.[0]?.message ||
+                        "Failed to update project",
+                },
                 { status: response.status },
             );
         }
@@ -224,7 +251,11 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
         if (!response.ok) {
             const errorData = await response.json();
             return NextResponse.json(
-                { error: errorData.errors?.[0]?.message || "Failed to delete project" },
+                {
+                    error:
+                        errorData.errors?.[0]?.message ||
+                        "Failed to delete project",
+                },
                 { status: response.status },
             );
         }

@@ -59,13 +59,26 @@ spec:
                         name: http
                         protocol: TCP
                   env:
-                      - name: API_BASE_URL
+                      - name: FRONT_BASE_URL
                         valueFrom:
                             secretKeyRef:
                                 name: alexandredfm-secret-env-prod
-                                key: API_BASE_URL
-                      - name: VISIBLE_SECRET
-                        value: "my-visible-secret-value"
+                                key: FRONT_BASE_URL
+                      - name: NEXT_PUBLIC_API_BASE_URL
+                        valueFrom:
+                            secretKeyRef:
+                                name: alexandredfm-secret-env-prod
+                                key: NEXT_PUBLIC_API_BASE_URL
+                      - name: NEXT_PUBLIC_DIRECTUS_URL
+                        valueFrom:
+                            secretKeyRef:
+                                name: alexandredfm-secret-env-prod
+                                key: NEXT_PUBLIC_DIRECTUS_URL
+                      - name: DIRECTUS_WEBSITE_TOKEN
+                        valueFrom:
+                            secretKeyRef:
+                                name: alexandredfm-secret-env-prod
+                                key: DIRECTUS_WEBSITE_TOKEN
                   livenessProbe:
                       httpGet:
                           path: /api/server/health

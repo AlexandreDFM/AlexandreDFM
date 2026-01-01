@@ -45,13 +45,17 @@ export default function AdminNav() {
     };
 
     const navItems = [
-        { href: `/${locale}/admin/projects`, label: "Projects", icon: Briefcase },
+        {
+            href: `/${locale}/admin/projects`,
+            label: "Projects",
+            icon: Briefcase,
+        },
         { href: `/${locale}/admin/blog`, label: "Blog Posts", icon: FileText },
         { href: `/${locale}/admin/media`, label: "Media Gallery", icon: Image },
     ];
 
     return (
-        <nav className="border-b border-default-200 bg-default-50">
+        <nav className="border-default-200 bg-default-50 border-b">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="flex h-16 items-center justify-between">
                     <div className="flex items-center gap-8">
@@ -60,7 +64,9 @@ export default function AdminNav() {
                             className="flex items-center gap-2 text-lg font-bold"
                         >
                             <Home className="h-5 w-5" />
-                            <span className="hidden sm:inline">Admin Panel</span>
+                            <span className="hidden sm:inline">
+                                Admin Panel
+                            </span>
                         </Link>
 
                         <div className="flex gap-1">
@@ -89,7 +95,7 @@ export default function AdminNav() {
 
                     <button
                         onClick={handleLogout}
-                        className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-default-600 transition-colors hover:bg-default-100 hover:text-default-900"
+                        className="text-default-600 hover:bg-default-100 hover:text-default-900 flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
                     >
                         <LogOut className="h-4 w-4" />
                         <span className="hidden sm:inline">Logout</span>

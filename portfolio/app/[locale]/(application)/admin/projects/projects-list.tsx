@@ -30,14 +30,25 @@
 import { useProjects } from "@/hooks/useProjects";
 import Link from "next/link";
 import Image from "next/image";
-import { Edit, Trash2, Eye, Star, Github, Briefcase, GraduationCap, User } from "lucide-react";
+import {
+    Edit,
+    Trash2,
+    Eye,
+    Star,
+    Github,
+    Briefcase,
+    GraduationCap,
+    User,
+} from "lucide-react";
 import { useState } from "react";
 import { Card } from "@/components/card";
 import { useTranslation } from "@/hooks/useTranslation";
 
 export default function ProjectsList() {
     const { locale } = useTranslation();
-    const { projects, loading, error } = useProjects({ language: locale as "en" | "fr" });
+    const { projects, loading, error } = useProjects({
+        language: locale as "en" | "fr",
+    });
     const [deleting, setDeleting] = useState<string | null>(null);
 
     const handleDelete = async (id: string) => {
@@ -62,10 +73,15 @@ export default function ProjectsList() {
         }
     };
 
-    const getCategoryIcon = (category?: ("professional" | "personal" | "academic")[]) => {
-        if (!category || category.length === 0) return <User className="h-4 w-4" />;
-        if (category.includes("professional")) return <Briefcase className="h-4 w-4" />;
-        if (category.includes("academic")) return <GraduationCap className="h-4 w-4" />;
+    const getCategoryIcon = (
+        category?: ("professional" | "personal" | "academic")[],
+    ) => {
+        if (!category || category.length === 0)
+            return <User className="h-4 w-4" />;
+        if (category.includes("professional"))
+            return <Briefcase className="h-4 w-4" />;
+        if (category.includes("academic"))
+            return <GraduationCap className="h-4 w-4" />;
         return <User className="h-4 w-4" />;
     };
 
@@ -129,13 +145,15 @@ export default function ProjectsList() {
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                                 className="text-default-400 hover:text-primary"
-                                                onClick={(e) => e.stopPropagation()}
+                                                onClick={(e) =>
+                                                    e.stopPropagation()
+                                                }
                                             >
                                                 <Github className="h-4 w-4" />
                                             </a>
                                         )}
                                     </div>
-                                    <p className="mt-1 text-sm text-default-400 line-clamp-2">
+                                    <p className="text-default-400 mt-1 line-clamp-2 text-sm">
                                         {project.description}
                                     </p>
                                 </div>
@@ -144,14 +162,14 @@ export default function ProjectsList() {
                                     <Link
                                         href={`/${locale}/projects`}
                                         target="_blank"
-                                        className="rounded-lg p-2 text-default-600 transition-colors hover:bg-default-100 hover:text-default-900"
+                                        className="text-default-600 hover:bg-default-100 hover:text-default-900 rounded-lg p-2 transition-colors"
                                         title="View"
                                     >
                                         <Eye className="h-4 w-4" />
                                     </Link>
                                     <Link
                                         href={`/${locale}/admin/projects/edit/${project.id}`}
-                                        className="rounded-lg p-2 text-default-600 transition-colors hover:bg-default-100 hover:text-default-900"
+                                        className="text-default-600 hover:bg-default-100 hover:text-default-900 rounded-lg p-2 transition-colors"
                                         title="Edit"
                                     >
                                         <Edit className="h-4 w-4" />
@@ -167,39 +185,50 @@ export default function ProjectsList() {
                                 </div>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-4 text-xs text-default-400">
-                                {project.category && project.category.length > 0 && (
-                                    <span className="flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-primary">
-                                        {getCategoryIcon(project.category)}
-                                        {project.category[0]}
-                                    </span>
-                                )}
+                            <div className="text-default-400 flex flex-wrap items-center gap-4 text-xs">
+                                {project.category &&
+                                    project.category.length > 0 && (
+                                        <span className="bg-primary/10 text-primary flex items-center gap-1 rounded-full px-2 py-0.5">
+                                            {getCategoryIcon(project.category)}
+                                            {project.category[0]}
+                                        </span>
+                                    )}
                                 {project.role && <span>{project.role}</span>}
-                                {project.duration && <span>{project.duration}</span>}
+                                {project.duration && (
+                                    <span>{project.duration}</span>
+                                )}
                                 {project.date && (
                                     <span>
-                                        {new Date(project.date).toLocaleDateString()}
+                                        {new Date(
+                                            project.date,
+                                        ).toLocaleDateString()}
                                     </span>
                                 )}
                             </div>
 
-                            {project.technologies && project.technologies.length > 0 && (
-                                <div className="flex flex-wrap gap-1">
-                                    {project.technologies.slice(0, 5).map((tech) => (
-                                        <span
-                                            key={tech}
-                                            className="rounded-full bg-default-100 px-2 py-0.5 text-xs text-default-600"
-                                        >
-                                            {tech}
-                                        </span>
-                                    ))}
-                                    {project.technologies.length > 5 && (
-                                        <span className="text-xs text-default-400">
-                                            +{project.technologies.length - 5} more
-                                        </span>
-                                    )}
-                                </div>
-                            )}
+                            {project.technologies &&
+                                project.technologies.length > 0 && (
+                                    <div className="flex flex-wrap gap-1">
+                                        {project.technologies
+                                            .slice(0, 5)
+                                            .map((tech) => (
+                                                <span
+                                                    key={tech}
+                                                    className="bg-default-100 text-default-600 rounded-full px-2 py-0.5 text-xs"
+                                                >
+                                                    {tech}
+                                                </span>
+                                            ))}
+                                        {project.technologies.length > 5 && (
+                                            <span className="text-default-400 text-xs">
+                                                +
+                                                {project.technologies.length -
+                                                    5}{" "}
+                                                more
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
                         </div>
                     </div>
                 </Card>

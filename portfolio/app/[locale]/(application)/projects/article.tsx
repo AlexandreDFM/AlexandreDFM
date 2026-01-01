@@ -81,7 +81,9 @@ export const Article: React.FC<Props> = ({ project, featured = false }) => {
                                 {project.category.map((cat) => (
                                     <span
                                         key={cat}
-                                        className={`rounded-full border px-3 py-1 text-xs font-medium backdrop-blur-sm ${getCategoryColor(cat)}`}
+                                        className={`rounded-full border px-3 py-1 text-xs font-medium backdrop-blur-sm ${getCategoryColor(
+                                            cat,
+                                        )}`}
                                     >
                                         {t(`projects.category.${cat}`)}
                                     </span>
@@ -109,7 +111,9 @@ export const Article: React.FC<Props> = ({ project, featured = false }) => {
                                 {project.category.map((cat) => (
                                     <span
                                         key={cat}
-                                        className={`rounded-full border px-3 py-1 text-xs font-medium backdrop-blur-sm ${getCategoryColor(cat)}`}
+                                        className={`rounded-full border px-3 py-1 text-xs font-medium backdrop-blur-sm ${getCategoryColor(
+                                            cat,
+                                        )}`}
                                     >
                                         {t(`projects.category.${cat}`)}
                                     </span>

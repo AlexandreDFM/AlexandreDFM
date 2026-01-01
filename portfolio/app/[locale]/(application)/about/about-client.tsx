@@ -50,11 +50,17 @@ export default function AboutClient() {
                             className="ml-4 h-20 w-20 shrink-0 md:h-24 md:w-24 lg:h-28 lg:w-28"
                             isBordered
                             radius="full"
-                            src={imageError ? "/app/bio/alexandredfm.jpeg" : avatarUrl}
+                            src={
+                                imageError
+                                    ? "/app/bio/alexandredfm.jpeg"
+                                    : avatarUrl
+                            }
                             alt="Alexandre De Freitas Martins profile picture"
                             showFallback={!imageError}
                             onError={() => {
-                                console.warn("[Avatar] Failed to load from Directus, using fallback");
+                                console.warn(
+                                    "[Avatar] Failed to load from Directus, using fallback",
+                                );
                                 setImageError(true);
                             }}
                         />

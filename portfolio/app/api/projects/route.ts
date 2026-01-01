@@ -150,7 +150,11 @@ export async function POST(request: NextRequest) {
         if (!response.ok) {
             const errorData = await response.json();
             return NextResponse.json(
-                { error: errorData.errors?.[0]?.message || "Failed to create project" },
+                {
+                    error:
+                        errorData.errors?.[0]?.message ||
+                        "Failed to create project",
+                },
                 { status: response.status },
             );
         }

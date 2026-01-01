@@ -64,7 +64,7 @@ export async function PATCH(
 ) {
     try {
         const { slug } = await params;
-        
+
         // Get user's auth token from cookies
         const cookieStore = await cookies();
         const authToken = cookieStore.get("directus_admin_token")?.value;
@@ -75,7 +75,7 @@ export async function PATCH(
                 { status: 401 },
             );
         }
-        
+
         const formData = await request.formData();
         const directus = await getDirectusClient(authToken);
 
@@ -153,7 +153,7 @@ export async function DELETE(
 ) {
     try {
         const { slug } = await params;
-        
+
         // Get user's auth token from cookies
         const cookieStore = await cookies();
         const authToken = cookieStore.get("directus_admin_token")?.value;
@@ -164,7 +164,7 @@ export async function DELETE(
                 { status: 401 },
             );
         }
-        
+
         const directus = await getDirectusClient(authToken);
 
         // Find post by slug

@@ -97,10 +97,12 @@ export async function POST(request: NextRequest) {
                 category: (formData.get("category") as string) || undefined,
                 tags: tags,
                 reading_time: parseInt(formData.get("reading_time") as string),
-                is_featured:
-                    formData.get("is_featured") === "true",
+                is_featured: formData.get("is_featured") === "true",
                 cover_image: coverImageId || undefined,
-                status: ((formData.get("status") as string) || "published") as "published" | "draft" | "archived",
+                status: ((formData.get("status") as string) || "published") as
+                    | "published"
+                    | "draft"
+                    | "archived",
             }),
         );
 
