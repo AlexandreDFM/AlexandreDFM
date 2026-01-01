@@ -41,13 +41,13 @@ export default async function NewMediaPostPage({
             <div className="flex items-center gap-4">
                 <Link
                     href={`/${locale}/admin/media`}
-                    className="rounded-lg p-2 transition-colors hover:bg-default-100"
+                    className="hover:bg-default-100 rounded-lg p-2 transition-colors"
                 >
                     <ArrowLeft className="h-5 w-5" />
                 </Link>
                 <div>
                     <h1 className="text-3xl font-bold">New Media Post</h1>
-                    <p className="mt-1 text-default-400">
+                    <p className="text-default-400 mt-1">
                         Add a new image or video to your gallery
                     </p>
                 </div>

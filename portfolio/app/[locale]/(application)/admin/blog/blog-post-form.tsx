@@ -25,7 +25,6 @@
  * THE SOFTWARE.
  */
 
-
 "use client";
 
 import { Card } from "@/components/card";
@@ -55,7 +54,10 @@ interface FormData {
 
 export default function BlogPostForm({ slug }: BlogPostFormProps) {
     const router = useRouter();
-    const { post: existingPost, loading: loadingPost } = useBlogPost(slug || "", "en");
+    const { post: existingPost, loading: loadingPost } = useBlogPost(
+        slug || "",
+        "en",
+    );
 
     const [formData, setFormData] = useState<FormData>({
         title_en: "",
@@ -208,7 +210,7 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
 
             {/* Language Tabs */}
             <Card>
-                <div className="border-b border-default-200">
+                <div className="border-default-200 border-b">
                     <div className="flex gap-1 p-2">
                         <button
                             type="button"
@@ -251,7 +253,7 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
                             value={formData[`title_${activeTab}`]}
                             onChange={handleInputChange}
                             required
-                            className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                             placeholder="Enter post title"
                         />
                     </div>
@@ -271,7 +273,7 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
                             onChange={handleInputChange}
                             required
                             rows={3}
-                            className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                             placeholder="Brief summary of the post"
                         />
                     </div>
@@ -291,10 +293,10 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
                             onChange={handleInputChange}
                             required
                             rows={15}
-                            className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 font-mono text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 font-mono text-sm focus:ring-2 focus:outline-none"
                             placeholder="<p>Write your content here in HTML format...</p>"
                         />
-                        <p className="mt-1 text-xs text-default-400">
+                        <p className="text-default-400 mt-1 text-xs">
                             Supports HTML formatting. Use tags like &lt;p&gt;,
                             &lt;h2&gt;, &lt;strong&gt;, &lt;a&gt;, etc.
                         </p>
@@ -323,10 +325,10 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
                             onChange={handleInputChange}
                             required
                             pattern="^[a-z0-9]+(?:-[a-z0-9]+)*$"
-                            className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 font-mono text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 font-mono text-sm focus:ring-2 focus:outline-none"
                             placeholder="my-blog-post-slug"
                         />
-                        <p className="mt-1 text-xs text-default-400">
+                        <p className="text-default-400 mt-1 text-xs">
                             Lowercase letters, numbers, and hyphens only
                         </p>
                     </div>
@@ -345,7 +347,7 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
                             name="category"
                             value={formData.category}
                             onChange={handleInputChange}
-                            className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                             placeholder="Tutorial, Guide, News, etc."
                         />
                     </div>
@@ -364,7 +366,7 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
                             name="tags"
                             value={formData.tags}
                             onChange={handleInputChange}
-                            className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                             placeholder="React, TypeScript, Tutorial (comma-separated)"
                         />
                     </div>
@@ -384,7 +386,7 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
                             value={formData.reading_time}
                             onChange={handleInputChange}
                             min="1"
-                            className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                         />
                     </div>
 
@@ -401,7 +403,7 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
                             id="cover_image"
                             accept="image/*"
                             onChange={handleFileChange}
-                            className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                         />
                         {preview && (
                             <div className="mt-4">
@@ -422,9 +424,12 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
                             name="is_featured"
                             checked={formData.is_featured}
                             onChange={handleInputChange}
-                            className="h-5 w-5 rounded border-default-200 text-primary focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 text-primary focus:ring-primary/20 h-5 w-5 rounded focus:ring-2"
                         />
-                        <label htmlFor="is_featured" className="text-sm font-medium">
+                        <label
+                            htmlFor="is_featured"
+                            className="text-sm font-medium"
+                        >
                             Mark as Featured Post
                         </label>
                     </div>
@@ -436,7 +441,7 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
                 <button
                     type="button"
                     onClick={() => router.back()}
-                    className="flex items-center gap-2 rounded-lg border border-default-200 px-6 py-3 font-medium transition-colors hover:bg-default-100"
+                    className="border-default-200 hover:bg-default-100 flex items-center gap-2 rounded-lg border px-6 py-3 font-medium transition-colors"
                 >
                     <X className="h-5 w-5" />
                     Cancel
@@ -447,7 +452,7 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
                         type="button"
                         onClick={(e) => handleSubmit(e, true)}
                         disabled={loading}
-                        className="flex items-center gap-2 rounded-lg border border-default-200 px-6 py-3 font-medium transition-colors hover:bg-default-100 disabled:opacity-50"
+                        className="border-default-200 hover:bg-default-100 flex items-center gap-2 rounded-lg border px-6 py-3 font-medium transition-colors disabled:opacity-50"
                     >
                         <Eye className="h-5 w-5" />
                         Save as Draft
@@ -456,10 +461,14 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
                         type="submit"
                         onClick={(e) => handleSubmit(e, false)}
                         disabled={loading}
-                        className="flex items-center gap-2 rounded-lg bg-primary px-6 py-3 font-medium text-white transition-colors hover:bg-primary/90 disabled:opacity-50"
+                        className="bg-primary hover:bg-primary/90 flex items-center gap-2 rounded-lg px-6 py-3 font-medium text-white transition-colors disabled:opacity-50"
                     >
                         <Save className="h-5 w-5" />
-                        {loading ? "Saving..." : slug ? "Update Post" : "Publish Post"}
+                        {loading
+                            ? "Saving..."
+                            : slug
+                              ? "Update Post"
+                              : "Publish Post"}
                     </button>
                 </div>
             </div>

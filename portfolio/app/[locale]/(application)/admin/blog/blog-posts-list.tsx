@@ -37,7 +37,9 @@ import { useTranslation } from "@/hooks/useTranslation";
 
 export default function BlogPostsList() {
     const { locale } = useTranslation();
-    const { posts, loading, error } = useBlog({ language: locale as "en" | "fr" });
+    const { posts, loading, error } = useBlog({
+        language: locale as "en" | "fr",
+    });
     const [deleting, setDeleting] = useState<string | null>(null);
 
     const handleDelete = async (id: string) => {
@@ -118,7 +120,7 @@ export default function BlogPostsList() {
                                             <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
                                         )}
                                     </div>
-                                    <p className="mt-1 text-sm text-default-400 line-clamp-2">
+                                    <p className="text-default-400 mt-1 line-clamp-2 text-sm">
                                         {post.excerpt}
                                     </p>
                                 </div>
@@ -127,14 +129,14 @@ export default function BlogPostsList() {
                                     <Link
                                         href={`/${locale}/blog/${post.slug}`}
                                         target="_blank"
-                                        className="rounded-lg p-2 text-default-600 transition-colors hover:bg-default-100 hover:text-default-900"
+                                        className="text-default-600 hover:bg-default-100 hover:text-default-900 rounded-lg p-2 transition-colors"
                                         title="View"
                                     >
                                         <Eye className="h-4 w-4" />
                                     </Link>
                                     <Link
                                         href={`/${locale}/admin/blog/edit/${post.slug}`}
-                                        className="rounded-lg p-2 text-default-600 transition-colors hover:bg-default-100 hover:text-default-900"
+                                        className="text-default-600 hover:bg-default-100 hover:text-default-900 rounded-lg p-2 transition-colors"
                                         title="Edit"
                                     >
                                         <Edit className="h-4 w-4" />
@@ -150,10 +152,10 @@ export default function BlogPostsList() {
                                 </div>
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-4 text-xs text-default-400">
+                            <div className="text-default-400 flex flex-wrap items-center gap-4 text-xs">
                                 <span>{post.readingTime} min read</span>
                                 {post.category && (
-                                    <span className="rounded-full bg-primary/10 px-2 py-0.5 text-primary">
+                                    <span className="bg-primary/10 text-primary rounded-full px-2 py-0.5">
                                         {post.category}
                                     </span>
                                 )}

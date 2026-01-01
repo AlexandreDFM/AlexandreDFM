@@ -84,9 +84,9 @@ export default function MediaModal({ post, onClose }: MediaModalProps) {
                     onClick={(e) => e.stopPropagation()}
                 >
                     {/* Media Container */}
-                    <div className="flex-1 flex items-center justify-center bg-black">
+                    <div className="flex flex-1 items-center justify-center bg-black">
                         {post.mediaType === "image" ? (
-                            <div className="relative h-full w-full max-h-[90vh]">
+                            <div className="relative h-full max-h-[90vh] w-full">
                                 <Image
                                     src={post.mediaUrl}
                                     alt={post.title}
@@ -114,7 +114,7 @@ export default function MediaModal({ post, onClose }: MediaModalProps) {
                             <h2 className="text-2xl font-bold">{post.title}</h2>
 
                             {/* Likes */}
-                            <div className="flex items-center gap-2 text-default-400">
+                            <div className="text-default-400 flex items-center gap-2">
                                 <Heart className="h-5 w-5" />
                                 <span className="font-medium">
                                     {post.likes} likes
@@ -134,7 +134,7 @@ export default function MediaModal({ post, onClose }: MediaModalProps) {
                                     {post.tags.map((tag) => (
                                         <span
                                             key={tag}
-                                            className="inline-flex items-center gap-1 rounded-full border border-default-200 px-3 py-1 text-xs font-medium"
+                                            className="border-default-200 inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-medium"
                                         >
                                             <Tag className="h-3 w-3" />
                                             {tag}
@@ -145,7 +145,7 @@ export default function MediaModal({ post, onClose }: MediaModalProps) {
 
                             {/* Date */}
                             {post.date_created && (
-                                <div className="flex items-center gap-2 text-sm text-default-400">
+                                <div className="text-default-400 flex items-center gap-2 text-sm">
                                     <Calendar className="h-4 w-4" />
                                     <span>
                                         {new Date(

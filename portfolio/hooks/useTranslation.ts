@@ -114,11 +114,11 @@ export const useTranslation = () => {
         // Store for 1 year
         Cookies.set("locale", newLocale, { expires: 365 });
         setLocaleState(newLocale);
-        
+
         // Navigate to the new locale by replacing the locale in the pathname
         const currentPath = pathname;
         let newPath: string;
-        
+
         // Remove the current locale prefix if it exists
         if (currentPath.startsWith("/fr/")) {
             newPath = currentPath.replace("/fr/", `/${newLocale}/`);
@@ -130,7 +130,7 @@ export const useTranslation = () => {
             // No locale in path, add it
             newPath = `/${newLocale}${currentPath}`;
         }
-        
+
         window.location.href = newPath;
     };
 

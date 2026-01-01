@@ -38,7 +38,7 @@ function getLocale(request: NextRequest) {
 
 export function middleware(request: NextRequest) {
     const pathname = request.nextUrl.pathname;
-    
+
     // Skip if the request is for an API route, static files, or other special paths
     if (
         pathname.startsWith("/_next") ||
@@ -64,13 +64,19 @@ export function middleware(request: NextRequest) {
 
     // Check protected routes (admin panel)
     // Extract the path without locale for route matching
-    const pathWithoutLocale = pathname.replace(/^\/(fr|en)/, '');
+    const pathWithoutLocale = pathname.replace(/^\/(fr|en)/, "");
     if (protectedRoutes.includes(pathWithoutLocale)) {
         const accessToken = request.cookies.get("directus_admin_token")?.value;
         if (!accessToken) {
             // Extract the current locale from the pathname
-            const currentLocale = pathname.startsWith('/fr') ? 'fr' : pathname.startsWith('/en') ? 'en' : locales[0];
-            return NextResponse.redirect(new URL(`/${currentLocale}/admin-login`, request.nextUrl));
+            const currentLocale = pathname.startsWith("/fr")
+                ? "fr"
+                : pathname.startsWith("/en")
+                  ? "en"
+                  : locales[0];
+            return NextResponse.redirect(
+                new URL(`/${currentLocale}/admin-login`, request.nextUrl),
+            );
         }
     }
 

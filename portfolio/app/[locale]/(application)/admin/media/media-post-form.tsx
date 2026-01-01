@@ -52,7 +52,10 @@ interface FormData {
 export default function MediaPostForm({ id }: MediaPostFormProps) {
     const router = useRouter();
     const { locale } = useTranslation();
-    const { post: existingPost, loading: loadingPost } = useMediaPost(id || "", locale as "en" | "fr");
+    const { post: existingPost, loading: loadingPost } = useMediaPost(
+        id || "",
+        locale as "en" | "fr",
+    );
 
     const [formData, setFormData] = useState<FormData>({
         title_en: "",
@@ -85,7 +88,9 @@ export default function MediaPostForm({ id }: MediaPostFormProps) {
     }, [existingPost]);
 
     const handleInputChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+        e: React.ChangeEvent<
+            HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+        >,
     ) => {
         const { name, value } = e.target;
         setFormData((prev) => ({
@@ -127,7 +132,10 @@ export default function MediaPostForm({ id }: MediaPostFormProps) {
             data.append("title_en", formData.title_en);
             data.append("title_fr", formData.title_fr || formData.title_en);
             data.append("caption_en", formData.caption_en);
-            data.append("caption_fr", formData.caption_fr || formData.caption_en);
+            data.append(
+                "caption_fr",
+                formData.caption_fr || formData.caption_en,
+            );
             data.append("media_type", formData.media_type);
             data.append("tags", JSON.stringify(tagsArray));
 
@@ -180,7 +188,7 @@ export default function MediaPostForm({ id }: MediaPostFormProps) {
 
             {/* Language Tabs */}
             <Card>
-                <div className="border-b border-default-200">
+                <div className="border-default-200 border-b">
                     <div className="flex gap-1 p-2">
                         <button
                             type="button"
@@ -223,7 +231,7 @@ export default function MediaPostForm({ id }: MediaPostFormProps) {
                             value={formData[`title_${activeTab}`]}
                             onChange={handleInputChange}
                             required
-                            className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                             placeholder="Enter media title"
                         />
                     </div>
@@ -243,7 +251,7 @@ export default function MediaPostForm({ id }: MediaPostFormProps) {
                             onChange={handleInputChange}
                             required
                             rows={4}
-                            className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                             placeholder="Describe this media post"
                         />
                     </div>
@@ -260,7 +268,7 @@ export default function MediaPostForm({ id }: MediaPostFormProps) {
                         </label>
                         <div className="space-y-4">
                             {preview && (
-                                <div className="relative aspect-video w-full max-w-md overflow-hidden rounded-lg bg-default-100">
+                                <div className="bg-default-100 relative aspect-video w-full max-w-md overflow-hidden rounded-lg">
                                     {formData.media_type === "image" ? (
                                         <Image
                                             src={preview}
@@ -277,17 +285,18 @@ export default function MediaPostForm({ id }: MediaPostFormProps) {
                                     )}
                                 </div>
                             )}
-                            <label className="flex cursor-pointer items-center justify-center rounded-lg border-2 border-dashed border-default-200 bg-default-100 px-4 py-8 transition-colors hover:border-primary hover:bg-default-200">
+                            <label className="border-default-200 bg-default-100 hover:border-primary hover:bg-default-200 flex cursor-pointer items-center justify-center rounded-lg border-2 border-dashed px-4 py-8 transition-colors">
                                 <div className="space-y-2 text-center">
-                                    <Upload className="mx-auto h-8 w-8 text-default-400" />
-                                    <div className="text-sm text-default-600">
-                                        <span className="font-medium text-primary">
+                                    <Upload className="text-default-400 mx-auto h-8 w-8" />
+                                    <div className="text-default-600 text-sm">
+                                        <span className="text-primary font-medium">
                                             Click to upload
                                         </span>{" "}
                                         or drag and drop
                                     </div>
-                                    <p className="text-xs text-default-400">
-                                        Images (PNG, JPG, GIF) or Videos (MP4, WebM)
+                                    <p className="text-default-400 text-xs">
+                                        Images (PNG, JPG, GIF) or Videos (MP4,
+                                        WebM)
                                     </p>
                                 </div>
                                 <input
@@ -314,7 +323,9 @@ export default function MediaPostForm({ id }: MediaPostFormProps) {
                                 }`}
                             >
                                 <ImageIcon className="h-5 w-5" />
-                                <span className="text-sm font-medium">Image</span>
+                                <span className="text-sm font-medium">
+                                    Image
+                                </span>
                             </div>
                             <div
                                 className={`flex items-center gap-2 rounded-lg border px-4 py-2 ${
@@ -324,17 +335,22 @@ export default function MediaPostForm({ id }: MediaPostFormProps) {
                                 }`}
                             >
                                 <Video className="h-5 w-5" />
-                                <span className="text-sm font-medium">Video</span>
+                                <span className="text-sm font-medium">
+                                    Video
+                                </span>
                             </div>
                         </div>
-                        <p className="mt-1 text-xs text-default-400">
+                        <p className="text-default-400 mt-1 text-xs">
                             Auto-detected from uploaded file
                         </p>
                     </div>
 
                     {/* Tags */}
                     <div>
-                        <label htmlFor="tags" className="mb-2 block text-sm font-medium">
+                        <label
+                            htmlFor="tags"
+                            className="mb-2 block text-sm font-medium"
+                        >
                             Tags
                         </label>
                         <input
@@ -343,7 +359,7 @@ export default function MediaPostForm({ id }: MediaPostFormProps) {
                             name="tags"
                             value={formData.tags}
                             onChange={handleInputChange}
-                            className="w-full rounded-lg border border-default-200 bg-default-100 px-4 py-2 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                            className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 focus:ring-2 focus:outline-none"
                             placeholder="photography, nature, art (comma-separated)"
                         />
                     </div>
@@ -355,7 +371,7 @@ export default function MediaPostForm({ id }: MediaPostFormProps) {
                 <button
                     type="button"
                     onClick={() => router.back()}
-                    className="flex items-center gap-2 rounded-lg border border-default-200 px-4 py-2 font-medium transition-colors hover:bg-default-100"
+                    className="border-default-200 hover:bg-default-100 flex items-center gap-2 rounded-lg border px-4 py-2 font-medium transition-colors"
                 >
                     <X className="h-5 w-5" />
                     Cancel
@@ -363,10 +379,11 @@ export default function MediaPostForm({ id }: MediaPostFormProps) {
                 <button
                     type="submit"
                     disabled={loading}
-                    className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 font-medium text-white transition-colors hover:bg-primary/90 disabled:opacity-50"
+                    className="bg-primary hover:bg-primary/90 flex items-center gap-2 rounded-lg px-4 py-2 font-medium text-white transition-colors disabled:opacity-50"
                 >
                     <Save className="h-5 w-5" />
-                    {loading ? "Saving..." : id ? "Update" : "Create"} Media Post
+                    {loading ? "Saving..." : id ? "Update" : "Create"} Media
+                    Post
                 </button>
             </div>
         </form>

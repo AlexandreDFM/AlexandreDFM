@@ -33,14 +33,16 @@ interface EditProjectPageProps {
     }>;
 }
 
-export default async function EditProjectPage({ params }: EditProjectPageProps) {
+export default async function EditProjectPage({
+    params,
+}: EditProjectPageProps) {
     const { id } = await params;
 
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="mb-8">
                 <h1 className="text-3xl font-bold">Edit Project</h1>
-                <p className="mt-2 text-default-600">
+                <p className="text-default-600 mt-2">
                     Update project information
                 </p>
             </div>

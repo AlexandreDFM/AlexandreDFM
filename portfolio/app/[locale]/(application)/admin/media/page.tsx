@@ -41,13 +41,13 @@ export default async function AdminMediaPage({
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-3xl font-bold">Media Gallery</h1>
-                    <p className="mt-1 text-default-400">
+                    <p className="text-default-400 mt-1">
                         Manage your media posts
                     </p>
                 </div>
                 <Link
                     href={`/${locale}/admin/media/new`}
-                    className="flex items-center gap-2 rounded-lg bg-primary px-4 py-2 font-medium text-white transition-colors hover:bg-primary/90"
+                    className="bg-primary hover:bg-primary/90 flex items-center gap-2 rounded-lg px-4 py-2 font-medium text-white transition-colors"
                 >
                     <Plus className="h-5 w-5" />
                     New Media Post

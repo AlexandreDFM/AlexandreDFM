@@ -41,7 +41,9 @@ export default function ProjectFilters({
     onFilteredProjectsChange,
 }: ProjectFiltersProps) {
     const { t } = useTranslation();
-    const [selectedCategory, setSelectedCategory] = useState<"all" | "professional" | "personal" | "academic">("all");
+    const [selectedCategory, setSelectedCategory] = useState<
+        "all" | "professional" | "personal" | "academic"
+    >("all");
     const [selectedTech, setSelectedTech] = useState<string>("all");
     const [selectedSkill, setSelectedSkill] = useState<string>("all");
     const [searchQuery, setSearchQuery] = useState("");
@@ -71,19 +73,23 @@ export default function ProjectFilters({
 
         // Category filter
         if (selectedCategory !== "all") {
-            filtered = filtered.filter((p) => p.category?.includes(selectedCategory));
+            filtered = filtered.filter(
+                (p) => p.category?.includes(selectedCategory),
+            );
         }
 
         // Technology filter
         if (selectedTech !== "all") {
-            filtered = filtered.filter((p) =>
-                p.technologies?.includes(selectedTech),
+            filtered = filtered.filter(
+                (p) => p.technologies?.includes(selectedTech),
             );
         }
 
         // Skill filter
         if (selectedSkill !== "all") {
-            filtered = filtered.filter((p) => p.skills?.includes(selectedSkill));
+            filtered = filtered.filter(
+                (p) => p.skills?.includes(selectedSkill),
+            );
         }
 
         // Search filter
@@ -94,8 +100,8 @@ export default function ProjectFilters({
                     p.title?.toLowerCase().includes(query) ||
                     p.description?.toLowerCase().includes(query) ||
                     p.role?.toLowerCase().includes(query) ||
-                    p.technologies?.some((t) =>
-                        t?.toLowerCase().includes(query),
+                    p.technologies?.some(
+                        (t) => t?.toLowerCase().includes(query),
                     ) ||
                     p.skills?.some((s) => s?.toLowerCase().includes(query)),
             );
@@ -157,12 +163,23 @@ export default function ProjectFilters({
                     <select
                         id="category"
                         value={selectedCategory}
-                        onChange={(e : React.ChangeEvent<HTMLSelectElement>) => setSelectedCategory(e.target.value as "all" | "professional" | "personal" | "academic")}
+                        onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+                            setSelectedCategory(
+                                e.target.value as
+                                    | "all"
+                                    | "professional"
+                                    | "personal"
+                                    | "academic",
+                            )
+                        }
                         className="w-full rounded-lg border border-white/10 bg-black/20 px-4 py-2 text-sm backdrop-blur-sm transition-colors focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 focus:outline-none"
                     >
                         <option value="all">{t("projects.filters.all")}</option>
                         {categories.map((category, index) => (
-                            <option key={`category-${category}-${index}`} value={category}>
+                            <option
+                                key={`category-${category}-${index}`}
+                                value={category}
+                            >
                                 {t(`projects.category.${category}`)}
                             </option>
                         ))}
@@ -208,7 +225,10 @@ export default function ProjectFilters({
                     >
                         <option value="all">{t("projects.filters.all")}</option>
                         {skills.map((skill, index) => (
-                            <option key={`skill-${skill}-${index}`} value={skill}>
+                            <option
+                                key={`skill-${skill}-${index}`}
+                                value={skill}
+                            >
                                 {skill}
                             </option>
                         ))}

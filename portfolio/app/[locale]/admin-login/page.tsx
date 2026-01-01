@@ -43,10 +43,10 @@ export default async function AdminLoginPage({
 
     return (
         <div className="flex min-h-[80vh] items-center justify-center">
-            <div className="w-full max-w-md space-y-8 rounded-lg border border-default-200 bg-default-50 p-8">
+            <div className="border-default-200 bg-default-50 w-full max-w-md space-y-8 rounded-lg border p-8">
                 <div className="text-center">
                     <h1 className="text-3xl font-bold">Admin Panel</h1>
-                    <p className="mt-2 text-default-400">
+                    <p className="text-default-400 mt-2">
                         Sign in with your Directus account
                     </p>
                 </div>
