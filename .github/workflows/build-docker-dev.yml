@@ -38,6 +38,9 @@ on:
     push:
         branches:
             - dev
+        paths:
+            - 'portfolio/**'
+            - '.github/workflows/build-docker-dev.yml'
 
 # Build and Push Docker Development Image to GitHub Container Registry
 jobs:
