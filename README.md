@@ -47,7 +47,7 @@ I'm looking forward to hearing your opinion about my projects and I hope you lik
 - [Deslock06®™ website](http://Deslock06.com) 🌐
 -->
 
-<img align="right" width="150" height="150" src="https://github.com/AlexandreDFM/Profil/blob/main/me/alexandre.jpg"></a>
+<img align="right" width="150" height="150" src="https://github.com/AlexandreDFM/Profil/blob/main/img/me/alexandre.jpg"></a>
 
 ### Some fun facts about me:
 
