@@ -27,7 +27,7 @@
 # THE SOFTWARE.
 #
 
-name: Deploy My API to Development
+name: Deploy My Portfolio to Development
 
 env:
     # Github Configuration
@@ -48,7 +48,7 @@ on:
         types: [completed]
         branches: [dev]
 
-# Deploy the My API to the development Kubernetes cluster
+# Deploy the My Portfolio to the development Kubernetes cluster
 jobs:
     on-failure:
       runs-on: ubuntu-latest
@@ -56,7 +56,7 @@ jobs:
       steps:
         - run: echo 'The triggering previous workflow failed'
     deploy_to_kubernetes:
-        name: Deploy My API dev to Kubernetes
+        name: Deploy My Portfolio dev to Kubernetes
         runs-on: ubuntu-latest
         if: ${{ github.event.workflow_run.conclusion == 'success' }}
         environment:
@@ -73,7 +73,7 @@ jobs:
               run: |
                 kubectl get namespace alexandredfm-dev || kubectl create namespace alexandredfm-dev
 
-            - name: Create My API secrets from YAML
+            - name: Create My Portfolio secrets from YAML
               run: |
                   # Write the secrets YAML to a temporary file
                   echo "${{ env.K8S_SECRETS_YAML_DEV }}" > /tmp/secrets.yaml
@@ -105,7 +105,7 @@ jobs:
                 kubectl -n alexandredfm-dev get deployments || true
                 echo ""
                 echo "=== Checking for stuck deployments ==="
-                # Check if My API deployment is stuck
+                # Check if My Portfolio deployment is stuck
                 if kubectl -n alexandredfm-dev get deployment alexandredfm-deployment-dev -o jsonpath='{.status.replicas}' | grep -q "1" && \
                    kubectl -n alexandredfm-dev get deployment alexandredfm-deployment-dev -o jsonpath='{.status.readyReplicas}' | grep -q "^$"; then
                   echo "Deployment appears stuck, forcing restart..."
@@ -140,6 +140,6 @@ jobs:
                 echo "=== Recent Events ==="
                 kubectl -n alexandredfm-dev get events --sort-by=.metadata.creationTimestamp --field-selector type=Warning
                 echo ""
-                echo "=== My API Pod Logs ==="
+                echo "=== My Portfolio Pod Logs ==="
                 kubectl -n alexandredfm-dev logs -l app=alexandredfm --tail=100 --previous=true || true
                 kubectl -n alexandredfm-dev logs -l app=alexandredfm --tail=100 || true
