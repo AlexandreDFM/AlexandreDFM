@@ -39,7 +39,7 @@ env:
     KUBERNETES_SECRET: ${{ secrets.KUBERNETES_SECRET }}
 
     # Kubernetes Secrets YAML (entire secrets.yaml file content)
-    K8S_SECRETS_YAML: ${{ secrets.K8S_SECRETS_YAML }}
+    K8S_SECRETS_YAML: ${{ secrets.K8S_SECRETS_YAML_PROD }}
 
 # Trigger the workflow when the Build and Push Docker Production Image to GitHub Container Registry workflow completes successfully
 on:
