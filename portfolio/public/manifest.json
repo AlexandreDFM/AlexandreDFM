@@ -1,0 +1,55 @@
+{
+  "name": "Alexandre De Freitas Martins - Portfolio",
+  "short_name": "AlexandreDFM",
+  "description": "Alexandre De Freitas Martins - Developer Portfolio",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/app/bio/me.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/app/bio/me.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["portfolio", "technology", "development"],
+  "lang": "en-US",
+  "dir": "ltr",
+  "shortcuts": [
+    {
+      "name": "Projects",
+      "short_name": "Projects",
+      "description": "View my projects",
+      "url": "/en/projects",
+      "icons": [{ "src": "/app/bio/me.jpg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Blog",
+      "short_name": "Blog",
+      "description": "Read my blog posts",
+      "url": "/en/blog",
+      "icons": [{ "src": "/app/bio/me.jpg", "sizes": "192x192" }]
+    },
+    {
+      "name": "Contact",
+      "short_name": "Contact",
+      "description": "Get in touch",
+      "url": "/en/contact",
+      "icons": [{ "src": "/app/bio/me.jpg", "sizes": "192x192" }]
+    }
+  ]
+}
