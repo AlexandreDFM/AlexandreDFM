@@ -33,8 +33,7 @@ metadata:
 spec:
     entryPoints:
         - websecure
-    tls:
-        certResolver: le
+    tls: {}
     routes:
           match: Host(`staging.alexandredfm.fr`) || Host(`www.staging.alexandredfm.fr`)
           kind: Rule
