@@ -44,5 +44,5 @@ COPY . .
 
 EXPOSE 3000
 
-# Install dependencies on container start to ensure Linux binaries
+# Run the development server
 CMD ["pnpm", "dev"]
