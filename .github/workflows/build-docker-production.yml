@@ -40,7 +40,7 @@ on:
             - main
         paths:
             - 'portfolio/**'
-            - '.github/workflows/build-docker-prod.yml'
+            - '.github/workflows/build-docker-production.yml'
 
 # Build and Push Docker Development Image to GitHub Container Registry
 jobs:
