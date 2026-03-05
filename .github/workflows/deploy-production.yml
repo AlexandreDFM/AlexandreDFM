@@ -106,10 +106,10 @@ jobs:
                 echo ""
                 echo "=== Checking for stuck deployments ==="
                 # Check if My Portfolio deployment is stuck
-                if kubectl -n alexandredfm-production get deployment alexandredfm-deployment-prod -o jsonpath='{.status.replicas}' | grep -q "1" && \
-                   kubectl -n alexandredfm-production get deployment alexandredfm-deployment-prod -o jsonpath='{.status.readyReplicas}' | grep -q "^$"; then
+                if kubectl -n alexandredfm-production get deployment alexandredfm-deployment-production -o jsonpath='{.status.replicas}' | grep -q "1" && \
+                   kubectl -n alexandredfm-production get deployment alexandredfm-deployment-production -o jsonpath='{.status.readyReplicas}' | grep -q "^$"; then
                   echo "Deployment appears stuck, forcing restart..."
-                  kubectl -n alexandredfm-production rollout restart deployment/alexandredfm-deployment-prod || true
+                  kubectl -n alexandredfm-production rollout restart deployment/alexandredfm-deployment-production || true
                   kubectl -n alexandredfm-production delete pods -l app=alexandredfm --force --grace-period=0 || true
                   sleep 30
                 fi
