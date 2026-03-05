@@ -27,7 +27,7 @@
 # THE SOFTWARE.
 #
 
-name: Deploy My Portfolio to Development
+name: Deploy My Portfolio to Staging
 
 env:
     # Github Configuration
@@ -38,17 +38,17 @@ env:
     KUBERNETES_URL: ${{ secrets.KUBERNETES_URL }}
     KUBERNETES_SECRET: ${{ secrets.KUBERNETES_SECRET }}
 
-    # Kubernetes Secrets YAML (entire secrets.yaml file content for dev)
-    K8S_SECRETS_YAML_DEV: ${{ secrets.K8S_SECRETS_YAML_DEV }}
+    # Kubernetes Secrets YAML (entire secrets.yaml file content for staging)
+    K8S_SECRETS_YAML_STAGING: ${{ secrets.K8S_SECRETS_YAML_STAGING }}
 
-# Trigger the workflow when the Build and Push Docker Development Image to GitHub Container Registry workflow completes successfully
+# Trigger the workflow when the Build and Push Docker Staging Image to GitHub Container Registry workflow completes successfully
 on:
     workflow_run:
-        workflows: ["Build and Push Docker Development Image to GitHub Container Registry"]
+        workflows: ["Build and Push Docker Staging Image to GitHub Container Registry"]
         types: [completed]
         branches: [dev]
 
-# Deploy the My Portfolio to the development Kubernetes cluster
+# Deploy the My Portfolio to the staging Kubernetes cluster
 jobs:
     on-failure:
       runs-on: ubuntu-latest
@@ -56,11 +56,11 @@ jobs:
       steps:
         - run: echo 'The triggering previous workflow failed'
     deploy_to_kubernetes:
-        name: Deploy My Portfolio dev to Kubernetes
+        name: Deploy My Portfolio staging to Kubernetes
         runs-on: ubuntu-latest
         if: ${{ github.event.workflow_run.conclusion == 'success' }}
         environment:
-            name: alexandredfm-dev
+            name: alexandredfm-staging
         steps:
             - name: Set the Kubernetes context
               uses: azure/k8s-set-context@v4
@@ -71,26 +71,26 @@ jobs:
 
             - name: Ensure namespace exists
               run: |
-                kubectl get namespace alexandredfm-dev || kubectl create namespace alexandredfm-dev
+                kubectl get namespace alexandredfm-staging || kubectl create namespace alexandredfm-staging
 
             - name: Create My Portfolio secrets from YAML
               run: |
                   # Write the secrets YAML to a temporary file
-                  echo "${{ env.K8S_SECRETS_YAML_DEV }}" > /tmp/secrets.yaml
+                  echo "${{ env.K8S_SECRETS_YAML_STAGING }}" > /tmp/secrets.yaml
 
-                  # Update the namespace in the YAML file to match development
-                  sed -i 's/namespace:.*/namespace: alexandredfm-dev/' /tmp/secrets.yaml || true
+                  # Update the namespace in the YAML file to match staging
+                  sed -i 's/namespace:.*/namespace: alexandredfm-staging/' /tmp/secrets.yaml || true
 
                   # Apply the secrets to the cluster
-                  kubectl apply -f /tmp/secrets.yaml -n alexandredfm-dev
+                  kubectl apply -f /tmp/secrets.yaml -n alexandredfm-staging
 
                   # Clean up
                   rm -f /tmp/secrets.yaml
 
             - name: Create GitHub Container Registry secret
               run: |
-                  kubectl delete secret github-container-registry -n alexandredfm-dev --ignore-not-found=true
-                  kubectl create secret docker-registry github-container-registry -n alexandredfm-dev  \
+                  kubectl delete secret github-container-registry -n alexandredfm-staging --ignore-not-found=true
+                  kubectl create secret docker-registry github-container-registry -n alexandredfm-staging  \
                     --docker-server=ghcr.io                                                                   \
                     --docker-username=${{ env.GITHUB_USERNAME }}                                              \
                     --docker-password=${{ env.GITHUB_TOKEN }}
@@ -101,45 +101,45 @@ jobs:
             - name: Force clean deployment if needed
               run: |
                 echo "=== Current deployment status ==="
-                kubectl -n alexandredfm-dev get pods -o wide || true
-                kubectl -n alexandredfm-dev get deployments || true
+                kubectl -n alexandredfm-staging get pods -o wide || true
+                kubectl -n alexandredfm-staging get deployments || true
                 echo ""
                 echo "=== Checking for stuck deployments ==="
                 # Check if My Portfolio deployment is stuck
-                if kubectl -n alexandredfm-dev get deployment alexandredfm-deployment-dev -o jsonpath='{.status.replicas}' | grep -q "1" && \
-                   kubectl -n alexandredfm-dev get deployment alexandredfm-deployment-dev -o jsonpath='{.status.readyReplicas}' | grep -q "^$"; then
+                if kubectl -n alexandredfm-staging get deployment alexandredfm-deployment-staging -o jsonpath='{.status.replicas}' | grep -q "1" && \
+                   kubectl -n alexandredfm-staging get deployment alexandredfm-deployment-staging -o jsonpath='{.status.readyReplicas}' | grep -q "^$"; then
                   echo "Deployment appears stuck, forcing restart..."
-                  kubectl -n alexandredfm-dev rollout restart deployment/alexandredfm-deployment-dev || true
-                  kubectl -n alexandredfm-dev delete pods -l app=alexandredfm --force --grace-period=0 || true
+                  kubectl -n alexandredfm-staging rollout restart deployment/alexandredfm-deployment-staging || true
+                  kubectl -n alexandredfm-staging delete pods -l app=alexandredfm --force --grace-period=0 || true
                   sleep 30
                 fi
 
             - name: Deploy to the Kubernetes cluster
               uses: azure/k8s-deploy@v5
               with:
-                  namespace: alexandredfm-dev
+                  namespace: alexandredfm-staging
                   manifests: |
-                      portfolio/deploy/kubernetes/development/deployment.yaml
-                      portfolio/deploy/kubernetes/development/service.yaml
-                      portfolio/deploy/kubernetes/development/ingress.yaml
+                      portfolio/deploy/kubernetes/staging/deployment.yaml
+                      portfolio/deploy/kubernetes/staging/service.yaml
+                      portfolio/deploy/kubernetes/staging/ingress.yaml
                   images: |
-                      ghcr.io/alexandredfm/alexandredfm:dev-${{ github.event.workflow_run.head_sha }}
+                      ghcr.io/alexandredfm/alexandredfm:staging-${{ github.event.workflow_run.head_sha }}
 
             - name: Debug deployment issues
               if: failure()
               run: |
                 echo "=== Deployment Status ==="
-                kubectl -n alexandredfm-dev get pods -o wide
-                kubectl -n alexandredfm-dev get deployments
-                kubectl -n alexandredfm-dev get services
-                kubectl -n alexandredfm-dev get secrets
+                kubectl -n alexandredfm-staging get pods -o wide
+                kubectl -n alexandredfm-staging get deployments
+                kubectl -n alexandredfm-staging get services
+                kubectl -n alexandredfm-staging get secrets
                 echo ""
                 echo "=== Pod Details ==="
-                kubectl -n alexandredfm-dev describe pods
+                kubectl -n alexandredfm-staging describe pods
                 echo ""
                 echo "=== Recent Events ==="
-                kubectl -n alexandredfm-dev get events --sort-by=.metadata.creationTimestamp --field-selector type=Warning
+                kubectl -n alexandredfm-staging get events --sort-by=.metadata.creationTimestamp --field-selector type=Warning
                 echo ""
                 echo "=== My Portfolio Pod Logs ==="
-                kubectl -n alexandredfm-dev logs -l app=alexandredfm --tail=100 --previous=true || true
-                kubectl -n alexandredfm-dev logs -l app=alexandredfm --tail=100 || true
+                kubectl -n alexandredfm-staging logs -l app=alexandredfm --tail=100 --previous=true || true
+                kubectl -n alexandredfm-staging logs -l app=alexandredfm --tail=100 || true

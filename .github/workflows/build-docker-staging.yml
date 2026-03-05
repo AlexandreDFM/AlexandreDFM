@@ -25,7 +25,7 @@
 # THE SOFTWARE.
 #
 
-name: Build and Push Docker Development Image to GitHub Container Registry
+name: Build and Push Docker Staging Image to GitHub Container Registry
 
 # Environment Variables
 env:
@@ -33,7 +33,7 @@ env:
     GITHUB_USERNAME: ${{ github.repository_owner }}
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-# Trigger the workflow when the Test CI/CD workflow completes successfully on develop branch
+# Trigger the workflow on push to dev branch
 on:
     push:
         branches:
@@ -42,10 +42,10 @@ on:
             - 'portfolio/**'
             - '.github/workflows/build-docker-dev.yml'
 
-# Build and Push Docker Development Image to GitHub Container Registry
+# Build and Push Docker Staging Image to GitHub Container Registry
 jobs:
     build:
-        name: Build & Push Docker Development Image
+        name: Build & Push Docker Staging Image
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Repository
@@ -66,15 +66,15 @@ jobs:
                   username: ${{ env.GITHUB_USERNAME }}
                   password: ${{ env.GITHUB_TOKEN }}
 
-            - name: Push Docker Development Image
+            - name: Push Docker Staging Image
               id: docker_build
               uses: docker/build-push-action@v6
               with:
                   context: "./portfolio"
-                  file: "./portfolio/Dockerfile.dev"
+                  file: "./portfolio/Dockerfile"
                   push: true
                   tags: |
-                      ghcr.io/alexandredfm/alexandredfm:dev-latest
-                      ghcr.io/alexandredfm/alexandredfm:dev-${{ github.sha }}
-                  cache-from: type=registry,ref=ghcr.io/alexandredfm/alexandredfm:dev-latest
-                  cache-to: type=registry,ref=ghcr.io/alexandredfm/alexandredfm:dev-cache,mode=max
+                      ghcr.io/alexandredfm/alexandredfm:staging-latest
+                      ghcr.io/alexandredfm/alexandredfm:staging-${{ github.sha }}
+                  cache-from: type=registry,ref=ghcr.io/alexandredfm/alexandredfm:staging-latest
+                  cache-to: type=registry,ref=ghcr.io/alexandredfm/alexandredfm:staging-cache,mode=max
