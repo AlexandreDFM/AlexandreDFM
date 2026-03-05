@@ -30,13 +30,19 @@ FROM node:22-slim
 # Install dependencies for native modules
 RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
 
-RUN corepack enable
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
 WORKDIR /usr/src/app
 
 ENV NODE_ENV=development
 
+COPY package.json pnpm-lock.yaml ./
+
+RUN pnpm install --no-frozen-lockfile
+
+COPY . .
+
 EXPOSE 3000
 
-# Install dependencies on container start to ensure Linux binaries
-CMD corepack prepare pnpm@latest --activate && pnpm install --no-frozen-lockfile && pnpm dev
+# Run the development server
+CMD ["pnpm", "dev"]

@@ -28,8 +28,8 @@
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
-    name: alexandredfm-ingress-prod
-    namespace: alexandredfm-prod
+    name: alexandredfm-ingress-production
+    namespace: alexandredfm-production
 spec:
     entryPoints:
         - websecure
@@ -39,5 +39,5 @@ spec:
         - match: Host(`alexandredfm.fr`) || Host(`www.alexandredfm.fr`)
           kind: Rule
           services:
-              - name: alexandredfm-service-prod
+              - name: alexandredfm-service-production
                 port: 80

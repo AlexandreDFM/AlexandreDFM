@@ -1,9 +1,9 @@
 #
-# File Name: secrets.yaml.example
+# File Name: ingress.yaml
 # Author: Alexandre Kévin DE FREITAS MARTINS
-# Creation Date: 1/1/2026
-# Description: This is the secrets.yaml.example
-# Copyright (c) 2026 Alexandre Kévin DE FREITAS MARTINS
+# Creation Date: 14/8/2025
+# Description: This is the ingress.yaml
+# Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
 # Version: 1.0.0
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,20 +25,19 @@
 # THE SOFTWARE.
 #
 
-# This is an example file. DO NOT commit the actual secrets.yaml to version control!
-# Copy this file to secrets.yaml and fill in your actual values.
-# Then create the secret using: kubectl apply -f kubernetes/secrets.yaml
-
-apiVersion: v1
-kind: Secret
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
 metadata:
-    name: alexandredfm-secret-env-dev
-    namespace: alexandredfm-dev
-    labels:
-        app: alexandredfm
-type: Opaque
-stringData:
-    FRONT_BASE_URL: "your-dev-front-base-url"
-    NEXT_PUBLIC_API_BASE_URL: "your-dev-api-base-url"
-    NEXT_PUBLIC_DIRECTUS_URL: "your-dev-directus-url"
-    DIRECTUS_WEBSITE_TOKEN: "your-dev-directus-website-token"
+    name: alexandredfm-ingress-staging
+    namespace: alexandredfm-staging
+spec:
+    entryPoints:
+        - websecure
+    tls:
+        certResolver: le
+    routes:
+          match: Host(`staging.alexandredfm.fr`) || Host(`www.staging.alexandredfm.fr`)
+          kind: Rule
+          services:
+              - name: alexandredfm-service-staging
+                port: 80

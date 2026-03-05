@@ -28,11 +28,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-    name: alexandredfm-deployment-dev
-    namespace: alexandredfm-dev
+    name: alexandredfm-deployment-staging
+    namespace: alexandredfm-staging
     labels:
         app: alexandredfm
-        environment: alexandredfm-dev
+        environment: alexandredfm-staging
 
 spec:
     replicas: 1
@@ -48,7 +48,7 @@ spec:
         metadata:
             labels:
                 app: alexandredfm
-                environment: alexandredfm-dev
+                environment: alexandredfm-staging
         spec:
             terminationGracePeriodSeconds: 30
             containers:
@@ -62,22 +62,22 @@ spec:
                       - name: FRONT_BASE_URL
                         valueFrom:
                             secretKeyRef:
-                                name: alexandredfm-secret-env-dev
+                                name: alexandredfm-secret-env-staging
                                 key: FRONT_BASE_URL
                       - name: NEXT_PUBLIC_API_BASE_URL
                         valueFrom:
                             secretKeyRef:
-                                name: alexandredfm-secret-env-dev
+                                name: alexandredfm-secret-env-staging
                                 key: NEXT_PUBLIC_API_BASE_URL
                       - name: NEXT_PUBLIC_DIRECTUS_URL
                         valueFrom:
                             secretKeyRef:
-                                name: alexandredfm-secret-env-dev
+                                name: alexandredfm-secret-env-staging
                                 key: NEXT_PUBLIC_DIRECTUS_URL
                       - name: DIRECTUS_WEBSITE_TOKEN
                         valueFrom:
                             secretKeyRef:
-                                name: alexandredfm-secret-env-dev
+                                name: alexandredfm-secret-env-staging
                                 key: DIRECTUS_WEBSITE_TOKEN
                   livenessProbe:
                       httpGet:
