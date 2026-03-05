@@ -45,4 +45,4 @@ COPY . .
 EXPOSE 3000
 
 # Install dependencies on container start to ensure Linux binaries
-CMD ["pnpm", "start"]
+CMD ["pnpm", "dev"]
