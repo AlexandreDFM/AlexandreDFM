@@ -1,0 +1,103 @@
+#
+# File Name: apply-k8s-manifests.yml
+# Author : Alexandre Kévin DE FREITAS MARTINS
+# Creation Date: 5/3/2026
+# Description: Applies Kubernetes manifests (ingress, service, namespace) directly when
+#              k8s YAML files change, without requiring a full Docker image rebuild.
+# Copyright (c) 2026 Alexandre Kévin DE FREITAS MARTINS
+# Version: 1.0.0
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the 'Software'), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
+#
+
+name: Apply Kubernetes Manifests
+
+env:
+    KUBERNETES_URL: ${{ secrets.KUBERNETES_URL }}
+    KUBERNETES_SECRET: ${{ secrets.KUBERNETES_SECRET }}
+
+on:
+    push:
+        branches:
+            - staging
+            - main
+        paths:
+            - 'portfolio/deploy/kubernetes/**'
+            - '.github/workflows/apply-k8s-manifests.yml'
+
+jobs:
+    apply_staging:
+        name: Apply Staging Manifests
+        runs-on: ubuntu-latest
+        if: github.ref == 'refs/heads/staging'
+        environment:
+            name: alexandredfm-staging
+        steps:
+            - name: Checkout source code
+              uses: actions/checkout@v4
+
+            - name: Set the Kubernetes context
+              uses: azure/k8s-set-context@v4
+              with:
+                  method: service-account
+                  k8s-url: ${{ env.KUBERNETES_URL }}
+                  k8s-secret: ${{ env.KUBERNETES_SECRET }}
+
+            - name: Ensure namespace exists
+              run: |
+                  kubectl get namespace alexandredfm-staging || kubectl create namespace alexandredfm-staging
+
+            - name: Apply namespaces
+              run: |
+                  kubectl apply -f portfolio/deploy/kubernetes/namespaces.yaml
+
+            - name: Apply staging manifests
+              run: |
+                  kubectl apply -f portfolio/deploy/kubernetes/staging/service.yaml -n alexandredfm-staging
+                  kubectl apply -f portfolio/deploy/kubernetes/staging/ingress.yaml -n alexandredfm-staging
+
+    apply_production:
+        name: Apply Production Manifests
+        runs-on: ubuntu-latest
+        if: github.ref == 'refs/heads/main'
+        environment:
+            name: alexandredfm-production
+        steps:
+            - name: Checkout source code
+              uses: actions/checkout@v4
+
+            - name: Set the Kubernetes context
+              uses: azure/k8s-set-context@v4
+              with:
+                  method: service-account
+                  k8s-url: ${{ env.KUBERNETES_URL }}
+                  k8s-secret: ${{ env.KUBERNETES_SECRET }}
+
+            - name: Ensure namespace exists
+              run: |
+                  kubectl get namespace alexandredfm-production || kubectl create namespace alexandredfm-production
+
+            - name: Apply namespaces
+              run: |
+                  kubectl apply -f portfolio/deploy/kubernetes/namespaces.yaml
+
+            - name: Apply production manifests
+              run: |
+                  kubectl apply -f portfolio/deploy/kubernetes/production/service.yaml -n alexandredfm-production
+                  kubectl apply -f portfolio/deploy/kubernetes/production/ingress.yaml -n alexandredfm-production
