@@ -35,7 +35,7 @@ spec:
         - websecure
     tls: {}
     routes:
-          match: Host(`staging.alexandredfm.fr`) || Host(`www.staging.alexandredfm.fr`)
+        - match: Host(`staging.alexandredfm.fr`) || Host(`www.staging.alexandredfm.fr`)
           kind: Rule
           services:
               - name: alexandredfm-service-staging
