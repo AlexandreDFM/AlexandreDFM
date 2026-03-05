@@ -1,10 +1,10 @@
 #
-# File Name: deploy-prod.yml
+# File Name: deploy-dev.yml
 # Author : Alexandre Kévin DE FREITAS MARTINS
 # Creation Date: 14/8/2025
 # Description: This workflow will build and push the Directus image to GitHub container registry
-#              Next, it will deploy it to the production namespace in the Kubernetes cluster
-#              Triggered when the Test CI/CD workflow completes successfully on main branch
+#              Next, it will deploy it to the development namespace in the Kubernetes cluster
+#              Triggered when the Test CI/CD workflow completes successfully
 # Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
 # Version: 1.0.0
 #
@@ -27,7 +27,7 @@
 # THE SOFTWARE.
 #
 
-name: Deploy My Portfolio to Production
+name: Deploy My Portfolio to Staging
 
 env:
     # Github Configuration
@@ -38,17 +38,17 @@ env:
     KUBERNETES_URL: ${{ secrets.KUBERNETES_URL }}
     KUBERNETES_SECRET: ${{ secrets.KUBERNETES_SECRET }}
 
-    # Kubernetes Secrets YAML (entire secrets.yaml file content)
-    K8S_SECRETS_YAML: ${{ secrets.K8S_SECRETS_YAML_PROD }}
+    # Kubernetes Secrets YAML (entire secrets.yaml file content for staging)
+    K8S_SECRETS_YAML_STAGING: ${{ secrets.K8S_SECRETS_YAML_STAGING }}
 
-# Trigger the workflow when the Build and Push Docker Production Image to GitHub Container Registry workflow completes successfully
+# Trigger the workflow when the Build and Push Docker Staging Image to GitHub Container Registry workflow completes successfully
 on:
     workflow_run:
-        workflows: ["Build and Push Docker Production Image to GitHub Container Registry"]
+        workflows: ["Build and Push Docker Staging Image to GitHub Container Registry"]
         types: [completed]
-        branches: [main]
+        branches: [dev]
 
-# Deploy the "My Portfolio" project to the production Kubernetes cluster
+# Deploy the My Portfolio to the staging Kubernetes cluster
 jobs:
     on-failure:
       runs-on: ubuntu-latest
@@ -56,11 +56,11 @@ jobs:
       steps:
         - run: echo 'The triggering previous workflow failed'
     deploy_to_kubernetes:
-        name: Deploy My Portfolio to Kubernetes Production
+        name: Deploy My Portfolio staging to Kubernetes
         runs-on: ubuntu-latest
         if: ${{ github.event.workflow_run.conclusion == 'success' }}
         environment:
-            name: alexandredfm-production
+            name: alexandredfm-staging
         steps:
             - name: Set the Kubernetes context
               uses: azure/k8s-set-context@v4
@@ -71,27 +71,27 @@ jobs:
 
             - name: Ensure namespace exists
               run: |
-                  kubectl get namespace alexandredfm-production || kubectl create namespace alexandredfm-production
+                kubectl get namespace alexandredfm-staging || kubectl create namespace alexandredfm-staging
 
             - name: Create My Portfolio secrets from YAML
               run: |
                   # Write the secrets YAML to a temporary file
-                  echo "${{ env.K8S_SECRETS_YAML }}" > /tmp/secrets.yaml
+                  echo "${{ env.K8S_SECRETS_YAML_STAGING }}" > /tmp/secrets.yaml
 
-                  # Update the namespace and secret name in the YAML file to match production
-                  sed -i 's/namespace:.*/namespace: alexandredfm-production/' /tmp/secrets.yaml || true
-                  sed -i 's/name: alexandredfm-secret-env-.*/name: alexandredfm-secret-env-production/' /tmp/secrets.yaml || true
+                  # Update the namespace and secret name in the YAML file to match staging
+                  sed -i 's/namespace:.*/namespace: alexandredfm-staging/' /tmp/secrets.yaml || true
+                  sed -i 's/name: alexandredfm-secret-env-.*/name: alexandredfm-secret-env-staging/' /tmp/secrets.yaml || true
 
                   # Apply the secrets to the cluster
-                  kubectl apply -f /tmp/secrets.yaml -n alexandredfm-production
+                  kubectl apply -f /tmp/secrets.yaml -n alexandredfm-staging
 
                   # Clean up
                   rm -f /tmp/secrets.yaml
 
             - name: Create GitHub Container Registry secret
               run: |
-                  kubectl delete secret github-container-registry -n alexandredfm-production --ignore-not-found=true
-                  kubectl create secret docker-registry github-container-registry -n alexandredfm-production        \
+                  kubectl delete secret github-container-registry -n alexandredfm-staging --ignore-not-found=true
+                  kubectl create secret docker-registry github-container-registry -n alexandredfm-staging  \
                     --docker-server=ghcr.io                                                                   \
                     --docker-username=${{ env.GITHUB_USERNAME }}                                              \
                     --docker-password=${{ env.GITHUB_TOKEN }}
@@ -102,45 +102,45 @@ jobs:
             - name: Force clean deployment if needed
               run: |
                 echo "=== Current deployment status ==="
-                kubectl -n alexandredfm-production get pods -o wide || true
-                kubectl -n alexandredfm-production get deployments || true
+                kubectl -n alexandredfm-staging get pods -o wide || true
+                kubectl -n alexandredfm-staging get deployments || true
                 echo ""
                 echo "=== Checking for stuck deployments ==="
                 # Check if My Portfolio deployment is stuck
-                if kubectl -n alexandredfm-production get deployment alexandredfm-deployment-production -o jsonpath='{.status.replicas}' | grep -q "1" && \
-                   kubectl -n alexandredfm-production get deployment alexandredfm-deployment-production -o jsonpath='{.status.readyReplicas}' | grep -q "^$"; then
+                if kubectl -n alexandredfm-staging get deployment alexandredfm-deployment-staging -o jsonpath='{.status.replicas}' | grep -q "1" && \
+                   kubectl -n alexandredfm-staging get deployment alexandredfm-deployment-staging -o jsonpath='{.status.readyReplicas}' | grep -q "^$"; then
                   echo "Deployment appears stuck, forcing restart..."
-                  kubectl -n alexandredfm-production rollout restart deployment/alexandredfm-deployment-production || true
-                  kubectl -n alexandredfm-production delete pods -l app=alexandredfm --force --grace-period=0 || true
+                  kubectl -n alexandredfm-staging rollout restart deployment/alexandredfm-deployment-staging || true
+                  kubectl -n alexandredfm-staging delete pods -l app=alexandredfm --force --grace-period=0 || true
                   sleep 30
                 fi
 
             - name: Deploy to the Kubernetes cluster
               uses: azure/k8s-deploy@v5
               with:
-                  namespace: alexandredfm-production
+                  namespace: alexandredfm-staging
                   manifests: |
-                      portfolio/deploy/kubernetes/production/deployment.yaml
-                      portfolio/deploy/kubernetes/production/service.yaml
-                      portfolio/deploy/kubernetes/production/ingress.yaml
+                      portfolio/deploy/kubernetes/staging/deployment.yaml
+                      portfolio/deploy/kubernetes/staging/service.yaml
+                      portfolio/deploy/kubernetes/staging/ingress.yaml
                   images: |
-                      ghcr.io/alexandredfm/alexandredfm:${{ github.sha }}
+                      ghcr.io/alexandredfm/alexandredfm:staging-${{ github.event.workflow_run.head_sha }}
 
             - name: Debug deployment issues
               if: failure()
               run: |
                 echo "=== Deployment Status ==="
-                kubectl -n alexandredfm-production get pods -o wide
-                kubectl -n alexandredfm-production get deployments
-                kubectl -n alexandredfm-production get services
-                kubectl -n alexandredfm-production get secrets
+                kubectl -n alexandredfm-staging get pods -o wide
+                kubectl -n alexandredfm-staging get deployments
+                kubectl -n alexandredfm-staging get services
+                kubectl -n alexandredfm-staging get secrets
                 echo ""
                 echo "=== Pod Details ==="
-                kubectl -n alexandredfm-production describe pods
+                kubectl -n alexandredfm-staging describe pods
                 echo ""
                 echo "=== Recent Events ==="
-                kubectl -n alexandredfm-production get events --sort-by=.metadata.creationTimestamp --field-selector type=Warning
+                kubectl -n alexandredfm-staging get events --sort-by=.metadata.creationTimestamp --field-selector type=Warning
                 echo ""
                 echo "=== My Portfolio Pod Logs ==="
-                kubectl -n alexandredfm-production logs -l app=alexandredfm --tail=100 --previous=true || true
-                kubectl -n alexandredfm-production logs -l app=alexandredfm --tail=100 || true
+                kubectl -n alexandredfm-staging logs -l app=alexandredfm --tail=100 --previous=true || true
+                kubectl -n alexandredfm-staging logs -l app=alexandredfm --tail=100 || true
