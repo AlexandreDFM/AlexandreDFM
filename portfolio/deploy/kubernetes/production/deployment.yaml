@@ -29,10 +29,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: alexandredfm-deployment-prod
-    namespace: alexandredfm-prod
+    namespace: alexandredfm-production
     labels:
         app: alexandredfm
-        environment: alexandredfm-prod
+        environment: alexandredfm-production
 
 spec:
     replicas: 1
@@ -48,7 +48,7 @@ spec:
         metadata:
             labels:
                 app: alexandredfm
-                environment: alexandredfm-prod
+                environment: alexandredfm-production
         spec:
             terminationGracePeriodSeconds: 30
             containers:
