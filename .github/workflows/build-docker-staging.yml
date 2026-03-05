@@ -1,8 +1,8 @@
 #
-# File Name: main.yml
+# File Name: build-docker-staging.yml
 # Author : Alexandre Kévin DE FREITAS MARTINS
 # Creation Date: 15/8/2025
-# Description: This is the main.yml
+# Description: This is the build-docker-staging.yml
 # Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
 # Version: 1.0.0
 #
@@ -33,14 +33,14 @@ env:
     GITHUB_USERNAME: ${{ github.repository_owner }}
     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-# Trigger the workflow on push to dev branch
+# Trigger the workflow on push to staging branch
 on:
     push:
         branches:
-            - dev
+            - staging
         paths:
             - 'portfolio/**'
-            - '.github/workflows/build-docker-dev.yml'
+            - '.github/workflows/build-docker-staging.yml'
 
 # Build and Push Docker Staging Image to GitHub Container Registry
 jobs:

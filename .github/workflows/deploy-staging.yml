@@ -1,9 +1,9 @@
 #
-# File Name: deploy-dev.yml
+# File Name: deploy-staging.yml
 # Author : Alexandre Kévin DE FREITAS MARTINS
 # Creation Date: 14/8/2025
 # Description: This workflow will build and push the Directus image to GitHub container registry
-#              Next, it will deploy it to the development namespace in the Kubernetes cluster
+#              Next, it will deploy it to the staging namespace in the Kubernetes cluster
 #              Triggered when the Test CI/CD workflow completes successfully
 # Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
 # Version: 1.0.0
@@ -46,7 +46,7 @@ on:
     workflow_run:
         workflows: ["Build and Push Docker Staging Image to GitHub Container Registry"]
         types: [completed]
-        branches: [dev]
+        branches: [staging]
 
 # Deploy the My Portfolio to the staging Kubernetes cluster
 jobs:
