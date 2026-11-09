@@ -1,47 +1,42 @@
 name: Deploy to Kubernetes
 
-# Runs after a successful image build:
+# Called by build.yaml once the image of the commit exists:
 #   staging branch -> GitHub environment "staging"    -> namespace alexandredfm-staging
 #   main branch    -> GitHub environment "production" -> namespace alexandredfm-production
+# A reusable workflow (not workflow_run): workflow_run only fires with the
+# definition of the default branch, so a first push on staging would never deploy.
 # One-time setup (namespaces, deploy accounts, TLS, GitHub Secrets and
 # Variables): see k8s/README.md.
 on:
-  workflow_run:
-    workflows: ["Build and push the image"]
-    types: [completed]
-    branches: [staging, main]
+  workflow_call:
 
 permissions:
   contents: read
 
-# One deployment at a time per environment; a newer one waits for the running one
-concurrency:
-  group: deploy-${{ github.event.workflow_run.head_branch }}
-  cancel-in-progress: false
-
 env:
   APP: alexandredfm
-  TARGET: ${{ github.event.workflow_run.head_branch == 'main' && 'production' || 'staging' }}
+  TARGET: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
 
 jobs:
   deploy:
-    name: Deploy (${{ github.event.workflow_run.head_branch == 'main' && 'production' || 'staging' }})
-    if: github.event.workflow_run.conclusion == 'success'
+    name: Deploy (${{ github.ref_name == 'main' && 'production' || 'staging' }})
     runs-on: ubuntu-latest
+    # One deployment at a time per environment; a newer one waits for the running one
+    concurrency:
+      group: deploy-${{ github.ref_name }}
+      cancel-in-progress: false
     environment:
-      name: ${{ github.event.workflow_run.head_branch == 'main' && 'production' || 'staging' }}
+      name: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
       url: ${{ vars.PUBLIC_SITE_URL }}
     steps:
       - name: Checkout the built commit
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Target
         run: |
           echo "NAMESPACE=$APP-$TARGET" >> "$GITHUB_ENV"
           echo "MANIFESTS=k8s/$TARGET" >> "$GITHUB_ENV"
-          echo "Deploying ${{ github.event.workflow_run.head_sha }} to $TARGET"
+          echo "Deploying ${{ github.sha }} to $TARGET"
 
       - name: Connect to the cluster
         env:
@@ -121,7 +116,7 @@ jobs:
 
       - name: Deploy
         env:
-          TAG: ${{ github.event.workflow_run.head_sha }}
+          TAG: ${{ github.sha }}
         run: |
           # Image of the deployed commit (portable sed: same syntax on Linux and macOS).
           # Quoted: a SHA made of digits (or like "8e1234...") would otherwise be read as a number.
@@ -174,8 +169,10 @@ jobs:
           img=$(curl -fsS "$SITE/api/projects?lang=fr" | jq -r '[.data[]? // .[]? | .imageUrl // empty][0] // empty')
           if [ -n "$img" ]; then
             type=$(curl -fsS -o /dev/null -w '%{content_type}' "$SITE$img") \
-              || { echo "::error::Project image $img is not served"; exit 1; }
-            case "$type" in image/*) echo "Project image OK ($type)";; *) echo "::error::$img answered $type"; exit 1;; esac
+              || type="error"
+            # Content, not code: reported here and every morning by content-check.yaml,
+            # but it does not fail the deployment
+            case "$type" in image/*) echo "Project image OK ($type)";; *) echo "::warning::Project image $img is not served ($type), see content-check.yaml";; esac
           else
             echo "::warning::No project image to check"
           fi

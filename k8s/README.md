@@ -24,8 +24,8 @@ Visiteur ─▶ Cloudflare (Full strict) ─▶ Traefik (IngressRoute, TLS Origi
 | `production/`, `staging/` | Kustomization, IngressRoute (et redirection www en prod) | Workflow |
 | `*/secret.example.yaml` | Forme des objets créés par le workflow (exemple, sans valeurs) | — |
 | `../.github/workflows/ci.yaml` | Lint, typecheck, tests, build, audit : sur PR et sur `dev` | — |
-| `../.github/workflows/build.yaml` | Image `:<sha>` construite sur `staging`, promue (re-tag `latest`) sur `main` | — |
-| `../.github/workflows/deploy.yaml` | Config, secrets, `apply -k`, rollout, tests de fumée | — |
+| `../.github/workflows/build.yaml` | Image `:<sha>` construite sur `staging`, promue (re-tag `latest`) sur `main`, puis appel de `deploy.yaml` | — |
+| `../.github/workflows/deploy.yaml` | Workflow réutilisable (appelé par `build.yaml`) : config, secrets, `apply -k`, rollout, tests de fumée | — |
 | `../.github/workflows/content-check.yaml` | Chaque matin : images de projets, avatar, fichiers Directus | — |
 
 ## Branches et environnements
@@ -107,7 +107,7 @@ kubectl -n $ns rollout undo deploy/alexandredfm-web          # revenir à la ver
 kubectl -n $ns get deploy alexandredfm-web -o jsonpath='{.spec.template.spec.containers[0].image}'   # SHA déployé
 ```
 
-Redéployer sans changer de code (par exemple après avoir changé une Variable) : Actions → « Deploy to Kubernetes » → Re-run. L'image étant la même, le workflow redémarre le pod pour recharger la config.
+Redéployer sans changer de code (par exemple après avoir changé une Variable) : Actions → « Build and push the image » → Re-run (ou « Run workflow » sur la branche). L'image existe déjà, l'étape de build est sautée et le déploiement repart. Comme l'image ne change pas, le workflow redémarre le pod pour recharger la config.
 
 ## Dépannage
 

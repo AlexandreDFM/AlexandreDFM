@@ -1,10 +1,11 @@
 name: Build and push the image
 
 # One image per commit: ghcr.io/alexandredfm/alexandredfm:<sha>.
-# - push on staging: checks, then build the image (also tagged "staging")
+# - push on staging: checks, then build the image (also tagged "staging"), then deploy
 # - push on main: the commit was promoted from staging (fast-forward), so its
 #   image already exists and is only re-tagged "latest"; a commit that was
-#   never built (hotfix) is built here.
+#   never built (hotfix) is built here. Then deploy (deploy.yaml).
+# Re-run this workflow to redeploy the same commit (settings or secret change).
 on:
   push:
     branches: [staging, main]
@@ -74,3 +75,10 @@ jobs:
         run: |
           docker buildx imagetools create -t "$IMAGE:$TAG" "$IMAGE:$GITHUB_SHA"
           echo "$IMAGE:$GITHUB_SHA -> $IMAGE:$TAG"
+
+  deploy:
+    name: Deploy
+    needs: [image]
+    uses: ./.github/workflows/deploy.yaml
+    # Environment secrets (KUBE_CONFIG...) are read by the deploy job itself
+    secrets: inherit
