@@ -27,58 +27,96 @@
 
 import { NextRequest, NextResponse } from "next/server";
 import { protectedRoutes } from "./router/routes";
+import { getLocale, isLocale } from "./util/i18n";
+import {
+    ADMIN_TOKEN_COOKIE,
+    applySession,
+    needsRefresh,
+    refreshSession,
+} from "./util/admin-session";
 
-let locales = ["fr", "en"];
-
-// Get the preferred locale from browser
-function getLocale(request: NextRequest) {
-    const acceptLanguage = request.headers.get("accept-language");
-    return acceptLanguage?.split(",")[0].split("-")[0] || "fr";
+function directusUrl(): string {
+    return (
+        process.env.DIRECTUS_URL ||
+        process.env.NEXT_PUBLIC_DIRECTUS_URL ||
+        "https://my-api.alexandredfm.fr"
+    ).replace(/\/+$/, "");
 }
 
-export function middleware(request: NextRequest) {
-    const pathname = request.nextUrl.pathname;
+function isProtected(pathWithoutLocale: string): boolean {
+    return protectedRoutes.some(
+        (route) =>
+            pathWithoutLocale === route ||
+            pathWithoutLocale.startsWith(`${route}/`),
+    );
+}
 
-    // Skip if the request is for an API route, static files, or other special paths
+function withRobotsHeader(response: NextResponse): NextResponse {
+    if (process.env.SITE_NOINDEX === "true") {
+        response.headers.set("X-Robots-Tag", "noindex, nofollow");
+    }
+    return response;
+}
+
+export async function middleware(request: NextRequest) {
+    const { pathname } = request.nextUrl;
+    const isApi = pathname.startsWith("/api/");
+
+    // Keep the admin session alive: refresh an expired Directus access token
+    // (admin pages and write calls to the API).
+    const wantsSession =
+        (isApi && request.method !== "GET") ||
+        /^\/(fr|en)\/admin(\/|$)/.test(pathname);
+    let refreshed: Awaited<ReturnType<typeof refreshSession>> | undefined;
+    if (wantsSession && needsRefresh(request)) {
+        refreshed = await refreshSession(request, directusUrl());
+        if (refreshed) {
+            request.cookies.set(ADMIN_TOKEN_COOKIE, refreshed.accessToken);
+        } else {
+            request.cookies.delete(ADMIN_TOKEN_COOKIE);
+        }
+    }
+    const next = () => {
+        const response = NextResponse.next({ request: { headers: request.headers } });
+        if (refreshed !== undefined) applySession(response, refreshed);
+        return withRobotsHeader(response);
+    };
+
+    // API routes, Next internals and static files: no locale handling
     if (
+        isApi ||
         pathname.startsWith("/_next") ||
-        pathname.startsWith("/api/") ||
         pathname.startsWith("/static/") ||
         pathname.includes(".")
     ) {
-        return NextResponse.next();
+        return next();
     }
 
-    // Check if the pathname starts with a locale
-    const pathnameHasLocale = locales.some(
-        (locale) =>
-            pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`,
-    );
-
-    // Redirect if there is no locale
-    if (!pathnameHasLocale) {
-        const locale = getLocale(request);
-        request.nextUrl.pathname = `/${locale}${pathname}`;
-        return NextResponse.redirect(request.nextUrl);
+    const segment = pathname.split("/")[1];
+    if (!isLocale(segment)) {
+        const url = request.nextUrl.clone();
+        const locale = getLocale(request.headers.get("accept-language"));
+        // "/de/about" (unsupported language prefix) -> "/fr/about", "/about" -> "/fr/about"
+        const rest = /^[a-z]{2}(-[a-z]{2})?$/i.test(segment)
+            ? pathname.slice(segment.length + 1)
+            : pathname;
+        url.pathname = `/${locale}${rest === "/" ? "" : rest}`;
+        return withRobotsHeader(NextResponse.redirect(url));
     }
 
-    // Check protected routes (admin panel)
-    // Extract the path without locale for route matching
-    const pathWithoutLocale = pathname.replace(/^\/(fr|en)/, "");
-    if (protectedRoutes.includes(pathWithoutLocale)) {
-        const accessToken = request.cookies.get("directus_admin_token")?.value;
-        if (!accessToken) {
-            // Extract the current locale from the pathname
-            const currentLocale = pathname.startsWith("/fr")
-                ? "fr"
-                : pathname.startsWith("/en")
-                  ? "en"
-                  : locales[0];
-            return NextResponse.redirect(
-                new URL(`/${currentLocale}/admin-login`, request.nextUrl),
-            );
-        }
+    // Admin pages require a session cookie (the admin layout verifies it with Directus)
+    const pathWithoutLocale = pathname.slice(segment.length + 1) || "/";
+    if (isProtected(pathWithoutLocale) && !request.cookies.get(ADMIN_TOKEN_COOKIE)?.value) {
+        const url = request.nextUrl.clone();
+        url.pathname = `/${segment}/admin-login`;
+        const response = NextResponse.redirect(url);
+        if (refreshed !== undefined) applySession(response, refreshed);
+        return withRobotsHeader(response);
     }
 
-    return NextResponse.next();
+    return next();
 }
+
+export const config = {
+    matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
+};

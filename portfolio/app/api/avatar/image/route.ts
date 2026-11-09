@@ -25,32 +25,23 @@
  * THE SOFTWARE.
  */
 
-import { fetchAvatarImage } from "@/util/directus";
+import { getAvatarFileId } from "@/util/directus";
+import { proxyDirectusAsset } from "@/util/directus-asset";
 
-// Enable caching for avatar images (revalidate every hour)
-export const revalidate = 3600;
+// Resolved at request time: a build-time render would bake a 404 into the image
+export const dynamic = "force-dynamic";
 
 export async function GET() {
-    try {
-        const result = await fetchAvatarImage();
-
-        if (!result) {
-            console.warn(
-                "[API/avatar/image] Avatar not found or failed to fetch",
-            );
-            return new Response("Avatar not found", { status: 404 });
-        }
-
-        return new Response(result.stream, {
-            status: 200,
-            headers: {
-                "Content-Type": result.contentType,
-                "Cache-Control":
-                    "public, s-maxage=3600, stale-while-revalidate=86400",
-            },
+    const avatarId = await getAvatarFileId();
+    if (!avatarId) {
+        return new Response("Avatar not found", {
+            status: 404,
+            headers: { "Cache-Control": "no-store" },
         });
-    } catch (error) {
-        console.error("[API/avatar/image] Internal server error:", error);
-        return new Response("Internal server error", { status: 500 });
     }
+    return proxyDirectusAsset(avatarId, {
+        kind: "image",
+        label: "API/avatar/image",
+        transform: { width: 512, format: "webp", quality: 85 },
+    });
 }

@@ -25,6 +25,8 @@
  * THE SOFTWARE.
  */
 
+import { isDirectusId } from "@/util/directus-asset";
+import { getDirectusUrl } from "@/util/config";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
@@ -37,11 +39,14 @@ interface RouteParams {
 export async function GET(request: NextRequest, { params }: RouteParams) {
     try {
         const { id } = await params;
+        if (!isDirectusId(id)) {
+            return NextResponse.json({ error: "Invalid id" }, { status: 400 });
+        }
         const { searchParams } = new URL(request.url);
         const language = (searchParams.get("lang") as "en" | "fr") || "en";
 
         const response = await fetch(
-            `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/projects/${id}`,
+            `${getDirectusUrl()}/items/projects/${id}`,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -73,7 +78,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
             date: project.date,
             github: project.github,
             imageUrl: project.image
-                ? `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/assets/${project.image}`
+                ? `/api/projects/image/${project.image}`
                 : null,
             role:
                 language === "fr" && project.role_fr
@@ -115,6 +120,9 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
 export async function PATCH(request: NextRequest, { params }: RouteParams) {
     try {
         const { id } = await params;
+        if (!isDirectusId(id)) {
+            return NextResponse.json({ error: "Invalid id" }, { status: 400 });
+        }
         const cookieStore = await cookies();
         const token = cookieStore.get("directus_admin_token");
 
@@ -149,7 +157,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
             imageFormData.append("file", imageFile);
 
             const uploadResponse = await fetch(
-                `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/files`,
+                `${getDirectusUrl()}/files`,
                 {
                     method: "POST",
                     headers: {
@@ -191,7 +199,7 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
         };
 
         const response = await fetch(
-            `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/projects/${id}`,
+            `${getDirectusUrl()}/items/projects/${id}`,
             {
                 method: "PATCH",
                 headers: {
@@ -228,6 +236,9 @@ export async function PATCH(request: NextRequest, { params }: RouteParams) {
 export async function DELETE(request: NextRequest, { params }: RouteParams) {
     try {
         const { id } = await params;
+        if (!isDirectusId(id)) {
+            return NextResponse.json({ error: "Invalid id" }, { status: 400 });
+        }
         const cookieStore = await cookies();
         const token = cookieStore.get("directus_admin_token");
 
@@ -239,7 +250,7 @@ export async function DELETE(request: NextRequest, { params }: RouteParams) {
         }
 
         const response = await fetch(
-            `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/projects/${id}`,
+            `${getDirectusUrl()}/items/projects/${id}`,
             {
                 method: "DELETE",
                 headers: {

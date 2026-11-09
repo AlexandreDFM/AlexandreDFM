@@ -26,63 +26,17 @@
  */
 
 import { NextRequest } from "next/server";
-
-const directusUrl =
-    process.env.NEXT_PUBLIC_DIRECTUS_URL || "https://my-api.alexandredfm.fr/";
-const directusToken =
-    process.env.DIRECTUS_WEBSITE_TOKEN || "YOUR_DIRECTUS_STATIC_TOKEN";
-
-// Enable caching for project images (revalidate every hour)
-export const revalidate = 3600;
+import { proxyDirectusAsset } from "@/util/directus-asset";
 
 export async function GET(
-    request: NextRequest,
+    _request: NextRequest,
     { params }: { params: Promise<{ id: string }> },
 ) {
-    try {
-        const { id } = await params;
-
-        if (!id) {
-            return new Response("Missing image ID", { status: 400 });
-        }
-
-        // Construct the file URL
-        const fileUrl = `${directusUrl.replace(/\/$/, "")}/assets/${id}`;
-
-        console.log(`[API/projects/image] Fetching image: ${fileUrl}`);
-
-        // Fetch the actual image file with authentication
-        const assetRes = await fetch(fileUrl, {
-            headers: {
-                Authorization: `Bearer ${directusToken}`,
-            },
-        });
-
-        if (!assetRes.ok) {
-            console.error(
-                `[API/projects/image] Failed to fetch image: ${assetRes.status} ${assetRes.statusText}`,
-            );
-            return new Response("Image not found", { status: 404 });
-        }
-
-        if (!assetRes.body) {
-            console.error("[API/projects/image] Image response has no body");
-            return new Response("Image not found", { status: 404 });
-        }
-
-        const contentType =
-            assetRes.headers.get("Content-Type") || "image/jpeg";
-
-        return new Response(assetRes.body, {
-            status: 200,
-            headers: {
-                "Content-Type": contentType,
-                "Cache-Control":
-                    "public, s-maxage=3600, stale-while-revalidate=86400",
-            },
-        });
-    } catch (error) {
-        console.error("[API/projects/image] Internal server error:", error);
-        return new Response("Internal server error", { status: 500 });
-    }
+    const { id } = await params;
+    return proxyDirectusAsset(id, {
+        kind: "image",
+        label: "API/projects/image",
+        // Originals are 2-4 MB PNGs of ~3000 px: serve a resized WebP instead
+        transform: { width: 1200, format: "webp", quality: 80 },
+    });
 }

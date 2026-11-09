@@ -25,59 +25,17 @@
  * THE SOFTWARE.
  */
 
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { proxyDirectusAsset } from "@/util/directus-asset";
 
 export async function GET(
-    request: NextRequest,
+    _request: NextRequest,
     { params }: { params: Promise<{ id: string }> },
 ) {
-    try {
-        const { id } = await params;
-        const directusUrl =
-            process.env.NEXT_PUBLIC_DIRECTUS_URL ||
-            "https://my-api.alexandredfm.fr/";
-        const directusToken =
-            process.env.DIRECTUS_WEBSITE_TOKEN || "YOUR_DIRECTUS_STATIC_TOKEN";
-
-        const fileUrl = `${directusUrl.replace(/\/$/, "")}/assets/${id}`;
-
-        const assetRes = await fetch(fileUrl, {
-            headers: {
-                Authorization: `Bearer ${directusToken}`,
-            },
-        });
-
-        if (!assetRes.ok) {
-            console.error(
-                `Failed to fetch blog image: ${assetRes.status} ${assetRes.statusText}`,
-            );
-            return NextResponse.json(
-                { error: "Image not found" },
-                { status: 404 },
-            );
-        }
-
-        if (!assetRes.body) {
-            return NextResponse.json(
-                { error: "No image data" },
-                { status: 404 },
-            );
-        }
-
-        const contentType =
-            assetRes.headers.get("Content-Type") || "image/jpeg";
-
-        return new NextResponse(assetRes.body, {
-            headers: {
-                "Content-Type": contentType,
-                "Cache-Control": "public, max-age=31536000, immutable",
-            },
-        });
-    } catch (error) {
-        console.error("Error fetching blog image:", error);
-        return NextResponse.json(
-            { error: "Failed to fetch image" },
-            { status: 500 },
-        );
-    }
+    const { id } = await params;
+    return proxyDirectusAsset(id, {
+        kind: "image",
+        label: "API/blog/image",
+        transform: { width: 1600, format: "webp", quality: 80 },
+    });
 }

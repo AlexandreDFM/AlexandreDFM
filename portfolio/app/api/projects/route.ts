@@ -25,6 +25,7 @@
  * THE SOFTWARE.
  */
 
+import { getDirectusUrl } from "@/util/config";
 import { getProjects } from "@/util/directus";
 import { NextRequest, NextResponse } from "next/server";
 import { cookies } from "next/headers";
@@ -94,7 +95,7 @@ export async function POST(request: NextRequest) {
             imageFormData.append("file", imageFile);
 
             const uploadResponse = await fetch(
-                `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/files`,
+                `${getDirectusUrl()}/files`,
                 {
                     method: "POST",
                     headers: {
@@ -136,7 +137,7 @@ export async function POST(request: NextRequest) {
         };
 
         const response = await fetch(
-            `${process.env.NEXT_PUBLIC_DIRECTUS_URL}/items/projects`,
+            `${getDirectusUrl()}/items/projects`,
             {
                 method: "POST",
                 headers: {

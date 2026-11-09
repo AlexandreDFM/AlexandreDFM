@@ -33,6 +33,10 @@ import {
     createDirectus,
 } from "@directus/sdk";
 
+import "server-only";
+
+import { getDirectusToken, getDirectusUrl } from "@/util/config";
+import { sanitizeHtml } from "@/util/sanitize";
 import { IProjectCollection } from "@/types/directus/IProjectCollection";
 import { IBlogPostCollection } from "@/types/directus/IBlogPostCollection";
 import { IMediaPostCollection } from "@/types/directus/IMediaPostCollection";
@@ -43,11 +47,9 @@ interface Schema {
     media_posts: IMediaPostCollection[];
 }
 
-// Create Directus client
-const directusUrl =
-    process.env.NEXT_PUBLIC_DIRECTUS_URL || "https://my-api.alexandredfm.fr/";
-const directusToken =
-    process.env.DIRECTUS_WEBSITE_TOKEN || "YOUR_DIRECTUS_STATIC_TOKEN";
+// Create Directus client (server side only: the token must never reach the browser)
+const directusUrl = getDirectusUrl();
+const directusToken = getDirectusToken() || "";
 
 export const directus = createDirectus<Schema>(directusUrl)
     .with(rest())
@@ -81,17 +83,9 @@ export async function getProjects(
             }),
         );
 
-        console.log("Fetched projects:", projects.length, "projects found.");
-
         // Transform projects to match the expected format with language-specific fields
         return projects.map(
-            (project: IProjectCollection) => (
-                console.log(
-                    "Processing project:",
-                    project.category,
-                    project.title,
-                ),
-                {
+            (project: IProjectCollection) => ({
                     id: project.id,
                     title:
                         language === "fr" && project.title_fr
@@ -128,8 +122,7 @@ export async function getProjects(
                             : project.achievements,
                     category: project.category,
                     is_featured: project.is_featured,
-                }
-            ),
+            }),
         );
     } catch (error) {
         console.error("Error fetching projects from Directus:", error);
@@ -150,96 +143,14 @@ export async function getProjects(
     }
 }
 
-export async function getAvatarUrl(): Promise<string | null> {
+/** File id of the avatar of the "website" Directus user, or null. */
+export async function getAvatarFileId(): Promise<string | null> {
     try {
         const user = await directus.request(readMe({ fields: ["avatar"] }));
-
-        console.log("Fetched user data from Directus:", user);
-
-        if (user.avatar) {
-            console.log("User avatar file ID:", user.avatar);
-            return `${directusUrl.replace(/\/$/, "")}/assets/${user.avatar}`;
-        } else {
-            console.warn("User has no avatar set.");
-        }
-
-        return null;
+        return (user?.avatar as string | null | undefined) || null;
     } catch (error) {
-        console.error("Error fetching user avatar from Directus:", error);
+        console.error("[Directus] Error fetching the avatar id:", error);
         return null;
-    }
-}
-
-// Service to fetch the avatar image as a stream and content type
-export async function fetchAvatarImage(): Promise<{
-    stream: ReadableStream<Uint8Array>;
-    contentType: string;
-} | null> {
-    try {
-        // Fetch the current user's data to get the avatar file ID
-        const user = await directus.request(readMe({ fields: ["avatar"] }));
-
-        if (!user.avatar) {
-            console.warn("[Directus] User has no avatar set");
-            return null;
-        }
-
-        console.log("[Directus] Fetching avatar with file ID:", user.avatar);
-
-        // Construct the file URL using the stored directusUrl
-        const fileUrl = `${directusUrl.replace(/\/$/, "")}/assets/${
-            user.avatar
-        }`;
-
-        // Fetch the actual image file with authentication
-        const assetRes = await fetch(fileUrl, {
-            headers: {
-                Authorization: `Bearer ${directusToken}`,
-            },
-        });
-
-        if (!assetRes.ok) {
-            console.error(
-                `[Directus] Failed to fetch avatar: ${assetRes.status} ${assetRes.statusText}`,
-            );
-            return null;
-        }
-
-        if (!assetRes.body) {
-            console.error("[Directus] Avatar response has no body");
-            return null;
-        }
-
-        const contentType =
-            assetRes.headers.get("Content-Type") || "image/jpeg";
-        console.log(
-            "[Directus] Avatar fetched successfully, content-type:",
-            contentType,
-        );
-
-        return {
-            stream: assetRes.body,
-            contentType,
-        };
-    } catch (error) {
-        console.error("[Directus] Error fetching avatar image:", error);
-        return null;
-    }
-}
-
-export async function testDirectusConnection() {
-    try {
-        const projects = await directus.request(
-            readItems("projects", {
-                limit: 1,
-                filter: { status: { _eq: "published" } },
-            }),
-        );
-        console.log("Directus connection successful");
-        return true;
-    } catch (error) {
-        console.error("Directus connection failed:", error);
-        return false;
     }
 }
 
@@ -261,21 +172,21 @@ export async function getBlogPosts(
             }),
         );
 
-        console.log("Fetched blog posts:", posts.length, "posts found.");
-
         return posts.map((post: IBlogPostCollection) => ({
             id: post.id,
             title:
                 language === "fr" && post.title_fr ? post.title_fr : post.title,
             slug: post.slug,
-            excerpt:
+            excerpt: sanitizeHtml(
                 language === "fr" && post.excerpt_fr
                     ? post.excerpt_fr
                     : post.excerpt,
-            content:
+            ),
+            content: sanitizeHtml(
                 language === "fr" && post.content_fr
                     ? post.content_fr
                     : post.content,
+            ),
             coverImageUrl: post.cover_image
                 ? `/api/blog/image/${post.cover_image}`
                 : null,
@@ -319,14 +230,16 @@ export async function getBlogPostBySlug(
             title:
                 language === "fr" && post.title_fr ? post.title_fr : post.title,
             slug: post.slug,
-            excerpt:
+            excerpt: sanitizeHtml(
                 language === "fr" && post.excerpt_fr
                     ? post.excerpt_fr
                     : post.excerpt,
-            content:
+            ),
+            content: sanitizeHtml(
                 language === "fr" && post.content_fr
                     ? post.content_fr
                     : post.content,
+            ),
             coverImageUrl: post.cover_image
                 ? `/api/blog/image/${post.cover_image}`
                 : null,
@@ -361,8 +274,6 @@ export async function getMediaPosts(
                 ...(limit && { limit }),
             }),
         );
-
-        console.log("Fetched media posts:", posts.length, "posts found.");
 
         return posts.map((post: IMediaPostCollection) => ({
             id: post.id,

@@ -28,68 +28,57 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { createDirectus, rest, authentication, readMe } from "@directus/sdk";
+import {
+    authentication,
+    createDirectus,
+    readMe,
+    readPolicyGlobals,
+    rest,
+} from "@directus/sdk";
+import { getDirectusUrl } from "@/util/config";
+import {
+    ADMIN_REFRESH_COOKIE,
+    ADMIN_TOKEN_COOKIE,
+    sessionCookieOptions,
+} from "@/util/admin-session";
 
-const ADMIN_TOKEN_COOKIE = "directus_admin_token";
-const ADMIN_REFRESH_COOKIE = "directus_admin_refresh";
-const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000; // 7 days
-
-const directusUrl =
-    process.env.NEXT_PUBLIC_DIRECTUS_URL || "https://my-api.alexandredfm.fr/";
+function client() {
+    return createDirectus(getDirectusUrl())
+        .with(rest())
+        .with(authentication("json"));
+}
 
 export async function login(
     email: string,
     password: string,
 ): Promise<{ success: boolean; error?: string }> {
+    const genericError = "Invalid email or password";
     try {
-        const client = createDirectus(directusUrl)
-            .with(rest())
-            .with(authentication("json"));
+        const directus = client();
+        const result = await directus.login({ email, password });
 
-        // Attempt to login with Directus
-        const result = await client.login({ email, password });
-
-        if (!result || !result.access_token) {
-            return { success: false, error: "Invalid credentials" };
+        if (!result?.access_token) {
+            return { success: false, error: genericError };
         }
 
-        // Verify user has admin access by checking their role
-        await client.setToken(result.access_token);
-        const user = await client.request(readMe());
-
-        if (!user) {
-            return { success: false, error: "Failed to verify user" };
+        // Only users allowed to use the Directus app can manage the portfolio
+        // (the read-only "website" user and public users cannot).
+        await directus.setToken(result.access_token);
+        const globals = await directus.request(readPolicyGlobals());
+        if (!globals?.app_access) {
+            return { success: false, error: "This account cannot manage the portfolio" };
         }
 
-        // Store tokens in cookies
         const cookieStore = await cookies();
-        const expiresAt = new Date(Date.now() + SESSION_DURATION);
-
-        cookieStore.set(ADMIN_TOKEN_COOKIE, result.access_token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            expires: expiresAt,
-            sameSite: "lax",
-            path: "/",
-        });
-
+        cookieStore.set(ADMIN_TOKEN_COOKIE, result.access_token, sessionCookieOptions());
         if (result.refresh_token) {
-            cookieStore.set(ADMIN_REFRESH_COOKIE, result.refresh_token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
-                expires: expiresAt,
-                sameSite: "lax",
-                path: "/",
-            });
+            cookieStore.set(ADMIN_REFRESH_COOKIE, result.refresh_token, sessionCookieOptions());
         }
 
         return { success: true };
-    } catch (error: any) {
-        console.error("Login error:", error);
-        return {
-            success: false,
-            error: error.message || "Authentication failed",
-        };
+    } catch (error) {
+        console.error("[admin] Login failed:", error);
+        return { success: false, error: genericError };
     }
 }
 
@@ -101,31 +90,21 @@ export async function logout(): Promise<void> {
 
 export async function isAuthenticated(): Promise<boolean> {
     const cookieStore = await cookies();
-    const token = cookieStore.get(ADMIN_TOKEN_COOKIE);
-
-    if (!token?.value) {
-        return false;
-    }
+    const token = cookieStore.get(ADMIN_TOKEN_COOKIE)?.value;
+    if (!token) return false;
 
     try {
-        // Verify token is still valid by checking with Directus
-        const client = createDirectus(directusUrl)
-            .with(rest())
-            .with(authentication("json"));
-
-        await client.setToken(token.value);
-        await client.request(readMe());
-
+        // The middleware refreshes an expired access token before we get here
+        const directus = client();
+        await directus.setToken(token);
+        await directus.request(readMe({ fields: ["id"] }));
         return true;
-    } catch (error) {
-        // Token is invalid or expired, but don't call logout here
-        // since this might be called from a non-Server Action context
+    } catch {
         return false;
     }
 }
 
 export async function getAuthToken(): Promise<string | null> {
     const cookieStore = await cookies();
-    const token = cookieStore.get(ADMIN_TOKEN_COOKIE);
-    return token?.value || null;
+    return cookieStore.get(ADMIN_TOKEN_COOKIE)?.value || null;
 }
