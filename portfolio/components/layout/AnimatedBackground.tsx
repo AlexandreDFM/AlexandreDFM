@@ -35,7 +35,7 @@ import { IAnimatedBackgroundProps } from "@/types/IAnimatedBackgroundProps";
 const AnimatedBackground = memo(function AnimatedBackground({
     children,
 }: IAnimatedBackgroundProps) {
-    const { theme } = useTheme();
+    const { resolvedTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
     const [floatingLights, setFloatingLights] = useState<
         Array<{
@@ -60,13 +60,14 @@ const AnimatedBackground = memo(function AnimatedBackground({
 
     if (!mounted) {
         return (
-            <div className="relative flex min-h-screen w-screen flex-col items-center justify-center overflow-hidden bg-slate-900">
+            <div className="relative flex min-h-screen w-screen flex-col items-center justify-center overflow-hidden bg-background">
                 <div className="relative z-10 w-full">{children}</div>
             </div>
         );
     }
 
-    const isDark = theme === "dark";
+    // resolvedTheme: "system" is resolved to "light" or "dark"
+    const isDark = resolvedTheme === "dark";
 
     return (
         <div

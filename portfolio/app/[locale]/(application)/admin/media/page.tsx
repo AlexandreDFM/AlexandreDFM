@@ -41,7 +41,7 @@ export default async function AdminMediaPage({
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-3xl font-bold">Media Gallery</h1>
-                    <p className="text-default-400 mt-1">
+                    <p className="text-muted mt-1">
                         Manage your media posts
                     </p>
                 </div>

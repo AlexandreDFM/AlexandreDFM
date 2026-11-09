@@ -80,7 +80,7 @@ export default function AdminNav() {
                                         className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                                             isActive
                                                 ? "bg-primary text-white"
-                                                : "text-default-600 hover:bg-default-100 hover:text-default-900"
+                                                : "text-foreground/80 hover:bg-default-100 hover:text-default-900"
                                         }`}
                                     >
                                         <Icon className="h-4 w-4" />
@@ -95,7 +95,7 @@ export default function AdminNav() {
 
                     <button
                         onClick={handleLogout}
-                        className="text-default-600 hover:bg-default-100 hover:text-default-900 flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
+                        className="text-foreground/80 hover:bg-default-100 hover:text-default-900 flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
                     >
                         <LogOut className="h-4 w-4" />
                         <span className="hidden sm:inline">Logout</span>

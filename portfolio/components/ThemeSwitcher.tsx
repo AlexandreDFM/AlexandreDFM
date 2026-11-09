@@ -28,70 +28,35 @@
 "use client";
 
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 import { MoonIcon, SunIcon } from "lucide-react";
-import { Button, PressEvent } from "@heroui/react";
-import { ChangeEvent, useEffect, useState } from "react";
+import { Button } from "@heroui/react";
 
 export const ThemeSwitcher = () => {
-    const { theme, setTheme } = useTheme();
+    // resolvedTheme is "light" or "dark" even when the theme follows the system
+    const { resolvedTheme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
         setMounted(true);
     }, []);
 
-    const handleThemeChange = (
-        e?:
-            | ChangeEvent<HTMLInputElement>
-            | React.MouseEvent
-            | React.KeyboardEvent
-            | PressEvent,
-    ) => {
-        if (e && typeof (e as any).preventDefault === "function")
-            (e as any).preventDefault();
+    const isLight = mounted && resolvedTheme === "light";
+    const label = isLight ? "Switch to dark theme" : "Switch to light theme";
 
-        if (e && typeof (e as any).stopPropagation === "function")
-            (e as any).stopPropagation();
-
-        const newTheme = theme === "light" ? "dark" : "light";
-
-        setTheme(newTheme);
-    };
-
-    if (!mounted) {
-        return (
-            <Button
-                isIconOnly
-                aria-label="Change Theme"
-                variant="bordered"
-                radius="full"
-                disabled
-            >
-                <SunIcon size={22} />
-            </Button>
-        );
-    }
-
+    // HeroUI's onPress already handles mouse, touch, Enter and Space:
+    // no extra onKeyDown (it used to toggle twice from the keyboard).
     return (
-        <>
-            <Button
-                isIconOnly
-                aria-label="Change Theme"
-                variant="bordered"
-                radius="full"
-                onPress={handleThemeChange}
-                onKeyDown={(e: React.KeyboardEvent) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                        handleThemeChange(e);
-                    }
-                }}
-            >
-                {theme === "light" ? (
-                    <SunIcon size={22} />
-                ) : (
-                    <MoonIcon size={22} />
-                )}
-            </Button>
-        </>
+        <Button
+            isIconOnly
+            aria-label={label}
+            title={label}
+            variant="bordered"
+            radius="full"
+            isDisabled={!mounted}
+            onPress={() => setTheme(isLight ? "dark" : "light")}
+        >
+            {isLight ? <SunIcon size={22} /> : <MoonIcon size={22} />}
+        </Button>
     );
 };

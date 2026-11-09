@@ -68,7 +68,7 @@ export default function BlogPostsList() {
     if (loading) {
         return (
             <div className="flex h-64 items-center justify-center">
-                <div className="h-12 w-12 animate-spin rounded-full border-4 border-purple-500/20 border-t-purple-500" />
+                <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary" />
             </div>
         );
     }
@@ -85,7 +85,7 @@ export default function BlogPostsList() {
         return (
             <Card>
                 <div className="p-12 text-center">
-                    <p className="text-default-400">
+                    <p className="text-muted">
                         No blog posts yet. Create your first post!
                     </p>
                 </div>
@@ -120,7 +120,7 @@ export default function BlogPostsList() {
                                             <Star className="h-4 w-4 fill-yellow-500 text-yellow-500" />
                                         )}
                                     </div>
-                                    <p className="text-default-400 mt-1 line-clamp-2 text-sm">
+                                    <p className="text-muted mt-1 line-clamp-2 text-sm">
                                         {post.excerpt}
                                     </p>
                                 </div>
@@ -129,14 +129,14 @@ export default function BlogPostsList() {
                                     <Link
                                         href={`/${locale}/blog/${post.slug}`}
                                         target="_blank"
-                                        className="text-default-600 hover:bg-default-100 hover:text-default-900 rounded-lg p-2 transition-colors"
+                                        className="text-foreground/80 hover:bg-default-100 hover:text-default-900 rounded-lg p-2 transition-colors"
                                         title="View"
                                     >
                                         <Eye className="h-4 w-4" />
                                     </Link>
                                     <Link
                                         href={`/${locale}/admin/blog/edit/${post.slug}`}
-                                        className="text-default-600 hover:bg-default-100 hover:text-default-900 rounded-lg p-2 transition-colors"
+                                        className="text-foreground/80 hover:bg-default-100 hover:text-default-900 rounded-lg p-2 transition-colors"
                                         title="Edit"
                                     >
                                         <Edit className="h-4 w-4" />
@@ -152,7 +152,7 @@ export default function BlogPostsList() {
                                 </div>
                             </div>
 
-                            <div className="text-default-400 flex flex-wrap items-center gap-4 text-xs">
+                            <div className="text-muted flex flex-wrap items-center gap-4 text-xs">
                                 <span>{post.readingTime} min read</span>
                                 {post.category && (
                                     <span className="bg-primary/10 text-primary rounded-full px-2 py-0.5">

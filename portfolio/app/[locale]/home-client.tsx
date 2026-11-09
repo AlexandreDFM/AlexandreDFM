@@ -64,7 +64,7 @@ export default function HomeClient() {
                         <li key={item.href}>
                             <Link
                                 href={item.href}
-                                className="rounded-md px-3 py-2 text-sm text-blue-300/80 transition-all duration-500 hover:scale-110 hover:text-white focus:text-white focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900 focus:outline-none dark:text-blue-200/80"
+                                className="rounded-md px-3 py-2 text-sm text-primary-700 transition-all duration-500 hover:scale-110 hover:text-primary focus:text-primary focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-background dark:hover:text-white dark:focus:text-white focus:outline-none dark:text-blue-200/80"
                                 aria-label={`Navigate to ${item.name} page`}
                             >
                                 {item.name}
@@ -94,12 +94,12 @@ export default function HomeClient() {
 
             {/* Subtitle */}
             <div className="animate-fade-in my-16 text-center">
-                <h2 className="text-sm text-blue-300/80 dark:text-blue-200/80">
+                <h2 className="text-sm text-primary-700 dark:text-blue-200/80">
                     I{"'"}m a developer. I love{" "}
                     <Link
                         target="_blank"
                         href="https://hownee.com"
-                        className="inline-block rounded-sm underline transition-all duration-500 hover:scale-110 hover:text-white focus:text-white focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900 focus:outline-none"
+                        className="inline-block rounded-sm underline transition-all duration-500 hover:scale-110 hover:text-primary focus:text-primary focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-background dark:hover:text-white dark:focus:text-white focus:outline-none"
                         aria-label="Visit hownee.com (opens in new tab)"
                         rel="noopener noreferrer"
                     >
@@ -109,7 +109,7 @@ export default function HomeClient() {
                     <Link
                         target="_blank"
                         href="https://tux-inc.com"
-                        className="inline-block rounded-sm underline transition-all duration-500 hover:scale-110 hover:text-white focus:text-white focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900 focus:outline-none"
+                        className="inline-block rounded-sm underline transition-all duration-500 hover:scale-110 hover:text-primary focus:text-primary focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-background dark:hover:text-white dark:focus:text-white focus:outline-none"
                         aria-label="Visit tux-inc.com (opens in new tab)"
                         rel="noopener noreferrer"
                     >

@@ -48,7 +48,7 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
                 role="main"
             >
                 <div className="flex h-96 items-center justify-center">
-                    <div className="h-12 w-12 animate-spin rounded-full border-4 border-purple-500/20 border-t-purple-500" />
+                    <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary" />
                 </div>
             </main>
         );
@@ -81,7 +81,7 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
             {/* Back button */}
             <Link
                 href={`/${locale}/blog`}
-                className="text-default-400 hover:text-primary inline-flex items-center gap-2 text-sm transition-colors"
+                className="text-muted hover:text-primary inline-flex items-center gap-2 text-sm transition-colors"
             >
                 <ArrowLeft className="h-4 w-4" />
                 {t("blog.backToBlog") || "Back to Blog"}
@@ -94,7 +94,7 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
                         {post.title}
                     </h1>
 
-                    <div className="text-default-400 flex flex-wrap items-center gap-4 text-sm">
+                    <div className="text-muted flex flex-wrap items-center gap-4 text-sm">
                         <span className="flex items-center gap-1">
                             <Clock className="h-4 w-4" />
                             {post.readingTime} min read
@@ -149,7 +149,7 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
 
                 {/* Article Content */}
                 <div
-                    className="prose prose-invert prose-lg prose-headings:font-bold prose-headings:tracking-tight prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl prose-p:text-default-300 prose-p:leading-relaxed prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-default-100 prose-strong:font-semibold prose-code:text-primary prose-code:bg-default-100 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-pre:bg-default-100 prose-pre:border prose-pre:border-default-200 prose-blockquote:border-l-primary prose-blockquote:text-default-300 prose-ul:text-default-300 prose-ol:text-default-300 prose-li:text-default-300 prose-img:rounded-lg prose-img:shadow-lg max-w-none"
+                    className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-headings:text-foreground prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl prose-p:text-foreground/85 prose-p:leading-relaxed prose-li:text-foreground/85 prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-strong:text-foreground prose-strong:font-semibold prose-code:text-primary prose-code:bg-default-200/60 prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:before:content-none prose-code:after:content-none prose-pre:bg-default-100 prose-pre:text-foreground prose-pre:border prose-pre:border-default-200 prose-blockquote:border-l-primary prose-blockquote:text-muted prose-img:rounded-lg prose-img:shadow-lg"
                     dangerouslySetInnerHTML={{ __html: post.content }}
                 />
 
@@ -165,7 +165,7 @@ export default function BlogPostClient({ slug }: BlogPostClientProps) {
                         </Link>
                         {post.date_updated &&
                             post.date_updated !== post.date_created && (
-                                <p className="text-default-400 text-sm">
+                                <p className="text-muted text-sm">
                                     {t("blog.lastUpdated") || "Last updated"}:{" "}
                                     {new Date(
                                         post.date_updated,

@@ -52,13 +52,13 @@ export default function GalleryClient() {
                     <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
                         Gallery
                     </h1>
-                    <p className="text-default-400">
+                    <p className="text-muted">
                         {t("gallery.description") ||
                             "Explore my visual journey"}
                     </p>
                 </header>
                 <div className="flex h-96 items-center justify-center">
-                    <div className="h-12 w-12 animate-spin rounded-full border-4 border-purple-500/20 border-t-purple-500" />
+                    <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary" />
                 </div>
             </main>
         );
@@ -94,13 +94,13 @@ export default function GalleryClient() {
                     <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
                         Gallery
                     </h1>
-                    <p className="text-default-400">
+                    <p className="text-muted">
                         {t("gallery.description") ||
                             "Explore my visual journey"}
                     </p>
                 </header>
                 <div className="text-center">
-                    <p className="text-default-400">
+                    <p className="text-muted">
                         {t("gallery.noPosts") ||
                             "No media yet. Check back soon!"}
                     </p>
@@ -115,7 +115,7 @@ export default function GalleryClient() {
                 <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
                     Gallery
                 </h1>
-                <p className="text-default-400">
+                <p className="text-muted">
                     {t("gallery.description") || "Explore my visual journey"}
                 </p>
             </header>
@@ -126,7 +126,7 @@ export default function GalleryClient() {
                     <button
                         key={post.id}
                         onClick={() => setSelectedPost(post)}
-                        className="group relative aspect-square overflow-hidden bg-zinc-900 transition-opacity hover:opacity-90"
+                        className="group relative aspect-square overflow-hidden bg-default-100 transition-opacity hover:opacity-90"
                         aria-label={`View ${post.title}`}
                     >
                         {/* Media Display */}

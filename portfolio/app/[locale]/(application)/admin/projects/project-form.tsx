@@ -230,7 +230,7 @@ export default function ProjectForm({ id }: ProjectFormProps) {
     if (loadingProject) {
         return (
             <div className="flex h-64 items-center justify-center">
-                <div className="h-12 w-12 animate-spin rounded-full border-4 border-purple-500/20 border-t-purple-500" />
+                <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary" />
             </div>
         );
     }
@@ -253,7 +253,7 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                             className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                                 activeTab === "en"
                                     ? "bg-primary text-white"
-                                    : "text-default-600 hover:bg-default-100"
+                                    : "text-foreground/80 hover:bg-default-100"
                             }`}
                         >
                             English
@@ -264,7 +264,7 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                             className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                                 activeTab === "fr"
                                     ? "bg-primary text-white"
-                                    : "text-default-600 hover:bg-default-100"
+                                    : "text-foreground/80 hover:bg-default-100"
                             }`}
                         >
                             Français
@@ -417,7 +417,7 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                                     className={`rounded-lg border px-4 py-2 text-sm font-medium transition-colors ${
                                         formData.category.includes(cat)
                                             ? "border-primary bg-primary text-white"
-                                            : "border-default-200 bg-default-100 text-default-600 hover:bg-default-200"
+                                            : "border-default-200 bg-default-100 text-foreground/80 hover:bg-default-200"
                                     }`}
                                 >
                                     {cat.charAt(0).toUpperCase() + cat.slice(1)}
@@ -501,14 +501,14 @@ export default function ProjectForm({ id }: ProjectFormProps) {
                             )}
                             <label className="border-default-200 bg-default-100 hover:border-primary hover:bg-default-200 flex cursor-pointer items-center justify-center rounded-lg border-2 border-dashed px-4 py-8 transition-colors">
                                 <div className="space-y-2 text-center">
-                                    <Upload className="text-default-400 mx-auto h-8 w-8" />
-                                    <div className="text-default-600 text-sm">
+                                    <Upload className="text-muted mx-auto h-8 w-8" />
+                                    <div className="text-foreground/80 text-sm">
                                         <span className="text-primary font-medium">
                                             Click to upload
                                         </span>{" "}
                                         or drag and drop
                                     </div>
-                                    <p className="text-default-400 text-xs">
+                                    <p className="text-muted text-xs">
                                         PNG, JPG, GIF up to 10MB
                                     </p>
                                 </div>

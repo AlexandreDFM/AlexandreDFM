@@ -88,17 +88,17 @@ export default function ContactClient() {
                         className="group relative flex flex-col items-center gap-2 p-4 duration-700 md:gap-4 md:p-8 md:py-9 lg:pb-12"
                     >
                         <span
-                            className="absolute h-2/3 w-px bg-linear-to-b from-zinc-500 via-zinc-500/50 to-transparent"
+                            className="absolute h-2/3 w-px bg-linear-to-b from-default-400 via-default-400/50 to-transparent"
                             aria-hidden="true"
                         />
-                        <span className="drop-shadow-orange relative z-10 flex h-12 w-12 items-center justify-center rounded-full border border-zinc-500 bg-zinc-900 text-sm text-zinc-200 duration-1000 group-hover:border-zinc-200 group-hover:bg-zinc-900 group-hover:text-white">
+                        <span className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full border border-default-300 bg-content1 text-sm text-foreground duration-1000 group-hover:border-primary group-hover:text-primary">
                             {s.icon}
                         </span>{" "}
                         <div className="z-10 flex flex-col items-center">
-                            <span className="font-display text-center font-medium duration-150 group-hover:text-white lg:text-xl xl:text-3xl dark:group-hover:text-zinc-600">
+                            <span className="font-display text-center font-medium duration-150 group-hover:text-primary lg:text-xl xl:text-3xl">
                                 {s.handle}
                             </span>
-                            <span className="mt-4 text-center text-sm text-zinc-400 duration-1000 group-hover:text-zinc-200">
+                            <span className="mt-4 text-center text-sm text-muted duration-1000 group-hover:text-foreground">
                                 {s.label}
                             </span>
                         </div>

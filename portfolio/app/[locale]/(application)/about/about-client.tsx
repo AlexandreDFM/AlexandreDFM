@@ -43,7 +43,7 @@ export default function AboutClient() {
     return (
         <div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
             {/* Colonne de gauche - Informations personnelles */}
-            <Card className="border border-white/10 bg-black/10 p-4 backdrop-blur-sm">
+            <Card className="border border-default-200 bg-default-100/50 p-4 backdrop-blur-sm">
                 <CardBody>
                     <div className="flex items-center gap-4 px-8">
                         <Avatar
@@ -69,7 +69,7 @@ export default function AboutClient() {
                                 {t("about.content.personnal_info.myname")}{" "}
                                 {t("about.content.personnal_info.mylastname")}
                             </h1>
-                            <p className="text-default-400">
+                            <p className="text-muted">
                                 {t("about.content.personnal_info.mydesc")}
                             </p>
                         </div>
@@ -83,7 +83,7 @@ export default function AboutClient() {
                         {t<string[]>("about.content.bio.items", {
                             returnObjects: true,
                         }).map((text: string, index: number) => (
-                            <p key={index} className="text-default-400">
+                            <p key={index} className="text-muted">
                                 {text}
                             </p>
                         ))}
@@ -104,9 +104,9 @@ export default function AboutClient() {
                             >
                                 <span>{name}</span>
                                 <span>{level}</span>
-                                <div className="h-2.5 w-full rounded-full bg-purple-900/30 dark:bg-blue-950/50">
+                                <div className="h-2.5 w-full rounded-full bg-primary-100 dark:bg-blue-950/50">
                                     <div
-                                        className="h-2.5 rounded-full bg-purple-500 dark:bg-blue-500"
+                                        className="h-2.5 rounded-full bg-primary-600 dark:bg-blue-500"
                                         style={{ width: pourcent }}
                                     />
                                 </div>
@@ -124,7 +124,7 @@ export default function AboutClient() {
                         }).map((text: string, index: number) => (
                             <div
                                 key={index}
-                                className="rounded bg-purple-900/30 px-2 py-1 text-center text-sm text-purple-100 dark:bg-blue-500/10 dark:text-blue-200/80"
+                                className="rounded bg-primary-100 px-2 py-1 text-center text-sm text-primary-800 dark:bg-blue-500/10 dark:text-blue-200/80"
                             >
                                 {text}
                             </div>
@@ -134,7 +134,7 @@ export default function AboutClient() {
             </Card>
 
             {/* Colonne de droite - Expériences et formations */}
-            <Card className="border border-white/10 bg-black/10 p-4 backdrop-blur-sm">
+            <Card className="border border-default-200 bg-default-100/50 p-4 backdrop-blur-sm">
                 <CardBody>
                     <h1 className="mb-4 text-xl font-semibold">
                         {t("about.content.formation.title")}

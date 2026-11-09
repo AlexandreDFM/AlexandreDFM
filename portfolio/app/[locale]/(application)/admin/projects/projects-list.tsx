@@ -88,7 +88,7 @@ export default function ProjectsList() {
     if (loading) {
         return (
             <div className="flex h-64 items-center justify-center">
-                <div className="h-12 w-12 animate-spin rounded-full border-4 border-purple-500/20 border-t-purple-500" />
+                <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary" />
             </div>
         );
     }
@@ -105,7 +105,7 @@ export default function ProjectsList() {
         return (
             <Card>
                 <div className="p-12 text-center">
-                    <p className="text-default-400">
+                    <p className="text-muted">
                         No projects yet. Create your first project!
                     </p>
                 </div>
@@ -144,7 +144,7 @@ export default function ProjectsList() {
                                                 href={project.github}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="text-default-400 hover:text-primary"
+                                                className="text-muted hover:text-primary"
                                                 onClick={(e) =>
                                                     e.stopPropagation()
                                                 }
@@ -153,7 +153,7 @@ export default function ProjectsList() {
                                             </a>
                                         )}
                                     </div>
-                                    <p className="text-default-400 mt-1 line-clamp-2 text-sm">
+                                    <p className="text-muted mt-1 line-clamp-2 text-sm">
                                         {project.description}
                                     </p>
                                 </div>
@@ -162,14 +162,14 @@ export default function ProjectsList() {
                                     <Link
                                         href={`/${locale}/projects`}
                                         target="_blank"
-                                        className="text-default-600 hover:bg-default-100 hover:text-default-900 rounded-lg p-2 transition-colors"
+                                        className="text-foreground/80 hover:bg-default-100 hover:text-default-900 rounded-lg p-2 transition-colors"
                                         title="View"
                                     >
                                         <Eye className="h-4 w-4" />
                                     </Link>
                                     <Link
                                         href={`/${locale}/admin/projects/edit/${project.id}`}
-                                        className="text-default-600 hover:bg-default-100 hover:text-default-900 rounded-lg p-2 transition-colors"
+                                        className="text-foreground/80 hover:bg-default-100 hover:text-default-900 rounded-lg p-2 transition-colors"
                                         title="Edit"
                                     >
                                         <Edit className="h-4 w-4" />
@@ -185,7 +185,7 @@ export default function ProjectsList() {
                                 </div>
                             </div>
 
-                            <div className="text-default-400 flex flex-wrap items-center gap-4 text-xs">
+                            <div className="text-muted flex flex-wrap items-center gap-4 text-xs">
                                 {project.category &&
                                     project.category.length > 0 && (
                                         <span className="bg-primary/10 text-primary flex items-center gap-1 rounded-full px-2 py-0.5">
@@ -214,13 +214,13 @@ export default function ProjectsList() {
                                             .map((tech) => (
                                                 <span
                                                     key={tech}
-                                                    className="bg-default-100 text-default-600 rounded-full px-2 py-0.5 text-xs"
+                                                    className="bg-default-100 text-foreground/80 rounded-full px-2 py-0.5 text-xs"
                                                 >
                                                     {tech}
                                                 </span>
                                             ))}
                                         {project.technologies.length > 5 && (
-                                            <span className="text-default-400 text-xs">
+                                            <span className="text-muted text-xs">
                                                 +
                                                 {project.technologies.length -
                                                     5}{" "}

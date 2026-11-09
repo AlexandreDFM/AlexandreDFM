@@ -131,7 +131,7 @@ export default function ProjectFilters({
         searchQuery.trim() !== "";
 
     return (
-        <div className="space-y-4 rounded-lg border border-white/10 bg-black/10 p-6 backdrop-blur-sm">
+        <div className="space-y-4 rounded-lg border border-default-200 bg-default-100/50 p-6 backdrop-blur-sm">
             {/* Search Bar */}
             <div>
                 <label
@@ -146,7 +146,7 @@ export default function ProjectFilters({
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder={t("projects.filters.search_placeholder")}
-                    className="w-full rounded-lg border border-white/10 bg-black/20 px-4 py-2 text-sm backdrop-blur-sm transition-colors focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 focus:outline-none"
+                    className="w-full rounded-lg border border-default-200 bg-default-100/70 px-4 py-2 text-sm backdrop-blur-sm transition-colors focus:border-primary/50 focus:ring-2 focus:ring-primary/20 focus:outline-none"
                 />
             </div>
 
@@ -172,7 +172,7 @@ export default function ProjectFilters({
                                     | "academic",
                             )
                         }
-                        className="w-full rounded-lg border border-white/10 bg-black/20 px-4 py-2 text-sm backdrop-blur-sm transition-colors focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 focus:outline-none"
+                        className="w-full rounded-lg border border-default-200 bg-default-100/70 px-4 py-2 text-sm backdrop-blur-sm transition-colors focus:border-primary/50 focus:ring-2 focus:ring-primary/20 focus:outline-none"
                     >
                         <option value="all">{t("projects.filters.all")}</option>
                         {categories.map((category, index) => (
@@ -198,7 +198,7 @@ export default function ProjectFilters({
                         id="technology"
                         value={selectedTech}
                         onChange={(e) => setSelectedTech(e.target.value)}
-                        className="w-full rounded-lg border border-white/10 bg-black/20 px-4 py-2 text-sm backdrop-blur-sm transition-colors focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 focus:outline-none"
+                        className="w-full rounded-lg border border-default-200 bg-default-100/70 px-4 py-2 text-sm backdrop-blur-sm transition-colors focus:border-primary/50 focus:ring-2 focus:ring-primary/20 focus:outline-none"
                     >
                         <option value="all">{t("projects.filters.all")}</option>
                         {technologies.map((tech, index) => (
@@ -221,7 +221,7 @@ export default function ProjectFilters({
                         id="skill"
                         value={selectedSkill}
                         onChange={(e) => setSelectedSkill(e.target.value)}
-                        className="w-full rounded-lg border border-white/10 bg-black/20 px-4 py-2 text-sm backdrop-blur-sm transition-colors focus:border-purple-500/50 focus:ring-2 focus:ring-purple-500/20 focus:outline-none"
+                        className="w-full rounded-lg border border-default-200 bg-default-100/70 px-4 py-2 text-sm backdrop-blur-sm transition-colors focus:border-primary/50 focus:ring-2 focus:ring-primary/20 focus:outline-none"
                     >
                         <option value="all">{t("projects.filters.all")}</option>
                         {skills.map((skill, index) => (
@@ -240,7 +240,7 @@ export default function ProjectFilters({
             {hasActiveFilters && (
                 <button
                     onClick={resetFilters}
-                    className="w-full rounded-lg border border-white/10 bg-purple-900/20 px-4 py-2 text-sm font-medium text-purple-200 transition-colors hover:bg-purple-900/30 focus:ring-2 focus:ring-purple-500/50 focus:outline-none"
+                    className="w-full rounded-lg border border-default-200 bg-primary/10 px-4 py-2 text-sm font-medium text-primary-700 dark:text-primary-200 transition-colors hover:bg-primary/20 focus:ring-2 focus:ring-primary/50 focus:outline-none"
                 >
                     {t("projects.filters.reset")}
                 </button>

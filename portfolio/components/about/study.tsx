@@ -38,17 +38,17 @@ export default function Study() {
             }).map((formation, index) => (
                 <div key={index} className="flex flex-col">
                     <div className="flex items-center justify-between">
-                        <h1 className="text-default-600 grow text-lg font-semibold">
+                        <h1 className="text-foreground/80 grow text-lg font-semibold">
                             {formation.degree}
                         </h1>
-                        <span className="text-default-400 shrink-0 align-middle text-sm">
+                        <span className="text-muted shrink-0 align-middle text-sm">
                             {formation.date}
                         </span>
                     </div>
-                    <div className="text-default-500 text-sm">
+                    <div className="text-muted text-sm">
                         {formation.school}
                     </div>
-                    <p className="text-default-400 text-sm">{formation.desc}</p>
+                    <p className="text-muted text-sm">{formation.desc}</p>
                 </div>
             ))}
         </div>

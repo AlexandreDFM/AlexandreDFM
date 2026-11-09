@@ -47,7 +47,7 @@ export default async function EditMediaPostPage({
                 </Link>
                 <div>
                     <h1 className="text-3xl font-bold">Edit Media Post</h1>
-                    <p className="text-default-400 mt-1">
+                    <p className="text-muted mt-1">
                         Update media post details
                     </p>
                 </div>

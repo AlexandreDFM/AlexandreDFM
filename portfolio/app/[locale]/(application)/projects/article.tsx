@@ -44,13 +44,13 @@ export const Article: React.FC<Props> = ({ project, featured = false }) => {
     const getCategoryColor = (category: string) => {
         switch (category) {
             case "professional":
-                return "bg-blue-500/20 text-blue-300 border-blue-500/30";
+                return "bg-blue-500/15 text-blue-800 border-blue-500/30 dark:text-blue-300";
             case "personal":
-                return "bg-purple-500/20 text-purple-300 border-purple-500/30";
+                return "bg-amber-500/15 text-amber-800 border-amber-500/30 dark:text-amber-300";
             case "academic":
-                return "bg-green-500/20 text-green-300 border-green-500/30";
+                return "bg-green-500/15 text-green-800 border-green-500/30 dark:text-green-300";
             default:
-                return "bg-gray-500/20 text-gray-300 border-gray-500/30";
+                return "bg-default-200/60 text-foreground/80 border-default-300 dark:text-gray-300";
         }
     };
 
@@ -64,7 +64,7 @@ export const Article: React.FC<Props> = ({ project, featured = false }) => {
                 {/* Image Section */}
                 {project.imageUrl && !imageError ? (
                     <div
-                        className={`relative overflow-hidden bg-gradient-to-br from-purple-900/20 to-blue-900/20 ${
+                        className={`relative overflow-hidden bg-gradient-to-br from-default-200/60 to-primary-100/60 dark:from-slate-800/40 dark:to-blue-900/20 ${
                             featured ? "h-64 md:h-auto md:w-2/5" : "h-48 w-full"
                         }`}
                     >
@@ -93,7 +93,7 @@ export const Article: React.FC<Props> = ({ project, featured = false }) => {
                     </div>
                 ) : (
                     <div
-                        className={`relative flex items-center justify-center bg-gradient-to-br from-purple-900/20 to-blue-900/20 ${
+                        className={`relative flex items-center justify-center bg-gradient-to-br from-default-200/60 to-primary-100/60 dark:from-slate-800/40 dark:to-blue-900/20 ${
                             featured ? "h-64 md:h-auto md:w-2/5" : "h-48 w-full"
                         }`}
                     >
@@ -142,7 +142,7 @@ export const Article: React.FC<Props> = ({ project, featured = false }) => {
                             </h3>
                             {project.date && (
                                 <time
-                                    className="text-default-400 text-xs whitespace-nowrap"
+                                    className="text-muted text-xs whitespace-nowrap"
                                     dateTime={new Date(
                                         project.date,
                                     ).toISOString()}
@@ -155,7 +155,7 @@ export const Article: React.FC<Props> = ({ project, featured = false }) => {
                         </div>
 
                         <p
-                            className={`text-default-400 mb-4 ${
+                            className={`text-muted mb-4 ${
                                 featured ? "text-base" : "text-sm"
                             }`}
                         >
@@ -164,10 +164,10 @@ export const Article: React.FC<Props> = ({ project, featured = false }) => {
 
                         {project.role && (
                             <div className="mb-3 text-sm">
-                                <span className="text-default-300 font-semibold">
+                                <span className="text-muted font-semibold">
                                     {t("projects.role")}:
                                 </span>{" "}
-                                <span className="text-default-400">
+                                <span className="text-muted">
                                     {project.role}
                                 </span>
                             </div>
@@ -175,10 +175,10 @@ export const Article: React.FC<Props> = ({ project, featured = false }) => {
 
                         {project.duration && (
                             <div className="mb-3 text-sm">
-                                <span className="text-default-300 font-semibold">
+                                <span className="text-muted font-semibold">
                                     {t("projects.duration")}:
                                 </span>{" "}
-                                <span className="text-default-400">
+                                <span className="text-muted">
                                     {project.duration}
                                 </span>
                             </div>
@@ -187,10 +187,10 @@ export const Article: React.FC<Props> = ({ project, featured = false }) => {
                         {project.achievements &&
                             project.achievements.length > 0 && (
                                 <div className="mb-4">
-                                    <span className="text-default-300 text-sm font-semibold">
+                                    <span className="text-muted text-sm font-semibold">
                                         {t("projects.achievements")}:
                                     </span>
-                                    <ul className="text-default-400 mt-2 list-inside list-disc space-y-1 text-sm">
+                                    <ul className="text-muted mt-2 list-inside list-disc space-y-1 text-sm">
                                         {project.achievements
                                             .slice(0, featured ? 4 : 2)
                                             .map((achievement, index) => (
@@ -213,14 +213,14 @@ export const Article: React.FC<Props> = ({ project, featured = false }) => {
                                         .map((tech, index) => (
                                             <span
                                                 key={index}
-                                                className="rounded-full bg-purple-900/30 px-2.5 py-1 text-xs font-medium text-purple-100 transition-colors hover:bg-purple-900/40"
+                                                className="rounded-full bg-primary/10 px-2.5 py-1 text-xs font-medium text-primary-800 transition-colors hover:bg-primary/20 dark:bg-primary-900/30 dark:text-primary-100 dark:hover:bg-primary-900/40"
                                             >
                                                 {tech}
                                             </span>
                                         ))}
                                     {project.technologies.length >
                                         (featured ? 8 : 5) && (
-                                        <span className="rounded-full bg-purple-900/20 px-2.5 py-1 text-xs text-purple-200">
+                                        <span className="rounded-full bg-primary/5 px-2.5 py-1 text-xs text-primary-700 dark:bg-primary-900/20 dark:text-primary-200">
                                             +
                                             {project.technologies.length -
                                                 (featured ? 8 : 5)}
@@ -236,13 +236,13 @@ export const Article: React.FC<Props> = ({ project, featured = false }) => {
                                     .map((skill, index) => (
                                         <span
                                             key={index}
-                                            className="rounded-full bg-blue-900/30 px-2.5 py-1 text-xs font-medium text-blue-100 transition-colors hover:bg-blue-900/40"
+                                            className="rounded-full bg-default-200/60 px-2.5 py-1 text-xs font-medium text-foreground transition-colors hover:bg-default-200 dark:bg-blue-900/30 dark:text-blue-100 dark:hover:bg-blue-900/40"
                                         >
                                             {skill}
                                         </span>
                                     ))}
                                 {project.skills.length > (featured ? 6 : 4) && (
-                                    <span className="rounded-full bg-blue-900/20 px-2.5 py-1 text-xs text-blue-200">
+                                    <span className="rounded-full bg-default-200/40 px-2.5 py-1 text-xs text-foreground/80 dark:bg-blue-900/20 dark:text-blue-200">
                                         +
                                         {project.skills.length -
                                             (featured ? 6 : 4)}

@@ -93,7 +93,7 @@ export const Footer: React.FC = () => {
 
     return (
         <footer ref={ref}>
-            <div className="h-[var(--footer-size)] border-t border-zinc-800 bg-zinc-900/500 backdrop-blur">
+            <div className="h-[var(--footer-size)] border-t border-default-200 bg-background/70 backdrop-blur">
                 <div className="container m-auto flex h-full flex-row-reverse items-center px-4">
                     <div className="flex space-x-2">
                         {socials.map((s) => (
@@ -104,7 +104,7 @@ export const Footer: React.FC = () => {
                                 className="items-center"
                             >
                                 <span
-                                    className="drop-shadow-orange flex h-8 w-8 items-center justify-center rounded-full border border-zinc-500 bg-zinc-900 text-sm text-zinc-200 group-hover:border-zinc-200 group-hover:bg-zinc-900 group-hover:text-white"
+                                    className="flex h-8 w-8 items-center justify-center rounded-full border border-default-300 bg-content1 text-sm text-foreground transition-colors hover:border-primary hover:text-primary"
                                     aria-label={s.label}
                                 >
                                     {s.icon}

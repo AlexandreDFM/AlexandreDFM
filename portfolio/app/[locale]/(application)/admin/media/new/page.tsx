@@ -47,7 +47,7 @@ export default async function NewMediaPostPage({
                 </Link>
                 <div>
                     <h1 className="text-3xl font-bold">New Media Post</h1>
-                    <p className="text-default-400 mt-1">
+                    <p className="text-muted mt-1">
                         Add a new image or video to your gallery
                     </p>
                 </div>

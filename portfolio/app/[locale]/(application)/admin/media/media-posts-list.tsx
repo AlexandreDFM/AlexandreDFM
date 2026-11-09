@@ -75,7 +75,7 @@ export default function MediaPostsList() {
     if (loading) {
         return (
             <div className="flex h-64 items-center justify-center">
-                <div className="h-12 w-12 animate-spin rounded-full border-4 border-purple-500/20 border-t-purple-500" />
+                <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary" />
             </div>
         );
     }
@@ -92,7 +92,7 @@ export default function MediaPostsList() {
         return (
             <Card>
                 <div className="p-12 text-center">
-                    <p className="text-default-400">
+                    <p className="text-muted">
                         No media posts yet. Create your first media post!
                     </p>
                 </div>
@@ -133,11 +133,11 @@ export default function MediaPostsList() {
                             <h3 className="line-clamp-1 font-semibold">
                                 {post.title}
                             </h3>
-                            <p className="text-default-400 line-clamp-2 text-sm">
+                            <p className="text-muted line-clamp-2 text-sm">
                                 {post.caption}
                             </p>
 
-                            <div className="text-default-400 flex items-center justify-between text-xs">
+                            <div className="text-muted flex items-center justify-between text-xs">
                                 <div className="flex items-center gap-1">
                                     <Heart className="h-3 w-3" />
                                     <span>{post.likes || 0}</span>
@@ -168,14 +168,14 @@ export default function MediaPostsList() {
                                 <Link
                                     href={`/${locale}/gallery`}
                                     target="_blank"
-                                    className="bg-default-100 text-default-600 hover:bg-default-200 flex-1 rounded-lg p-2 text-center text-sm transition-colors"
+                                    className="bg-default-100 text-foreground/80 hover:bg-default-200 flex-1 rounded-lg p-2 text-center text-sm transition-colors"
                                     title="View in gallery"
                                 >
                                     <Eye className="mx-auto h-4 w-4" />
                                 </Link>
                                 <Link
                                     href={`/${locale}/admin/media/edit/${post.id}`}
-                                    className="bg-default-100 text-default-600 hover:bg-default-200 flex-1 rounded-lg p-2 text-center text-sm transition-colors"
+                                    className="bg-default-100 text-foreground/80 hover:bg-default-200 flex-1 rounded-lg p-2 text-center text-sm transition-colors"
                                     title="Edit"
                                 >
                                     <Edit className="mx-auto h-4 w-4" />

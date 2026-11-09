@@ -114,7 +114,7 @@ export default function MediaModal({ post, onClose }: MediaModalProps) {
                             <h2 className="text-2xl font-bold">{post.title}</h2>
 
                             {/* Likes */}
-                            <div className="text-default-400 flex items-center gap-2">
+                            <div className="text-muted flex items-center gap-2">
                                 <Heart className="h-5 w-5" />
                                 <span className="font-medium">
                                     {post.likes} likes
@@ -123,7 +123,7 @@ export default function MediaModal({ post, onClose }: MediaModalProps) {
 
                             {/* Caption */}
                             {post.caption && (
-                                <p className="text-default-300">
+                                <p className="text-muted">
                                     {post.caption}
                                 </p>
                             )}
@@ -145,7 +145,7 @@ export default function MediaModal({ post, onClose }: MediaModalProps) {
 
                             {/* Date */}
                             {post.date_created && (
-                                <div className="text-default-400 flex items-center gap-2 text-sm">
+                                <div className="text-muted flex items-center gap-2 text-sm">
                                     <Calendar className="h-4 w-4" />
                                     <span>
                                         {new Date(

@@ -42,7 +42,7 @@ export default async function EditBlogPostPage({
         <div className="space-y-6">
             <div>
                 <h1 className="text-3xl font-bold">Edit Post</h1>
-                <p className="text-default-400 mt-1">Update your blog post</p>
+                <p className="text-muted mt-1">Update your blog post</p>
             </div>
 
             <BlogPostForm slug={slug} />

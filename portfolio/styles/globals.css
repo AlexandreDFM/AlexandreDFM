@@ -27,6 +27,12 @@
 @import "tailwindcss";
 
 @config "../tailwind.config.ts";
+@plugin "@tailwindcss/typography";
+
+/* Semantic colors that follow the theme (light/dark variables below) */
+@theme inline {
+    --color-muted: rgb(var(--muted-rgb));
+}
 
 @theme {
     /* Custom animations */
@@ -145,6 +151,8 @@
     );
     --accent-blue: 29, 78, 216;
     --accent-blue-light: 59, 130, 246;
+    /* Secondary text: >= 5:1 on the background, the cards and the tags */
+    --muted-rgb: 107, 90, 76;
 }
 
 .dark {
@@ -160,6 +168,8 @@
     );
     --accent-blue: 59, 130, 246;
     --accent-blue-light: 147, 197, 253;
+    /* Secondary text: >= 6:1 on the background and the cards */
+    --muted-rgb: 148, 163, 184;
 }
 
 body {

@@ -79,15 +79,15 @@ export default function ProjectsClient() {
                     <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
                         {t("projects.title")}
                     </h1>
-                    <h2 className="text-default-400 text-xl font-bold tracking-tight sm:text-2xl">
+                    <h2 className="text-muted text-xl font-bold tracking-tight sm:text-2xl">
                         {t("projects.headline")}
                     </h2>
-                    <p className="text-default-400">
+                    <p className="text-muted">
                         {t("projects.description")}
                     </p>
                 </header>
                 <div className="flex h-96 items-center justify-center">
-                    <div className="h-12 w-12 animate-spin rounded-full border-4 border-purple-500/20 border-t-purple-500" />
+                    <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary" />
                 </div>
             </main>
         );
@@ -104,12 +104,12 @@ export default function ProjectsClient() {
                         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
                             {t("projects.title")}
                         </h1>
-                        <ArrowBigRight className="mt-1 h-6 w-6 text-purple-500/50" />
-                        <h2 className="text-default-400 text-xl font-bold tracking-tight sm:text-2xl">
+                        <ArrowBigRight className="mt-1 h-6 w-6 text-primary/50" />
+                        <h2 className="text-muted text-xl font-bold tracking-tight sm:text-2xl">
                             {t("projects.headline")}
                         </h2>
                     </div>
-                    <p className="text-default-400">
+                    <p className="text-muted">
                         {t("projects.description")}
                     </p>
                 </header>
@@ -135,13 +135,13 @@ export default function ProjectsClient() {
                         {t("projects.title")}
                     </h1>
                     <div className="my-auto">
-                        <ArrowBigRight className="h-6 w-6 items-center text-purple-500/50" />
+                        <ArrowBigRight className="h-6 w-6 items-center text-primary/50" />
                     </div>
-                    <h2 className="text-default-400 text-xl font-bold tracking-tight sm:text-2xl">
+                    <h2 className="text-muted text-xl font-bold tracking-tight sm:text-2xl">
                         {t("projects.headline")}
                     </h2>
                 </div>
-                <p className="text-default-400">{t("projects.description")}</p>
+                <p className="text-muted">{t("projects.description")}</p>
             </header>
             <div className="mx-auto max-w-7xl space-y-8 md:space-y-12">
                 {/* Pinned/Featured Projects Section */}
@@ -191,7 +191,7 @@ export default function ProjectsClient() {
                             >
                                 {t("projects.all_projects")}
                             </h2>
-                            <span className="text-default-400 text-sm">
+                            <span className="text-muted text-sm">
                                 {displayProjects.length}{" "}
                                 {displayProjects.length === 1
                                     ? t("projects.project")
@@ -210,9 +210,9 @@ export default function ProjectsClient() {
                         </div>
                     </section>
                 ) : (
-                    <div className="flex h-64 items-center justify-center rounded-lg border border-white/10 bg-black/10 backdrop-blur-sm">
+                    <div className="flex h-64 items-center justify-center rounded-lg border border-default-200 bg-default-100/50 backdrop-blur-sm">
                         <p
-                            className="text-default-400"
+                            className="text-muted"
                             role="status"
                             aria-live="polite"
                         >

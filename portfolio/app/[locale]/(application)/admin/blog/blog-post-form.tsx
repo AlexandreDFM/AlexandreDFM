@@ -195,7 +195,7 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
     if (loadingPost) {
         return (
             <div className="flex h-64 items-center justify-center">
-                <div className="h-12 w-12 animate-spin rounded-full border-4 border-purple-500/20 border-t-purple-500" />
+                <div className="h-12 w-12 animate-spin rounded-full border-4 border-primary/20 border-t-primary" />
             </div>
         );
     }
@@ -218,7 +218,7 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
                             className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                                 activeTab === "en"
                                     ? "bg-primary text-white"
-                                    : "text-default-600 hover:bg-default-100"
+                                    : "text-foreground/80 hover:bg-default-100"
                             }`}
                         >
                             English
@@ -229,7 +229,7 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
                             className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                                 activeTab === "fr"
                                     ? "bg-primary text-white"
-                                    : "text-default-600 hover:bg-default-100"
+                                    : "text-foreground/80 hover:bg-default-100"
                             }`}
                         >
                             Français
@@ -296,7 +296,7 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
                             className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 font-mono text-sm focus:ring-2 focus:outline-none"
                             placeholder="<p>Write your content here in HTML format...</p>"
                         />
-                        <p className="text-default-400 mt-1 text-xs">
+                        <p className="text-muted mt-1 text-xs">
                             Supports HTML formatting. Use tags like &lt;p&gt;,
                             &lt;h2&gt;, &lt;strong&gt;, &lt;a&gt;, etc.
                         </p>
@@ -328,7 +328,7 @@ export default function BlogPostForm({ slug }: BlogPostFormProps) {
                             className="border-default-200 bg-default-100 focus:border-primary focus:ring-primary/20 w-full rounded-lg border px-4 py-2 font-mono text-sm focus:ring-2 focus:outline-none"
                             placeholder="my-blog-post-slug"
                         />
-                        <p className="text-default-400 mt-1 text-xs">
+                        <p className="text-muted mt-1 text-xs">
                             Lowercase letters, numbers, and hyphens only
                         </p>
                     </div>
