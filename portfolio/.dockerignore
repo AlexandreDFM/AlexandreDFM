@@ -64,3 +64,12 @@ Thumbs.db
 # Other files to ignore
 *.pem
 .vercel
+
+# Local tooling and tests
+tests
+vitest.config.ts
+*.tsbuildinfo
+Dockerfile*
+docker-compose.yml
+env
+backend

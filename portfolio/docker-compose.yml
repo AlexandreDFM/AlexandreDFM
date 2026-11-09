@@ -22,6 +22,14 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
+# Local development stack: Postgres + Redis + Directus + Next.js (hot reload).
+#
+# First run:
+#   for f in database directus frontend; do cp env/.env.$f.template env/.env.$f; done
+#   (edit the values) then: docker compose up -d
+#
+# Frontend: http://localhost:3000   Directus: http://localhost:8055
+
 name: alexandredfm-dev
 
 services:
@@ -31,17 +39,15 @@ services:
     container_name: alexandredfm-portfolio-database-postgres
     restart: unless-stopped
     ports:
-      - "5432:5432"
-    # Required when running on platform other than amd64, like Apple M1/M2:
-    platform: linux/amd64
+      - "127.0.0.1:5432:5432"
     volumes:
       - alexandredfm-portfolio-db:/var/lib/postgresql/data
     env_file:
-      - ./.env/.env.database.template
+      - ./env/.env.database
     networks:
       - alexandredfm-network
     healthcheck:
-      test: [ "CMD", "pg_isready", "--host=localhost", "--username=${POSTGRES_USER}" ]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -52,9 +58,7 @@ services:
     container_name: alexandredfm-portfolio-redis-cache
     restart: unless-stopped
     ports:
-        - 6379:6379
-    depends_on:
-        - database
+        - "127.0.0.1:6379:6379"
     networks:
         - alexandredfm-network
     healthcheck:
@@ -63,7 +67,7 @@ services:
       timeout: 5s
       retries: 5
 
-  # Directus Backend
+  # Directus Backend (same version as the my-api deployment)
   backend:
     container_name: alexandredfm-portfolio-backend
     image: directus/directus:11.10.2
@@ -74,12 +78,12 @@ services:
       cache:
         condition: service_healthy
     ports:
-        - 8055:8055
+        - "127.0.0.1:8055:8055"
     volumes:
         - ./backend/uploads:/directus/uploads
         - ./backend/extensions:/directus/extensions
     env_file:
-        - ./.env/.env.directus.template
+        - ./env/.env.directus
     networks:
         - alexandredfm-network
 
@@ -91,14 +95,16 @@ services:
       dockerfile: Dockerfile.dev
     restart: unless-stopped
     working_dir: /usr/src/app
+    depends_on:
+      - backend
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000"
     volumes:
       - ./:/usr/src/app
       - /usr/src/app/node_modules
       - /usr/src/app/.next
     env_file:
-      - ./.env/.env.frontend.template
+      - ./env/.env.frontend
     networks:
       - alexandredfm-network
 

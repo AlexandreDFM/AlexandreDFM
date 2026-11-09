@@ -38,9 +38,15 @@ yarn-error.log*
 logs/
 *.log
 
-# Environment files
+# Environment files (real values are never committed)
 .env
 .env.*
+# ...but the templates are
+!**/env/.env.*.template
+!**/env/.env.*.example
+
+# Kubernetes secrets filled locally
+secrets.yaml
 
 # VSCode
 .vscode/

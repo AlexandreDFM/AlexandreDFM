@@ -25,49 +25,55 @@
 # THE SOFTWARE.
 #
 
+# Same base image for every stage: native modules (sharp, lightningcss) are
+# built for musl and run on musl. Bump NODE_VERSION deliberately.
+ARG NODE_VERSION=22.21.0
+
 ###############################################################################
-### Build For Production
+### Dependencies (cached as long as the lockfile does not change)
 
-
-FROM node:22-slim AS build-stage
-
-# Install dependencies for native modules
-RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
-
-# Install pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
-
-# Create app directory
-RUN mkdir /app
+FROM node:${NODE_VERSION}-alpine AS deps
 WORKDIR /app
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
+# pnpm version comes from "packageManager" in package.json
+RUN corepack enable
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+RUN pnpm install --frozen-lockfile
 
-# Install app dependencies
-COPY package.json ./
-COPY pnpm-lock.yaml ./
-RUN pnpm install --no-frozen-lockfile
+###############################################################################
+### Build
 
-# Bundle app source
+FROM node:${NODE_VERSION}-alpine AS build
+WORKDIR /app
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0 \
+    NEXT_TELEMETRY_DISABLED=1
+RUN corepack enable
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
-
-# Build app
-RUN pnpm run build
+# No NEXT_PUBLIC_* here: the configuration is read at runtime (util/config.ts),
+# so the same image is promoted from staging to production.
+RUN pnpm build
 
 ###############################################################################
-### Production Stage
+### Runtime
 
-FROM node:22-alpine AS production-stage
-
-# Install pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
-
+FROM node:${NODE_VERSION}-alpine AS runtime
 WORKDIR /app
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    PORT=3000 \
+    HOSTNAME=0.0.0.0
 
-# Copy build from build-stage
-COPY --from=build-stage /app/public ./public
-# Automatically leverage output traces to reduce image size
-# https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=build-stage --chown=nextjs:nodejs /app/.next/standalone ./
-COPY --from=build-stage --chown=nextjs:nodejs /app/.next/static ./.next/static
+# Standalone output: only the traced files, no pnpm needed at runtime
+COPY --from=build --chown=node:node /app/public ./public
+COPY --from=build --chown=node:node /app/.next/standalone ./
+COPY --from=build --chown=node:node /app/.next/static ./.next/static
 
-# Run server
-CMD ["node", "/app/server.js"]
+# Non-root user shipped with the node image (uid 1000)
+USER node
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+    CMD wget -qO- http://127.0.0.1:3000/api/server/health > /dev/null || exit 1
+
+CMD ["node", "server.js"]
