@@ -27,27 +27,76 @@
 
 import { Metadata } from "next";
 import BlogPostClient from "./blog-post-client";
+import { getBlogPostBySlug } from "@/util/directus";
+import { blogPostJsonLd, jsonLdScript } from "@/util/metadata";
+import { defaultLocale, isLocale, type Locale } from "@/util/i18n";
 
-export async function generateMetadata({
-    params,
-}: {
-    params: Promise<{ slug: string }>;
-}): Promise<Metadata> {
-    const { slug } = await params;
+type Params = Promise<{ locale: string; slug: string }>;
+
+function toLocale(value: string): Locale {
+    return isLocale(value) ? value : defaultLocale;
+}
+
+/** Plain-text excerpt for meta descriptions (the excerpt may contain HTML). */
+function plainText(html: string | null | undefined, max = 160): string {
+    const text = (html || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+    return text.length > max ? `${text.slice(0, max - 1)}…` : text;
+}
+
+function titleFromSlug(slug: string): string {
+    return slug
+        .split("-")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+}
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+    const { slug, locale } = await params;
+    const post = await getBlogPostBySlug(slug, toLocale(locale));
+    if (!post) {
+        return { title: titleFromSlug(slug), robots: { index: false } };
+    }
+    const description = plainText(post.excerpt) || "Read this blog post on AlexandreDFM";
     return {
-        title: slug
-            .split("-")
-            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(" "),
-        description: `Read this blog post on AlexandreDFM`,
+        title: post.title,
+        description,
+        openGraph: {
+            type: "article",
+            title: post.title,
+            description,
+            publishedTime: post.date_created || undefined,
+            modifiedTime: post.date_updated || undefined,
+            ...(post.coverImageUrl ? { images: [post.coverImageUrl] } : {}),
+        },
     };
 }
 
-export default async function BlogPostPage({
-    params,
-}: {
-    params: Promise<{ slug: string }>;
-}) {
-    const { slug } = await params;
-    return <BlogPostClient slug={slug} />;
+export default async function BlogPostPage({ params }: { params: Params }) {
+    const { slug, locale } = await params;
+    const lang = toLocale(locale);
+    const post = await getBlogPostBySlug(slug, lang);
+
+    return (
+        <>
+            {post && (
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: jsonLdScript(
+                            blogPostJsonLd({
+                                title: post.title,
+                                description: plainText(post.excerpt),
+                                slug: post.slug,
+                                locale: lang,
+                                publishedAt: post.date_created || undefined,
+                                updatedAt: post.date_updated || undefined,
+                                image: post.coverImageUrl,
+                            }),
+                        ),
+                    }}
+                />
+            )}
+            <BlogPostClient slug={slug} />
+        </>
+    );
 }

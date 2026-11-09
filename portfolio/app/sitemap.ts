@@ -25,70 +25,45 @@
  */
 
 import { MetadataRoute } from "next";
+import { getSiteUrl } from "@/util/config";
+import { getBlogPosts } from "@/util/directus";
+import { locales } from "@/util/i18n";
+
+// Built at request time (cached one hour): the blog posts come from Directus
+export const dynamic = "force-dynamic";
+export const revalidate = 3600;
+
+const STATIC_PAGES = ["", "/about", "/projects", "/blog", "/contact", "/gallery"];
+
+function alternates(baseUrl: string, path: string) {
+    return {
+        languages: Object.fromEntries(locales.map((l) => [l, `${baseUrl}/${l}${path}`])),
+    };
+}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-    const baseUrl =
-        process.env.NEXT_PUBLIC_SITE_URL || "https://alexandredfm.fr";
-    const locales = ["en", "fr"];
+    const baseUrl = getSiteUrl();
 
-    // Static pages with locales
-    const staticPages = [
-        "",
-        "/about",
-        "/projects",
-        "/blog",
-        "/contact",
-        "/gallery",
-    ];
-
-    const staticRoutes = staticPages.flatMap((page) =>
+    const staticRoutes: MetadataRoute.Sitemap = STATIC_PAGES.flatMap((page) =>
         locales.map((locale) => ({
             url: `${baseUrl}/${locale}${page}`,
-            lastModified: new Date(),
             changeFrequency: "monthly" as const,
             priority: page === "" ? 1.0 : 0.8,
-            alternates: {
-                languages: {
-                    en: `${baseUrl}/en${page}`,
-                    fr: `${baseUrl}/fr${page}`,
-                },
-            },
+            alternates: alternates(baseUrl, page),
         })),
     );
 
-    // Try to fetch dynamic blog posts (this can be enhanced with actual blog post fetching)
-    let blogRoutes: MetadataRoute.Sitemap = [];
-    try {
-        // You can implement actual blog post fetching here
-        // const blogPosts = await fetchBlogPosts();
-        // blogRoutes = blogPosts.flatMap((post) =>
-        //     locales.map((locale) => ({
-        //         url: `${baseUrl}/${locale}/blog/${post.slug}`,
-        //         lastModified: post.updatedAt || new Date(),
-        //         changeFrequency: "weekly" as const,
-        //         priority: 0.7,
-        //     }))
-        // );
-    } catch (error) {
-        console.error("Error fetching blog posts for sitemap:", error);
-    }
+    // Same slug in both languages (the content is translated per field)
+    const posts = await getBlogPosts("en");
+    const blogRoutes: MetadataRoute.Sitemap = posts.flatMap((post) =>
+        locales.map((locale) => ({
+            url: `${baseUrl}/${locale}/blog/${post.slug}`,
+            lastModified: post.date_updated || post.date_created || undefined,
+            changeFrequency: "weekly" as const,
+            priority: 0.7,
+            alternates: alternates(baseUrl, `/blog/${post.slug}`),
+        })),
+    );
 
-    // Try to fetch dynamic projects (this can be enhanced with actual project fetching)
-    let projectRoutes: MetadataRoute.Sitemap = [];
-    try {
-        // You can implement actual project fetching here
-        // const projects = await fetchProjects();
-        // projectRoutes = projects.flatMap((project) =>
-        //     locales.map((locale) => ({
-        //         url: `${baseUrl}/${locale}/projects/${project.id}`,
-        //         lastModified: project.updatedAt || new Date(),
-        //         changeFrequency: "monthly" as const,
-        //         priority: 0.6,
-        //     }))
-        // );
-    } catch (error) {
-        console.error("Error fetching projects for sitemap:", error);
-    }
-
-    return [...staticRoutes, ...blogRoutes, ...projectRoutes];
+    return [...staticRoutes, ...blogRoutes];
 }

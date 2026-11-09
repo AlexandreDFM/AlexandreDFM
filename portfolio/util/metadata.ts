@@ -24,192 +24,180 @@
  * THE SOFTWARE.
  */
 
-import { Metadata } from "next";
+import "server-only";
 
-const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://alexandredfm.fr";
+import type { Metadata, Viewport } from "next";
+import { getSiteUrl, isNoIndex } from "@/util/config";
+import { defaultLocale, isLocale, locales, type Locale } from "@/util/i18n";
 
-interface PageMetadataProps {
-    title: string;
-    description: string;
-    path: string;
-    keywords?: string[];
-    image?: string;
-    locale?: string;
-    type?: "website" | "article" | "profile";
-    publishedTime?: string;
-    modifiedTime?: string;
-    authors?: string[];
+export const SITE_NAME = "AlexandreDFM Portfolio";
+export const AUTHOR = "Alexandre De Freitas Martins";
+/** Square portrait (460x460), used for JSON-LD and the PWA icons. */
+export const PORTRAIT_PATH = "/app/bio/alexandredfm.jpeg";
+
+const DESCRIPTIONS: Record<Locale, string> = {
+    fr: "Alexandre De Freitas Martins, développeur full stack : projets, blog et contact.",
+    en: "Alexandre De Freitas Martins, full stack developer: projects, blog and contact.",
+};
+
+export const viewport: Viewport = {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 5,
+    // Matches the page background of each theme
+    themeColor: [
+        { media: "(prefers-color-scheme: light)", color: "#faf5ee" },
+        { media: "(prefers-color-scheme: dark)", color: "#0f172a" },
+    ],
+};
+
+/** Locale and path of the current request, set by the middleware. */
+export function requestLocale(headerLocale: string | null): Locale {
+    return isLocale(headerLocale ?? undefined) ? (headerLocale as Locale) : defaultLocale;
 }
 
 /**
- * Generate consistent metadata for pages
+ * Site-wide metadata. The canonical URL and the hreflang alternates are built
+ * from the real request path, so every page gets its own.
  */
-export function generatePageMetadata({
-    title,
-    description,
-    path,
-    keywords = [],
-    image = "/app/bio/me.jpg",
-    locale = "en",
-    type = "website",
-    publishedTime,
-    modifiedTime,
-    authors = ["Alexandre De Freitas Martins"],
-}: PageMetadataProps): Metadata {
-    const url = `${baseUrl}${path}`;
-    const fullTitle = `${title} | AlexandreDFM`;
-
-    const defaultKeywords = [
-        "Alexandre De Freitas Martins",
-        "AlexandreDFM",
-        "Developer",
-        "Web Development",
-        "Portfolio",
-        "Software Engineer",
-        "Full Stack",
-        "Cloud Solutions",
-        "Open Source",
-        "Game Development",
-        "Mobile Apps",
-    ];
+export function siteMetadata(locale: Locale, pathname: string | null): Metadata {
+    const siteUrl = getSiteUrl();
+    const path = pathname && pathname.startsWith(`/${locale}`) ? pathname : `/${locale}`;
+    const rest = path.slice(locale.length + 1); // "/about", "" ...
+    const languages = Object.fromEntries(
+        locales.map((l) => [l === "fr" ? "fr-FR" : "en-US", `/${l}${rest}`]),
+    );
+    const noIndex = isNoIndex();
+    const verification = process.env.GOOGLE_SITE_VERIFICATION;
 
     return {
-        title: fullTitle,
-        description,
-        keywords: [...defaultKeywords, ...keywords],
-        authors: authors.map((name) => ({ name })),
+        metadataBase: new URL(siteUrl),
+        title: {
+            default: `${AUTHOR} - Developer Portfolio`,
+            template: "AlexandreDFM - %s",
+        },
+        description: DESCRIPTIONS[locale],
+        applicationName: SITE_NAME,
+        authors: [{ name: AUTHOR, url: siteUrl }],
+        creator: AUTHOR,
+        keywords: [
+            AUTHOR,
+            "AlexandreDFM",
+            "Portfolio",
+            "Full Stack Developer",
+            "Web Development",
+            "Next.js",
+            "TypeScript",
+            "Kubernetes",
+            "Game Development",
+        ],
+        alternates: {
+            canonical: path,
+            languages: { ...languages, "x-default": `/${defaultLocale}${rest}` },
+        },
         openGraph: {
-            type: type,
-            locale: locale === "en" ? "en_US" : "fr_FR",
-            url,
-            title: fullTitle,
-            description,
-            siteName: "AlexandreDFM Portfolio",
-            images: [
-                {
-                    url: `${baseUrl}${image}`,
-                    width: 1200,
-                    height: 630,
-                    alt: title,
-                },
-            ],
-            ...(type === "article" && {
-                publishedTime,
-                modifiedTime,
-                authors,
-            }),
+            type: "website",
+            siteName: SITE_NAME,
+            locale: locale === "fr" ? "fr_FR" : "en_US",
+            alternateLocale: locale === "fr" ? "en_US" : "fr_FR",
+            url: path,
+            // The image comes from app/opengraph-image.tsx (1200x630)
         },
         twitter: {
             card: "summary_large_image",
             site: "@AlexandreDFM",
             creator: "@AlexandreDFM",
-            title: fullTitle,
-            description,
-            images: [`${baseUrl}${image}`],
         },
-        alternates: {
-            canonical: url,
-            languages: {
-                "en-US": path.replace(/^\/(en|fr)/, "/en"),
-                "fr-FR": path.replace(/^\/(en|fr)/, "/fr"),
-            },
-        },
-        robots: {
-            index: true,
-            follow: true,
-            googleBot: {
-                index: true,
-                follow: true,
-                "max-video-preview": -1,
-                "max-image-preview": "large",
-                "max-snippet": -1,
-            },
-        },
+        manifest: "/manifest.json",
+        formatDetection: { telephone: false },
+        robots: noIndex
+            ? { index: false, follow: false }
+            : {
+                  index: true,
+                  follow: true,
+                  googleBot: {
+                      index: true,
+                      follow: true,
+                      "max-image-preview": "large",
+                      "max-snippet": -1,
+                      "max-video-preview": -1,
+                  },
+              },
+        ...(verification ? { verification: { google: verification } } : {}),
     };
 }
 
-/**
- * Generate JSON-LD structured data for blog posts
- */
-export function generateBlogPostJsonLd(post: {
+/** JSON-LD describing the person and the website (rendered in the root layout). */
+export function siteJsonLd() {
+    const siteUrl = getSiteUrl();
+    return [
+        {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            "@id": `${siteUrl}#person`,
+            name: AUTHOR,
+            url: siteUrl,
+            image: `${siteUrl}${PORTRAIT_PATH}`,
+            sameAs: [
+                "https://github.com/AlexandreDFM",
+                "https://www.linkedin.com/in/alexandre-de-freitas-martins/",
+            ],
+            jobTitle: "Full Stack Developer",
+            // To keep up to date (see RAPPORT.md §6.2)
+            worksFor: {
+                "@type": "Organization",
+                name: "Tux Inc.",
+                url: "https://tux-inc.com",
+            },
+            knowsAbout: [
+                "Web Development",
+                "Cloud Solutions",
+                "Software Engineering",
+                "Open Source",
+                "Game Development",
+                "Mobile Apps",
+            ],
+        },
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "@id": `${siteUrl}#website`,
+            url: siteUrl,
+            name: SITE_NAME,
+            publisher: { "@id": `${siteUrl}#person` },
+            inLanguage: ["fr-FR", "en-US"],
+        },
+    ];
+}
+
+/** JSON-LD of a blog post (URL with its locale). */
+export function blogPostJsonLd(post: {
     title: string;
     description: string;
     slug: string;
-    publishedAt: string;
+    locale: Locale;
+    publishedAt?: string;
     updatedAt?: string;
-    author: string;
-    image?: string;
+    image?: string | null;
 }) {
+    const siteUrl = getSiteUrl();
+    const url = `${siteUrl}/${post.locale}/blog/${post.slug}`;
     return {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         headline: post.title,
         description: post.description,
-        url: `${baseUrl}/blog/${post.slug}`,
+        url,
+        inLanguage: post.locale === "fr" ? "fr-FR" : "en-US",
         datePublished: post.publishedAt,
         dateModified: post.updatedAt || post.publishedAt,
-        author: {
-            "@type": "Person",
-            name: post.author,
-            url: baseUrl,
-        },
-        publisher: {
-            "@type": "Person",
-            name: "Alexandre De Freitas Martins",
-            logo: {
-                "@type": "ImageObject",
-                url: `${baseUrl}/app/bio/me.jpg`,
-            },
-        },
-        image: post.image ? `${baseUrl}${post.image}` : `${baseUrl}/app/bio/me.jpg`,
-        mainEntityOfPage: {
-            "@type": "WebPage",
-            "@id": `${baseUrl}/blog/${post.slug}`,
-        },
+        author: { "@id": `${siteUrl}#person` },
+        image: post.image ? `${siteUrl}${post.image}` : `${siteUrl}${PORTRAIT_PATH}`,
+        mainEntityOfPage: { "@type": "WebPage", "@id": url },
     };
 }
 
-/**
- * Generate JSON-LD structured data for projects
- */
-export function generateProjectJsonLd(project: {
-    title: string;
-    description: string;
-    id: string;
-    dateCreated: string;
-    dateModified?: string;
-    image?: string;
-    url?: string;
-}) {
-    return {
-        "@context": "https://schema.org",
-        "@type": "CreativeWork",
-        name: project.title,
-        description: project.description,
-        url: project.url || `${baseUrl}/projects/${project.id}`,
-        dateCreated: project.dateCreated,
-        dateModified: project.dateModified || project.dateCreated,
-        author: {
-            "@type": "Person",
-            name: "Alexandre De Freitas Martins",
-            url: baseUrl,
-        },
-        image: project.image ? `${baseUrl}${project.image}` : `${baseUrl}/app/bio/me.jpg`,
-    };
-}
-
-/**
- * Generate breadcrumb JSON-LD structured data
- */
-export function generateBreadcrumbJsonLd(items: { name: string; url: string }[]) {
-    return {
-        "@context": "https://schema.org",
-        "@type": "BreadcrumbList",
-        itemListElement: items.map((item, index) => ({
-            "@type": "ListItem",
-            position: index + 1,
-            name: item.name,
-            item: `${baseUrl}${item.url}`,
-        })),
-    };
+/** Serialize JSON-LD for a <script> tag ("<" escaped so content cannot close the tag). */
+export function jsonLdScript(data: unknown): string {
+    return JSON.stringify(data).replace(/</g, "\\u003c");
 }

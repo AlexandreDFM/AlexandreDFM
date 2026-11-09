@@ -25,40 +25,24 @@
  */
 
 import { MetadataRoute } from "next";
+import { getSiteUrl, isNoIndex } from "@/util/config";
+
+// Read at request time: staging (SITE_NOINDEX=true) must never be indexed
+export const dynamic = "force-dynamic";
 
 export default function robots(): MetadataRoute.Robots {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://alexandredfm.fr";
+    const baseUrl = getSiteUrl();
+
+    if (isNoIndex()) {
+        return { rules: [{ userAgent: "*", disallow: "/" }] };
+    }
 
     return {
         rules: [
             {
                 userAgent: "*",
                 allow: "/",
-                disallow: [
-                    "/api/",
-                    "/admin/",
-                    "/admin-login/",
-                    "/_next/",
-                    "/backend/",
-                ],
-            },
-            {
-                userAgent: "Googlebot",
-                allow: "/",
-                disallow: [
-                    "/api/",
-                    "/admin/",
-                    "/admin-login/",
-                ],
-            },
-            {
-                userAgent: "Bingbot",
-                allow: "/",
-                disallow: [
-                    "/api/",
-                    "/admin/",
-                    "/admin-login/",
-                ],
+                disallow: ["/api/", "/fr/admin", "/en/admin", "/fr/admin-login", "/en/admin-login"],
             },
         ],
         sitemap: `${baseUrl}/sitemap.xml`,

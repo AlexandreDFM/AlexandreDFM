@@ -24,6 +24,9 @@
  * THE SOFTWARE.
  */
 
+import { dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+
 const isDev = process.env.NODE_ENV !== "production";
 
 // Inline scripts are needed by Next.js, next-themes and the JSON-LD blocks.
@@ -58,6 +61,8 @@ const securityHeaders = [
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     output: "standalone",
+    // This folder is the root: an unrelated lockfile higher up must not change the output layout
+    outputFileTracingRoot: dirname(fileURLToPath(import.meta.url)),
     poweredByHeader: false,
     devIndicators: false,
     images: {

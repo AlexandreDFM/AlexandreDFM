@@ -42,7 +42,7 @@ export default async function Image() {
             <div
                 style={{
                     fontSize: 60,
-                    background: "linear-gradient(to bottom right, #000000, #1a1a1a)",
+                    background: "linear-gradient(to bottom right, #0f172a, #1e3a8a)",
                     width: "100%",
                     height: "100%",
                     display: "flex",
@@ -65,7 +65,7 @@ export default async function Image() {
                         style={{
                             fontSize: 72,
                             fontWeight: "bold",
-                            background: "linear-gradient(90deg, #ffffff, #a0a0a0)",
+                            background: "linear-gradient(90deg, #f8fafc, #93c5fd)",
                             backgroundClip: "text",
                             color: "transparent",
                             WebkitBackgroundClip: "text",
@@ -77,7 +77,7 @@ export default async function Image() {
                     <div
                         style={{
                             fontSize: 36,
-                            color: "#a0a0a0",
+                            color: "#93c5fd",
                         }}
                     >
                         Developer
@@ -85,7 +85,7 @@ export default async function Image() {
                     <div
                         style={{
                             fontSize: 24,
-                            color: "#666666",
+                            color: "#94a3b8",
                             marginTop: "20px",
                         }}
                     >
@@ -97,7 +97,7 @@ export default async function Image() {
                         position: "absolute",
                         bottom: "40px",
                         fontSize: 28,
-                        color: "#505050",
+                        color: "#94a3b8",
                     }}
                 >
                     alexandredfm.fr
