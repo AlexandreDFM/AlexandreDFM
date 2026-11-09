@@ -1,0 +1,182 @@
+name: Deploy to Kubernetes
+
+# Runs after a successful image build:
+#   staging branch -> GitHub environment "staging"    -> namespace alexandredfm-staging
+#   main branch    -> GitHub environment "production" -> namespace alexandredfm-production
+# One-time setup (namespaces, deploy accounts, TLS, GitHub Secrets and
+# Variables): see k8s/README.md.
+on:
+  workflow_run:
+    workflows: ["Build and push the image"]
+    types: [completed]
+    branches: [staging, main]
+
+permissions:
+  contents: read
+
+# One deployment at a time per environment; a newer one waits for the running one
+concurrency:
+  group: deploy-${{ github.event.workflow_run.head_branch }}
+  cancel-in-progress: false
+
+env:
+  APP: alexandredfm
+  TARGET: ${{ github.event.workflow_run.head_branch == 'main' && 'production' || 'staging' }}
+
+jobs:
+  deploy:
+    name: Deploy (${{ github.event.workflow_run.head_branch == 'main' && 'production' || 'staging' }})
+    if: github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.event.workflow_run.head_branch == 'main' && 'production' || 'staging' }}
+      url: ${{ vars.PUBLIC_SITE_URL }}
+    steps:
+      - name: Checkout the built commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Target
+        run: |
+          echo "NAMESPACE=$APP-$TARGET" >> "$GITHUB_ENV"
+          echo "MANIFESTS=k8s/$TARGET" >> "$GITHUB_ENV"
+          echo "Deploying ${{ github.event.workflow_run.head_sha }} to $TARGET"
+
+      - name: Connect to the cluster
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
+        run: |
+          if [ -z "$KUBE_CONFIG" ]; then
+            echo "::error::Secret KUBE_CONFIG is missing in the $TARGET environment (k8s/rbac/make-kubeconfig.sh)"
+            exit 1
+          fi
+          kubeconfig="$RUNNER_TEMP/kubeconfig"
+          printf '%s' "$KUBE_CONFIG" | base64 --decode > "$kubeconfig"
+          chmod 600 "$kubeconfig"
+          echo "KUBECONFIG=$kubeconfig" >> "$GITHUB_ENV"
+          KUBECONFIG="$kubeconfig" kubectl -n "$NAMESPACE" auth can-i create deployments.apps \
+            || { echo "::error::The deploy account cannot deploy in $NAMESPACE (k8s/rbac/deployer.yaml)"; exit 1; }
+
+      - name: Check the one-time setup
+        run: |
+          # Created by hand by the admin (Cloudflare Origin certificate)
+          missing=0
+          required_secrets=("$APP-tls")
+          for secret in "${required_secrets[@]}"; do
+            if ! kubectl -n "$NAMESPACE" get secret "$secret" > /dev/null 2>&1; then
+              echo "::error::Secret $secret is missing in $NAMESPACE (k8s/README.md, TLS)"
+              missing=1
+            fi
+          done
+          exit "$missing"
+
+      - name: Registry access (private package only)
+        env:
+          GHCR_PULL_TOKEN: ${{ secrets.GHCR_PULL_TOKEN }}
+          GHCR_PULL_USER: ${{ secrets.GHCR_PULL_USER || github.repository_owner }}
+        run: |
+          if [ -z "$GHCR_PULL_TOKEN" ]; then
+            echo "No GHCR_PULL_TOKEN: the package must be public"
+            exit 0
+          fi
+          kubectl -n "$NAMESPACE" create secret docker-registry github-container-registry \
+            --docker-server=ghcr.io \
+            --docker-username="$GHCR_PULL_USER" \
+            --docker-password="$GHCR_PULL_TOKEN" \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Application settings (GitHub Variables)
+        env:
+          # Read at runtime by the server (portfolio/util/config.ts)
+          SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
+          DIRECTUS_URL: ${{ vars.DIRECTUS_URL }}
+          SITE_NOINDEX: ${{ vars.SITE_NOINDEX }}
+          GOOGLE_SITE_VERIFICATION: ${{ vars.GOOGLE_SITE_VERIFICATION }}
+        run: |
+          args=()
+          for name in SITE_URL DIRECTUS_URL SITE_NOINDEX GOOGLE_SITE_VERIFICATION; do
+            if [ -n "${!name}" ]; then
+              args+=(--from-literal="$name=${!name}")
+            fi
+          done
+          kubectl -n "$NAMESPACE" create configmap "$APP-app-config" "${args[@]}" \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Application secrets (GitHub Secrets)
+        env:
+          DIRECTUS_WEBSITE_TOKEN: ${{ secrets.DIRECTUS_WEBSITE_TOKEN }}
+        run: |
+          required="DIRECTUS_WEBSITE_TOKEN"
+          args=()
+          for name in $required; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Secret $name is required in the $TARGET environment"
+              exit 1
+            fi
+            args+=(--from-literal="$name=${!name}")
+          done
+          kubectl -n "$NAMESPACE" create secret generic "$APP-app" "${args[@]}" \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Deploy
+        env:
+          TAG: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          # Image of the deployed commit (portable sed: same syntax on Linux and macOS).
+          # Quoted: a SHA made of digits (or like "8e1234...") would otherwise be read as a number.
+          sed "s/^\([[:space:]]*newTag:\).*/\1 \"${TAG}\"/" "$MANIFESTS/kustomization.yaml" > "$RUNNER_TEMP/kustomization.yaml"
+          mv "$RUNNER_TEMP/kustomization.yaml" "$MANIFESTS/kustomization.yaml"
+          before=$(kubectl -n "$NAMESPACE" get "deployment/$APP-web" \
+            -o jsonpath='{.spec.template.spec.containers[0].image}' 2>/dev/null || true)
+          kubectl apply -k "$MANIFESTS"
+          # Same image (re-run, settings or secret change only): restart to reload the env
+          if [ "$before" = "ghcr.io/alexandredfm/alexandredfm:${TAG}" ]; then
+            kubectl -n "$NAMESPACE" rollout restart "deployment/$APP-web"
+          fi
+          kubectl -n "$NAMESPACE" rollout status "deployment/$APP-web" --timeout=300s
+
+      - name: Diagnostics
+        if: failure()
+        run: |
+          kubectl -n "$NAMESPACE" get pods,deploy,svc -o wide || true
+          kubectl -n "$NAMESPACE" get events --sort-by=.metadata.creationTimestamp --field-selector type=Warning | tail -20 || true
+          kubectl -n "$NAMESPACE" logs -l app.kubernetes.io/component=web --tail=100 --all-containers || true
+
+      - name: Smoke tests on the public site
+        if: vars.PUBLIC_SITE_URL != ''
+        env:
+          SITE: ${{ vars.PUBLIC_SITE_URL }}
+        run: |
+          # Through Cloudflare and the ingress, like a visitor
+          for attempt in $(seq 1 12); do
+            if curl -fsS --max-time 10 -o /dev/null "$SITE/api/server/health"; then
+              break
+            fi
+            [ "$attempt" = 12 ] && { echo "::error::$SITE/api/server/health does not answer"; exit 1; }
+            sleep 10
+          done
+
+          # Pages render and carry the security headers
+          headers=$(curl -fsS -D - -o /dev/null --max-time 15 "$SITE/fr")
+          echo "$headers" | grep -qi '^content-security-policy:' \
+            || { echo "::error::$SITE/fr has no Content-Security-Policy header"; exit 1; }
+
+          # Unsupported languages must not loop (former /de/de/... bug)
+          location=$(curl -fsS -o /dev/null -w '%{redirect_url}' -H 'Accept-Language: de' "$SITE/about")
+          case "$location" in */fr/about) ;; *) echo "::error::/about with Accept-Language: de redirects to '$location'"; exit 1;; esac
+
+          # The asset proxy refuses path traversal
+          code=$(curl -s -o /dev/null -w '%{http_code}' "$SITE/api/media/file/..%2Fusers%2Fme")
+          [ "$code" = 400 ] || { echo "::error::Path traversal answered $code instead of 400"; exit 1; }
+
+          # One project image is really served (uploads volume of Directus)
+          img=$(curl -fsS "$SITE/api/projects?lang=fr" | jq -r '[.data[]? // .[]? | .imageUrl // empty][0] // empty')
+          if [ -n "$img" ]; then
+            type=$(curl -fsS -o /dev/null -w '%{content_type}' "$SITE$img") \
+              || { echo "::error::Project image $img is not served"; exit 1; }
+            case "$type" in image/*) echo "Project image OK ($type)";; *) echo "::error::$img answered $type"; exit 1;; esac
+          else
+            echo "::warning::No project image to check"
+          fi
+          echo "Smoke tests passed on $SITE"

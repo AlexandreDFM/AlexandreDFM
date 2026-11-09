@@ -1,0 +1,109 @@
+# Account used by the GitHub deploy workflow in alexandredfm-production. It can only manage the
+# resources the app uses, in this namespace: no delete, no exec, nothing
+# cluster-wide (it cannot create or delete namespaces or volumes).
+# Applied once by a cluster admin, then:
+#   NAMESPACE=alexandredfm-production ./k8s/rbac/make-kubeconfig.sh https://<api-server>:6443 \
+#     | gh secret set KUBE_CONFIG --env production
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: github-deployer
+  namespace: alexandredfm-production
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: github-deployer
+  namespace: alexandredfm-production
+rules:
+  - apiGroups: [""]
+    resources: [configmaps, secrets, services]
+    verbs: [get, list, watch, create, update, patch]
+  - apiGroups: [""]
+    resources: [pods, pods/log, events]
+    verbs: [get, list, watch]
+  - apiGroups: [apps]
+    resources: [deployments, replicasets]
+    verbs: [get, list, watch, create, update, patch]
+  - apiGroups: [traefik.io]
+    resources: [ingressroutes, middlewares]
+    verbs: [get, list, watch, create, update, patch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: github-deployer
+  namespace: alexandredfm-production
+subjects:
+  - kind: ServiceAccount
+    name: github-deployer
+    namespace: alexandredfm-production
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: github-deployer
+---
+# Long-lived token of the account, read by make-kubeconfig.sh
+apiVersion: v1
+kind: Secret
+metadata:
+  name: github-deployer-token
+  namespace: alexandredfm-production
+  annotations:
+    kubernetes.io/service-account.name: github-deployer
+type: kubernetes.io/service-account-token
+---
+# Account used by the GitHub deploy workflow in alexandredfm-staging. It can only manage the
+# resources the app uses, in this namespace: no delete, no exec, nothing
+# cluster-wide (it cannot create or delete namespaces or volumes).
+# Applied once by a cluster admin, then:
+#   NAMESPACE=alexandredfm-staging ./k8s/rbac/make-kubeconfig.sh https://<api-server>:6443 \
+#     | gh secret set KUBE_CONFIG --env staging
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: github-deployer
+  namespace: alexandredfm-staging
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: github-deployer
+  namespace: alexandredfm-staging
+rules:
+  - apiGroups: [""]
+    resources: [configmaps, secrets, services]
+    verbs: [get, list, watch, create, update, patch]
+  - apiGroups: [""]
+    resources: [pods, pods/log, events]
+    verbs: [get, list, watch]
+  - apiGroups: [apps]
+    resources: [deployments, replicasets]
+    verbs: [get, list, watch, create, update, patch]
+  - apiGroups: [traefik.io]
+    resources: [ingressroutes, middlewares]
+    verbs: [get, list, watch, create, update, patch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: github-deployer
+  namespace: alexandredfm-staging
+subjects:
+  - kind: ServiceAccount
+    name: github-deployer
+    namespace: alexandredfm-staging
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: github-deployer
+---
+# Long-lived token of the account, read by make-kubeconfig.sh
+apiVersion: v1
+kind: Secret
+metadata:
+  name: github-deployer-token
+  namespace: alexandredfm-staging
+  annotations:
+    kubernetes.io/service-account.name: github-deployer
+type: kubernetes.io/service-account-token

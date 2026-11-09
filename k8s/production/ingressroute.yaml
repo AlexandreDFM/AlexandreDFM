@@ -1,0 +1,42 @@
+# Behind Cloudflare (SSL mode "Full (strict)"): alexandredfm-tls holds the
+# Cloudflare Origin certificate for alexandredfm.fr and *.alexandredfm.fr,
+# created once by the admin (see k8s/README.md). k3s' Traefik has no ACME resolver.
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: alexandredfm-web
+  labels:
+    app.kubernetes.io/name: alexandredfm
+    app.kubernetes.io/component: web
+spec:
+  entryPoints:
+    - websecure
+  tls:
+    secretName: alexandredfm-tls
+  routes:
+    - match: Host(`alexandredfm.fr`)
+      kind: Rule
+      services:
+        - name: alexandredfm-web
+          port: http
+    # One canonical host: www -> apex (no duplicate content)
+    - match: Host(`www.alexandredfm.fr`)
+      kind: Rule
+      middlewares:
+        - name: alexandredfm-redirect-www
+      services:
+        - name: alexandredfm-web
+          port: http
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: alexandredfm-redirect-www
+  labels:
+    app.kubernetes.io/name: alexandredfm
+    app.kubernetes.io/component: web
+spec:
+  redirectRegex:
+    regex: ^https?://www\.alexandredfm\.fr/(.*)
+    replacement: https://alexandredfm.fr/${1}
+    permanent: true

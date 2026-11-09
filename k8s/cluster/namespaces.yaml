@@ -1,0 +1,20 @@
+# Applied once by a cluster admin (the deploy accounts have no cluster-wide rights):
+#   kubectl apply -f k8s/cluster/namespaces.yaml
+#
+# NEVER delete or rename these namespaces: deleting a namespace deletes
+# everything in it (deployments, secrets, volumes).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: alexandredfm-production
+  labels:
+    app.kubernetes.io/part-of: alexandredfm
+    environment: production
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: alexandredfm-staging
+  labels:
+    app.kubernetes.io/part-of: alexandredfm
+    environment: staging

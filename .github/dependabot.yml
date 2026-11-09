@@ -1,0 +1,32 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /portfolio
+    schedule:
+      interval: weekly
+    target-branch: dev
+    open-pull-requests-limit: 5
+    groups:
+      # Patch and minor updates in one PR; majors one by one
+      minor-and-patch:
+        update-types: [minor, patch]
+    ignore:
+      # Majors that change the design or need a migration (see RAPPORT.md)
+      - dependency-name: "@heroui/react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react*"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    target-branch: dev
+
+  - package-ecosystem: docker
+    directory: /portfolio
+    schedule:
+      interval: monthly
+    target-branch: dev

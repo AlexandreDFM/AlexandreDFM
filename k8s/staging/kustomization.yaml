@@ -1,0 +1,18 @@
+# Everything the deploy workflow applies for staging: kubectl apply -k k8s/staging
+# The workflow sets images[].newTag to the deployed commit SHA.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: alexandredfm-staging
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: alexandredfm
+      app.kubernetes.io/managed-by: kustomize
+      environment: staging
+    includeSelectors: false
+    includeTemplates: true
+resources:
+  - ../base
+  - ingressroute.yaml
+images:
+  - name: ghcr.io/alexandredfm/alexandredfm
+    newTag: latest

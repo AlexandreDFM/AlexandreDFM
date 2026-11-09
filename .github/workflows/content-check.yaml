@@ -1,0 +1,80 @@
+name: Content check
+
+# Every morning: are the project images, the avatar and every file declared in
+# Directus really served? Opens one issue (an e-mail) when something is missing,
+# and does not open another one while it stays open.
+# Needs, in the "production" environment: Variables PUBLIC_SITE_URL and
+# DIRECTUS_URL, Secret DIRECTUS_CHECK_TOKEN (read-only: directus_files + published items).
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    name: Images and Directus files
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      SITE: ${{ vars.PUBLIC_SITE_URL }}
+      DIRECTUS_URL: ${{ vars.DIRECTUS_URL }}
+      DIRECTUS_TOKEN: ${{ secrets.DIRECTUS_CHECK_TOKEN }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Project images and avatar (through the site)
+        run: |
+          : > report.txt
+          json=$(curl -fsS --max-time 20 "$SITE/api/projects?lang=fr") \
+            || { echo "KO  $SITE/api/projects is unreachable" | tee -a report.txt; json='{}'; }
+          urls=$(printf '%s' "$json" | jq -r '.data[]? // .[]? | .imageUrl // empty')
+          for u in $urls /api/avatar/image; do
+            r=$(curl -s -o /dev/null -w '%{http_code} %{content_type}' "$SITE$u")
+            case "$r" in
+              "200 image/"*) echo "OK  $u" ;;
+              *) echo "KO  $SITE$u -> $r" | tee -a report.txt ;;
+            esac
+          done
+
+      - name: Directus files on disk vs database
+        if: env.DIRECTUS_TOKEN != ''
+        run: |
+          curl -fsS -H "Authorization: Bearer $DIRECTUS_TOKEN" \
+            "$DIRECTUS_URL/files?fields=id,filename_download&limit=-1" \
+            | jq -r '.data[] | "\(.id) \(.filename_download)"' > files.txt
+          echo "$(wc -l < files.txt) files declared in Directus"
+          while read -r id name; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' -r 0-0 \
+              -H "Authorization: Bearer $DIRECTUS_TOKEN" "$DIRECTUS_URL/assets/$id")
+            case "$code" in
+              200|206) ;;
+              *) echo "Missing file: $id ($name) -> HTTP $code" | tee -a report.txt ;;
+            esac
+          done < files.txt
+
+      - name: Open an issue
+        if: always()
+        run: |
+          [ -s report.txt ] || { echo "Everything is served"; exit 0; }
+          open=$(gh issue list -R "$GITHUB_REPOSITORY" --label content-check --state open --json number -q '.[0].number')
+          if [ -n "$open" ]; then
+            gh issue comment "$open" -R "$GITHUB_REPOSITORY" --body-file report.txt
+          else
+            gh label create content-check -R "$GITHUB_REPOSITORY" --color B60205 \
+              --description "Missing images or Directus files" 2>/dev/null || true
+            {
+              echo "Content check of $(date -u +%F) found unavailable content:"
+              echo
+              echo '```'
+              cat report.txt
+              echo '```'
+              echo
+              echo "Restore: see docs/STORAGE.md in the my-api repository."
+            } > body.md
+            gh issue create -R "$GITHUB_REPOSITORY" --label content-check \
+              --title "Content unavailable ($(date -u +%F))" --body-file body.md
+          fi
+          exit 1

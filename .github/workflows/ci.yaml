@@ -1,0 +1,47 @@
+name: CI
+
+# Checks on every pull request and on dev; reused by build.yaml before
+# building an image (workflow_call).
+on:
+  pull_request:
+  push:
+    branches: [dev]
+  workflow_call:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+defaults:
+  run:
+    working-directory: portfolio
+
+jobs:
+  checks:
+    name: Lint, typecheck, tests, build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          package_json_file: portfolio/package.json   # version from "packageManager"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: portfolio/package.json   # "engines.node"
+          cache: pnpm
+          cache-dependency-path: portfolio/pnpm-lock.yaml
+
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm typecheck
+      - run: pnpm test
+      - run: pnpm build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+      - name: Security audit (production dependencies)
+        run: pnpm audit --prod --audit-level high

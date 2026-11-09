@@ -1,0 +1,21 @@
+# staging.alexandredfm.fr only: a second-level subdomain such as
+# www.staging.alexandredfm.fr is not covered by Cloudflare's universal certificate.
+# The DNS record must be proxied (orange cloud) so the server IP stays hidden.
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: alexandredfm-web
+  labels:
+    app.kubernetes.io/name: alexandredfm
+    app.kubernetes.io/component: web
+spec:
+  entryPoints:
+    - websecure
+  tls:
+    secretName: alexandredfm-tls
+  routes:
+    - match: Host(`staging.alexandredfm.fr`)
+      kind: Rule
+      services:
+        - name: alexandredfm-web
+          port: http
