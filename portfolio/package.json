@@ -1,52 +1,52 @@
 {
-    "name": "frontend",
+    "name": "alexandredfm-portfolio",
     "version": "0.1.0",
     "private": true,
     "type": "module",
+    "packageManager": "pnpm@11.5.2",
+    "engines": {
+        "node": ">=22"
+    },
     "scripts": {
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "lint": "next lint",
+        "lint": "eslint .",
+        "typecheck": "tsc --noEmit",
+        "test": "vitest run",
+        "check": "pnpm lint && pnpm typecheck && pnpm test",
         "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md,yaml}\""
     },
     "dependencies": {
-        "@boiseitguru/cookie-cutter": "^0.2.3",
         "@directus/sdk": "^20.3.0",
-        "@heroui/button": "^2.2.28",
-        "@heroui/link": "^2.2.24",
-        "@heroui/react": "^2.8.6",
-        "@heroui/select": "^2.4.29",
-        "@heroui/system": "^2.4.24",
-        "@heroui/theme": "^2.4.24",
-        "@next/mdx": "^15.5.9",
-        "@tailwindcss/postcss": "^4.1.18",
-        "@tailwindcss/typography": "^0.5.19",
-        "@tailwindcss/vite": "^4.1.18",
-        "@types/js-cookie": "^3.0.6",
-        "cookie-cutter": "^0.2.0",
-        "framer-motion": "^12.23.26",
-        "js-cookie": "^3.0.5",
+        "@heroui/react": "^2.8.10",
+        "@heroui/theme": "^2.4.26",
+        "@tailwindcss/postcss": "^4.3.5",
+        "@tailwindcss/typography": "^0.5.20",
+        "framer-motion": "^12.43.0",
+        "js-cookie": "^3.0.8",
         "lucide-react": "^0.309.0",
-        "next": "^15.5.9",
+        "next": "^15.5.29",
         "next-themes": "^0.4.6",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
-        "tailwindcss": "^4.1.18",
-        "tailwindcss-debug-screens": "^2.2.1"
+        "sanitize-html": "^2.18.1",
+        "server-only": "^0.0.1",
+        "tailwindcss": "^4.3.5"
     },
     "devDependencies": {
-        "@types/node": "^20.19.27",
-        "@types/react": "^18.3.27",
+        "@eslint/eslintrc": "^3.3.7",
+        "@types/js-cookie": "^3.0.6",
+        "@types/node": "^20.19.43",
+        "@types/react": "^18.3.31",
         "@types/react-dom": "^18.3.7",
-        "eslint": "^9.39.2",
-        "eslint-config-next": "^15.5.9",
-        "postcss": "^8.5.6",
-        "prettier": "3.1.1",
+        "@types/sanitize-html": "^2.16.2",
+        "eslint": "^9.39.5",
+        "eslint-config-next": "^15.5.29",
+        "postcss": "^8.5.32",
+        "prettier": "3.9.10",
         "prettier-plugin-tailwindcss": "^0.6.14",
-        "typescript": "^5.9.3"
-    },
-    "optionalDependencies": {
-        "lightningcss-linux-arm64-musl": "^1.30.2"
+        "typescript": "^5.9.3",
+        "vitest": "^3.2.7"
     }
 }

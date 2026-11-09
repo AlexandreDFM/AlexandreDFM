@@ -1,0 +1,12 @@
+# Dependencies allowed to run install scripts (pnpm >= 10 blocks them by default)
+allowBuilds:
+  '@heroui/shared-utils': true
+  sharp: true
+  unrs-resolver: true
+  esbuild: false
+
+
+# Security fixes for transitive dependencies (same major versions)
+overrides:
+  'next>postcss': ^8.5.32
+  postcss-selector-parser@6: ^6.1.5
