@@ -6,7 +6,7 @@
 #   ops/github-setup.sh <step> [--apply]
 #
 # Steps, in this order:
-#   resync        make dev, staging and main point to the same commit (triggers deployments)
+#   resync        move dev and staging to the current commit (deploys staging), then promote to main
 #   pages         disable GitHub Pages (source main:/docs no longer exists)
 #   branches      archive the "pages" branch as a tag, delete the merged leftover branches
 #   environments  create the "staging" and "production" environments with their branch policy
@@ -31,15 +31,19 @@ run() {
 
 case "$step" in
 resync)
-    # main only has merge commits that staging lacks; staging has all the code.
+    # First release of the new flow. The current branch already contains
+    # origin/main, origin/staging and origin/dev (one "resync" merge commit),
+    # so every branch moves by fast-forward. Pushing main directly would run
+    # its old workflows: staging goes first, main is promoted once staging works.
     run git fetch origin
-    run git checkout main
-    run git merge --ff-only origin/main
-    run git merge --no-edit origin/staging -m "chore: resync staging into main"
-    run git push origin main
-    run git push origin main:staging     # fast-forward
-    run git push origin main:dev         # fast-forward
-    echo "Check: git rev-parse origin/dev origin/staging origin/main  -> 3 times the same SHA"
+    for b in dev staging main; do
+        git merge-base --is-ancestor "origin/$b" HEAD \
+            || { echo "origin/$b is not contained in HEAD: merge it first"; exit 1; }
+    done
+    run git push origin HEAD:dev
+    run git push origin HEAD:staging     # build + deploy staging (needs the Secrets and Variables)
+    echo "Check https://staging.alexandredfm.fr, then promote:"
+    echo "  git push origin origin/staging:main     # deploy production"
     ;;
 
 pages)

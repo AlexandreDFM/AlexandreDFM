@@ -57,11 +57,12 @@ git log --oneline origin/main..origin/staging           # ce qui attend d'aller 
 
 ## Mise en place (une fois)
 
-`ops/github-setup.sh <étape>` affiche les commandes, et `--apply` les exécute. Ordre recommandé : **après** avoir créé les Secrets et Variables (k8s/README.md), sinon le premier déploiement échoue.
+`ops/github-setup.sh <étape>` affiche les commandes, et `--apply` les exécute.
 
-1. `resync` : aligne les trois branches (déclenche staging et production).
-2. `pages` : désactive GitHub Pages (son build échoue à chaque push).
-3. `branches` : archive `pages` dans le tag `archive/pages-2024`, supprime `pages` et l'ancienne branche de PR déjà fusionnée.
-4. `environments` : crée `staging` et `production` avec leur politique de branche.
-5. `rulesets` : protège `main`, `staging` et `dev`.
-6. `cleanup` : supprime les anciens environnements (y compris `copilot`) et secrets, une fois les deux environnements déployés avec succès.
+1. `pages` : désactive GitHub Pages (son build échouait à chaque push). Déjà fait.
+2. `environments` : crée `staging` et `production` avec leur politique de branche. Ajouter ensuite les Secrets et Variables (k8s/README.md), **avant** l'étape suivante, sinon le premier déploiement échoue.
+3. `resync`, depuis la branche qui contient tout (elle contient déjà `origin/main`, `origin/staging` et `origin/dev`) : avance `dev` puis `staging` en fast-forward, ce qui déploie staging. Une fois https://staging.alexandredfm.fr vérifié : `git push origin origin/staging:main`. Ne pas pousser `main` en premier : ses anciens workflows redéploieraient l'ancien code.
+4. Supprimer les anciennes ressources Kubernetes (k8s/README.md, étape 7).
+5. `branches` : archive `pages` dans le tag `archive/pages-2024`, supprime `pages` et l'ancienne branche de PR déjà fusionnée.
+6. `rulesets` : protège `main`, `staging` et `dev`.
+7. `cleanup` : supprime les anciens environnements (y compris `copilot`) et secrets, une fois les deux environnements déployés avec succès.
