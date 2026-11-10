@@ -35,11 +35,11 @@ import {
     Trash2,
     Eye,
     Star,
-    Github,
     Briefcase,
     GraduationCap,
     User,
 } from "lucide-react";
+import { GithubIcon } from "@/components/brand-icons";
 import { useState } from "react";
 import { Card } from "@/components/card";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -149,7 +149,7 @@ export default function ProjectsList() {
                                                     e.stopPropagation()
                                                 }
                                             >
-                                                <Github className="h-4 w-4" />
+                                                <GithubIcon className="h-4 w-4" />
                                             </a>
                                         )}
                                     </div>

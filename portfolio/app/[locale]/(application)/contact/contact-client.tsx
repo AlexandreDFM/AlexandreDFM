@@ -27,14 +27,8 @@
 
 "use client";
 
-import {
-    Github,
-    InstagramIcon,
-    Linkedin,
-    Mail,
-    Phone,
-    XIcon,
-} from "lucide-react";
+import { Mail, Phone } from "lucide-react";
+import { GithubIcon, InstagramIcon, LinkedinIcon, XLogoIcon } from "@/components/brand-icons";
 
 import Link from "next/link";
 import { Card } from "@/components/card";
@@ -53,19 +47,19 @@ export default function ContactClient() {
                 icon = <InstagramIcon size={20} />;
                 break;
             case "x":
-                icon = <XIcon size={20} />;
+                icon = <XLogoIcon size={20} />;
                 break;
             case "mail":
                 icon = <Mail size={20} />;
                 break;
             case "github":
-                icon = <Github size={20} />;
+                icon = <GithubIcon size={20} />;
                 break;
             case "phone":
                 icon = <Phone size={20} />;
                 break;
             case "linkedin":
-                icon = <Linkedin size={20} />;
+                icon = <LinkedinIcon size={20} />;
                 break;
             default:
                 icon = <span />;

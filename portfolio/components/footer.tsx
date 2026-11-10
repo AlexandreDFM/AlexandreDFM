@@ -27,14 +27,8 @@
 
 "use client";
 
-import {
-    Mail,
-    Phone,
-    XIcon,
-    Github,
-    Linkedin,
-    InstagramIcon,
-} from "lucide-react";
+import { Mail, Phone } from "lucide-react";
+import { GithubIcon, InstagramIcon, LinkedinIcon, XLogoIcon } from "@/components/brand-icons";
 
 import Link from "next/link";
 import { ISocial } from "@/types/ISocial";
@@ -66,19 +60,19 @@ export const Footer: React.FC = () => {
                 icon = <InstagramIcon size={12} />;
                 break;
             case "x":
-                icon = <XIcon size={12} />;
+                icon = <XLogoIcon size={12} />;
                 break;
             case "mail":
                 icon = <Mail size={12} />;
                 break;
             case "github":
-                icon = <Github size={12} />;
+                icon = <GithubIcon size={12} />;
                 break;
             case "phone":
                 icon = <Phone size={12} />;
                 break;
             case "linkedin":
-                icon = <Linkedin size={12} />;
+                icon = <LinkedinIcon size={12} />;
                 break;
             default:
                 icon = <span />;
