@@ -13,8 +13,8 @@ importers:
   .:
     dependencies:
       '@directus/sdk':
-        specifier: ^20.3.0
-        version: 20.3.0
+        specifier: ^27.1.0
+        version: 27.1.0
       '@heroui/react':
         specifier: ^2.8.10
         version: 2.8.10(@react-spectrum/provider@3.11.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.31)(framer-motion@12.43.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(tailwindcss@4.3.5)
@@ -126,8 +126,8 @@ packages:
     resolution: {integrity: sha512-v+oN26xP4YIlQsbQ/CbTH1WG5m/l/DjKKZNy/Kp3f/AFvbgt7Em/D0FeMM3O2hX0YzeN2M16W8lOpyhIkfCBcQ==}
     engines: {node: '>=6.9.0'}
 
-  '@directus/sdk@20.3.0':
-    resolution: {integrity: sha512-auy59B0A7Ri+4JDy0JcdFHnsHvOkl3ixWMWYciXAbm4oYIE9S4be8xEpIwA5qhlPTOprJ6JHPWo9rEvcrLwNtA==}
+  '@directus/sdk@27.1.0':
+    resolution: {integrity: sha512-dPuhb6DOJfTHlh9fbe0wQeUJLpjwVIA3rhVkRotcNL3IBFbnzgTxZhz5kt6CP+UK3TLfpC0erkKYszBXj7yolg==}
     engines: {node: '>=22'}
 
   '@emnapi/runtime@1.11.3':
@@ -4103,7 +4103,7 @@ snapshots:
 
   '@babel/runtime@7.29.13': {}
 
-  '@directus/sdk@20.3.0': {}
+  '@directus/sdk@27.1.0': {}
 
   '@emnapi/runtime@1.11.3':
     dependencies:
