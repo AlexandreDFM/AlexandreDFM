@@ -1,8 +1,8 @@
 /**
- * File Name: LanguageSwitcher.tsx
+ * File Name: ThemeSwitcher.tsx
  * Author: Alexandre Kévin DE FREITAS MARTINS
  * Creation Date: 6/6/2025
- * Description: This is the LanguageSwitcher.tsx
+ * Description: This is the ThemeSwitcher.tsx
  * Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
  * Version: 1.0.0
  *
