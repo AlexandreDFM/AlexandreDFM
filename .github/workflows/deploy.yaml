@@ -73,7 +73,13 @@ jobs:
           GHCR_PULL_USER: ${{ secrets.GHCR_PULL_USER || github.repository_owner }}
         run: |
           if [ -z "$GHCR_PULL_TOKEN" ]; then
-            echo "No GHCR_PULL_TOKEN: the package must be public"
+            # Public package: pull anonymously. A pull secret left by the former
+            # workflows (GITHUB_TOKEN, expired after its job) would make GHCR answer
+            # 403, so it is replaced by empty credentials.
+            kubectl -n "$NAMESPACE" create secret docker-registry github-container-registry \
+              --from-file=.dockerconfigjson=<(printf '{"auths":{}}') \
+              --dry-run=client -o yaml | kubectl apply -f -
+            echo "No GHCR_PULL_TOKEN: anonymous pull, the package must be public"
             exit 0
           fi
           kubectl -n "$NAMESPACE" create secret docker-registry github-container-registry \
