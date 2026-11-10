@@ -129,10 +129,11 @@ cleanup)
     # Only once the new workflows have deployed staging AND production successfully
     # Not "Production": environment names ignore case, it IS the new "production"
     for env in alexandredfm-dev alexandredfm-prod alexandredfm-production alexandredfm-staging Preview github-pages copilot; do
-        run gh api -X DELETE "repos/$REPO/environments/$env"
+        # Already deleted (404) is fine: the step can be re-run
+        run gh api -X DELETE "repos/$REPO/environments/$env" > /dev/null 2>&1 || echo "  $env: already gone"
     done
     for secret in KUBERNETES_URL KUBERNETES_SECRET K8S_SECRETS_YAML_PROD K8S_SECRETS_YAML_STAGING; do
-        run gh secret delete "$secret" -R "$REPO" || true
+        run gh secret delete "$secret" -R "$REPO" > /dev/null 2>&1 || echo "  $secret: already gone"
     done
     ;;
 
