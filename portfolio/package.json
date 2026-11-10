@@ -18,7 +18,7 @@
         "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md,yaml}\""
     },
     "dependencies": {
-        "@directus/sdk": "^20.3.0",
+        "@directus/sdk": "^27.1.0",
         "@heroui/react": "^2.8.10",
         "@heroui/theme": "^2.4.26",
         "@tailwindcss/postcss": "^4.3.5",
