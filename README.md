@@ -23,7 +23,7 @@ I'm looking forward to hearing your opinion about my projects and I hope you lik
 
 ### Some fun facts about me:
 
-- I love to play video games, especially on my Twitch channel (http://twitch.tv/AlexandreDFM or http://twitch.tv/jetlagsoff)
+- I love to play video games, especially on my Twitch channel (http://twitch.tv/AlexandreDFM)
 - I love to do live coding on Twitch, sharing my knowledge and learning from others
 - I love to create new things, whether it's a new project, a new feature, or a new way of doing things
 - I love to learn new things, whether it's a new programming language, a new framework, or a new way of thinking
