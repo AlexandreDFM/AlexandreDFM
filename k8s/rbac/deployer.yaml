@@ -1,20 +1,20 @@
-# Account used by the GitHub deploy workflow in alexandredfm-production. It can only manage the
+# Account used by the GitHub deploy workflow in alexandredfm-prod. It can only manage the
 # resources the app uses, in this namespace: no delete, no exec, nothing
 # cluster-wide (it cannot create or delete namespaces or volumes).
 # Applied once by a cluster admin, then:
-#   NAMESPACE=alexandredfm-production ./k8s/rbac/make-kubeconfig.sh https://<api-server>:6443 \
+#   NAMESPACE=alexandredfm-prod ./k8s/rbac/make-kubeconfig.sh https://<api-server>:6443 \
 #     | gh secret set KUBE_CONFIG --env production
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: github-deployer
-  namespace: alexandredfm-production
+  namespace: alexandredfm-prod
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: github-deployer
-  namespace: alexandredfm-production
+  namespace: alexandredfm-prod
 rules:
   - apiGroups: [""]
     resources: [configmaps, secrets, services]
@@ -33,11 +33,11 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: github-deployer
-  namespace: alexandredfm-production
+  namespace: alexandredfm-prod
 subjects:
   - kind: ServiceAccount
     name: github-deployer
-    namespace: alexandredfm-production
+    namespace: alexandredfm-prod
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -48,7 +48,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: github-deployer-token
-  namespace: alexandredfm-production
+  namespace: alexandredfm-prod
   annotations:
     kubernetes.io/service-account.name: github-deployer
 type: kubernetes.io/service-account-token

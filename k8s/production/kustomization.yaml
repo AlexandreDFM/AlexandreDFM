@@ -2,7 +2,7 @@
 # The workflow sets images[].newTag to the deployed commit SHA.
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: alexandredfm-production
+namespace: alexandredfm-prod
 labels:
   - pairs:
       app.kubernetes.io/part-of: alexandredfm

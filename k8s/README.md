@@ -16,7 +16,7 @@ Visiteur ─▶ Cloudflare (SSL Full) ─▶ Traefik (IngressRoute, certificat p
 
 | Fichier | Rôle | Appliqué par |
 | --- | --- | --- |
-| `cluster/namespaces.yaml` | Namespaces `alexandredfm-production` et `alexandredfm-staging` | Admin, une fois |
+| `cluster/namespaces.yaml` | Namespaces `alexandredfm-prod` et `alexandredfm-staging` | Admin, une fois |
 | `cluster/traefik-config.example.yaml` | IP réelle des visiteurs derrière Cloudflare (Traefik k3s). **Partagé avec les autres apps** : à fusionner | Admin, optionnel |
 | `rbac/deployer.yaml` | Compte `github-deployer` par namespace : sans suppression, sans exec, sans droits sur le cluster | Admin, une fois |
 | `rbac/make-kubeconfig.sh` | Produit le secret `KUBE_CONFIG` de chaque environnement | Admin, une fois |
@@ -35,7 +35,7 @@ Visiteur ─▶ Cloudflare (SSL Full) ─▶ Traefik (IngressRoute, certificat p
 | `feature/*` → PR | CI | — | — | — |
 | `dev` | CI | — | — | — |
 | `staging` | CI + build + deploy | `staging` | `alexandredfm-staging` | https://staging.alexandredfm.fr |
-| `main` | promotion de l'image + deploy | `production` | `alexandredfm-production` | https://alexandredfm.fr |
+| `main` | promotion de l'image + deploy | `production` | `alexandredfm-prod` | https://alexandredfm.fr |
 
 Promotion en fast-forward, sans merge commit : voir [../ops/BRANCHES.md](../ops/BRANCHES.md).
 
@@ -72,7 +72,7 @@ Promotion en fast-forward, sans merge commit : voir [../ops/BRANCHES.md](../ops/
 2. **KUBE_CONFIG** de chaque environnement :
    ```bash
    NAMESPACE=alexandredfm-staging    ./k8s/rbac/make-kubeconfig.sh https://<ip-ou-nom>:6443 | gh secret set KUBE_CONFIG --env staging
-   NAMESPACE=alexandredfm-production ./k8s/rbac/make-kubeconfig.sh https://<ip-ou-nom>:6443 | gh secret set KUBE_CONFIG --env production
+   NAMESPACE=alexandredfm-prod ./k8s/rbac/make-kubeconfig.sh https://<ip-ou-nom>:6443 | gh secret set KUBE_CONFIG --env production
    ```
    ✔︎ `KUBECONFIG=<(… | base64 --decode) kubectl -n alexandredfm-staging auth can-i create deployments` → `yes`, et `auth can-i delete deployments` → `no`.
 3. **TLS et Cloudflare** : pour l'instant, Traefik présente son certificat par défaut (`tls: {}` dans les IngressRoutes), et Cloudflare doit être en SSL **Full** (pas « Full (strict) », qui exige un certificat valide : erreur 526). Désactiver Rocket Loader et Email Address Obfuscation, qui cassent la CSP. Pour passer plus tard au certificat Origin, voir « Certificat Cloudflare Origin (plus tard) » ci-dessous.
@@ -90,6 +90,23 @@ Promotion en fast-forward, sans merge commit : voir [../ops/BRANCHES.md](../ops/
    Même chose pour la production après la promotion vers `main` (`-production`). Les deux IngressRoutes déclarent le même hôte : supprimer l'ancienne **juste après** le premier déploiement réussi.
 8. Supprimer les anciens secrets GitHub (`KUBERNETES_URL`, `KUBERNETES_SECRET`, `K8S_SECRETS_YAML_*`) et les anciens environnements (`../ops/github-setup.sh cleanup`).
 
+## Renommage du namespace de prod (novembre 2026)
+
+Le namespace de prod était `alexandredfm-production`. Il devient `alexandredfm-prod`, comme `alexandredfm-my-api-prod`. Un namespace ne se renomme pas : on crée le nouveau, on y déploie, puis on supprime l'ancien. Le portfolio n'a aucun volume, donc rien à copier. L'environnement GitHub garde le nom `production`.
+
+1. Admin : `kubectl apply -f k8s/cluster/namespaces.yaml && kubectl apply -f k8s/rbac/deployer.yaml`
+2. Nouveau `KUBE_CONFIG` de prod :
+   ```bash
+   NAMESPACE=alexandredfm-prod ./k8s/rbac/make-kubeconfig.sh https://<ip-ou-nom>:6443 | gh secret set KUBE_CONFIG --env production
+   ```
+3. Faire passer le changement par `dev` (PR), puis `staging`, puis `main`. Le déploiement de `main` crée tout dans `alexandredfm-prod`. Les deux namespaces servent alors la même image sur le même hôte : aucune différence visible.
+4. Vérifier : `kubectl -n alexandredfm-prod get pods`, puis https://alexandredfm.fr
+5. Supprimer l'ancien namespace, après avoir vérifié qu'il ne contient aucun volume :
+   ```bash
+   kubectl -n alexandredfm-production get pvc        # doit répondre "No resources found"
+   kubectl delete namespace alexandredfm-production
+   ```
+
 ## Certificat Cloudflare Origin (plus tard)
 
 Avec le mode « Full », Cloudflare chiffre jusqu'au serveur mais ne vérifie pas le certificat. « Full (strict) » avec un certificat Origin ferme cette faille. Le dépôt my-api suit la même démarche, avec le même certificat.
@@ -97,7 +114,7 @@ Avec le mode « Full », Cloudflare chiffre jusqu'au serveur mais ne vérifie pa
 1. Cloudflare → SSL/TLS → Origin Server → Create Certificate, pour `alexandredfm.fr` et `*.alexandredfm.fr` (15 ans par défaut). Garder la clé dans le gestionnaire de mots de passe.
 2. Le mettre dans chaque namespace :
    ```bash
-   for ns in alexandredfm-production alexandredfm-staging; do
+   for ns in alexandredfm-prod alexandredfm-staging; do
      kubectl -n $ns create secret tls alexandredfm-tls --cert=origin.pem --key=origin-key.pem
    done
    ```
@@ -112,7 +129,7 @@ Avec le mode « Full », Cloudflare chiffre jusqu'au serveur mais ne vérifie pa
 ## Exploitation
 
 ```bash
-ns=alexandredfm-production
+ns=alexandredfm-prod
 kubectl -n $ns get pods,svc,ingressroutes
 kubectl -n $ns logs -l app.kubernetes.io/component=web -f
 kubectl -n $ns rollout history deploy/alexandredfm-web
