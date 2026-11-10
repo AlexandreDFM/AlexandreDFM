@@ -259,5 +259,20 @@
                 "value": "AlexandreDFM"
             }
         ]
+    },
+    "meta": {
+        "description": "Alexandre De Freitas Martins, full stack developer: projects, blog and contact."
+    },
+    "home": {
+        "title": "AlexandreDFM - Portfolio",
+        "description": "Alexandre De Freitas Martins, full stack developer passionate about hownee.com and tux-inc.com. Explore my projects, my blog, and get in touch.",
+        "skipToContent": "Skip to main content",
+        "navigationLabel": "Main navigation",
+        "navigateTo": "Go to the {page} page",
+        "intro": "I'm a developer. I love",
+        "and": "and",
+        "outro": "with all my heart",
+        "heart": "blue heart",
+        "visit": "Visit {site} (opens in a new tab)"
     }
 }

@@ -25,27 +25,31 @@
  * THE SOFTWARE.
  */
 
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import HomeClient from "./home-client";
+import { defaultLocale, isLocale, type Locale } from "@/util/i18n";
+import { siteMetadata } from "@/util/metadata";
+import en from "@/locales/en.json";
+import fr from "@/locales/fr.json";
 
-export const metadata: Metadata = {
-    title: "AlexandreDFM - Portfolio",
-    description: "Alexandre De Freitas Martins - Full Stack Developer. Passionate about hownee.com and tux-inc.com. Explore my projects, blog, and get in touch.",
-    keywords: ["Alexandre De Freitas Martins", "AlexandreDFM", "Portfolio", "Developer", "Full Stack", "Web Development"],
-    authors: [{ name: "Alexandre De Freitas Martins" }],
-    openGraph: {
-        title: "AlexandreDFM - Portfolio",
-        description: "Alexandre De Freitas Martins - Full Stack Developer. Passionate about hownee.com and tux-inc.com.",
-        type: "website",
-        locale: "en_US",
-        siteName: "AlexandreDFM",
-    },
-    twitter: {
-        card: "summary_large_image",
-        title: "AlexandreDFM - Portfolio",
-        description: "Alexandre De Freitas Martins - Full Stack Developer. Passionate about hownee.com and tux-inc.com.",
-    },
-};
+type Params = Promise<{ locale: string }>;
+
+const MESSAGES: Record<Locale, typeof fr> = { fr, en };
+
+export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+    const { locale: raw } = await params;
+    const locale = isLocale(raw) ? raw : defaultLocale;
+    const { title, description } = MESSAGES[locale].home;
+    // openGraph and twitter replace the layout's objects: start from them so the
+    // locale, url and accounts stay, then set this page's title and description
+    const site = siteMetadata(locale, `/${locale}`);
+    return {
+        title: { absolute: title },
+        description,
+        openGraph: { ...site.openGraph, title, description },
+        twitter: { ...site.twitter, title, description },
+    };
+}
 
 export default function Home() {
     return <HomeClient />;

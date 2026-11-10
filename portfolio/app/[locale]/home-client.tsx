@@ -1,8 +1,8 @@
 /**
- * File Name: page.tsx
+ * File Name: home-client.tsx
  * Author: Alexandre Kévin DE FREITAS MARTINS
  * Creation Date: 5/1/2026
- * Description: This is the page.tsx
+ * Description: This is the home-client.tsx
  * Copyright (c) 2026 Alexandre Kévin DE FREITAS MARTINS
  * Version: 1.0.0
  *
@@ -32,15 +32,17 @@ import Link from "next/link";
 import { useTranslation } from "@/hooks/useTranslation";
 
 export default function HomeClient() {
-    const { locale } = useTranslation();
+    const { t, locale } = useTranslation();
 
     const navigation = [
-        { name: "About", href: `/${locale}/about` },
-        { name: "Projects", href: `/${locale}/projects` },
-        { name: "Contact", href: `/${locale}/contact` },
-        { name: "Blog", href: `/${locale}/blog` },
-        { name: "Gallery", href: `/${locale}/gallery` },
+        { name: t("common.about"), href: `/${locale}/about` },
+        { name: t("common.projects"), href: `/${locale}/projects` },
+        { name: t("common.contact"), href: `/${locale}/contact` },
+        { name: t("common.blog"), href: `/${locale}/blog` },
+        { name: t("common.gallery"), href: `/${locale}/gallery` },
     ];
+
+    const visit = (site: string) => t("home.visit").replace("{site}", site);
 
     return (
         <main className="flex h-screen flex-col items-center justify-center">
@@ -48,16 +50,16 @@ export default function HomeClient() {
             <a
                 href="#main-content"
                 className="bg-primary sr-only z-50 rounded-md px-4 py-2 text-white focus:not-sr-only focus:absolute focus:top-4 focus:left-4"
-                aria-label="Skip to main content"
+                aria-label={t("home.skipToContent")}
             >
-                Skip to main content
+                {t("home.skipToContent")}
             </a>
 
             {/* Navigation */}
             <nav
                 className="animate-fade-in my-16"
                 role="navigation"
-                aria-label="Main navigation"
+                aria-label={t("home.navigationLabel")}
             >
                 <ul className="flex items-center justify-center gap-4">
                     {navigation.map((item) => (
@@ -65,7 +67,7 @@ export default function HomeClient() {
                             <Link
                                 href={item.href}
                                 className="rounded-md px-3 py-2 text-sm text-primary-700 transition-all duration-500 hover:scale-110 hover:text-primary focus:text-primary focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-background dark:hover:text-white dark:focus:text-white focus:outline-none dark:text-blue-200/80"
-                                aria-label={`Navigate to ${item.name} page`}
+                                aria-label={t("home.navigateTo").replace("{page}", item.name)}
                             >
                                 {item.name}
                             </Link>
@@ -95,28 +97,28 @@ export default function HomeClient() {
             {/* Subtitle */}
             <div className="animate-fade-in my-16 text-center">
                 <h2 className="text-sm text-primary-700 dark:text-blue-200/80">
-                    I{"'"}m a developer. I love{" "}
+                    {t("home.intro")}{" "}
                     <Link
                         target="_blank"
                         href="https://hownee.com"
                         className="inline-block rounded-sm underline transition-all duration-500 hover:scale-110 hover:text-primary focus:text-primary focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-background dark:hover:text-white dark:focus:text-white focus:outline-none"
-                        aria-label="Visit hownee.com (opens in new tab)"
+                        aria-label={visit("hownee.com")}
                         rel="noopener noreferrer"
                     >
                         hownee.com
                     </Link>{" "}
-                    and{" "}
+                    {t("home.and")}{" "}
                     <Link
                         target="_blank"
                         href="https://tux-inc.com"
                         className="inline-block rounded-sm underline transition-all duration-500 hover:scale-110 hover:text-primary focus:text-primary focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-background dark:hover:text-white dark:focus:text-white focus:outline-none"
-                        aria-label="Visit tux-inc.com (opens in new tab)"
+                        aria-label={visit("tux-inc.com")}
                         rel="noopener noreferrer"
                     >
                         tux-inc.com
                     </Link>{" "}
-                    with all my heart{" "}
-                    <span role="img" aria-label="blue heart emoji">
+                    {t("home.outro")}{" "}
+                    <span role="img" aria-label={t("home.heart")}>
                         💙
                     </span>{" "}
                     !
