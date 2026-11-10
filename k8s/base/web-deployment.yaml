@@ -51,6 +51,13 @@ spec:
           ports:
             - name: http
               containerPort: 3000
+          # On a rollout, Traefik keeps sending requests to the old pod for a few
+          # seconds after it is told to stop (502 seen on /fr). The pause keeps it
+          # serving until it is removed from the endpoints; SIGTERM comes after.
+          lifecycle:
+            preStop:
+              sleep:
+                seconds: 10
           startupProbe:
             httpGet:
               path: /api/server/health
