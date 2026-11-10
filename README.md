@@ -8,7 +8,7 @@ I'm looking forward to hearing your opinion about my projects and I hope you lik
 
 <p align="left">
 <a href="https://www.linkedin.com/in/alexandre-de-freitas-martins/" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/linkedin.png" alt="" height="30" /></a>
-<a href="https://jetlags.fr/discord" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/icons/socials/discord.png" height="30" /></a>
+<a href="https://jetlags.fr/discord" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/discord.png" height="30" /></a>
 <a href="https://www.instagram.com/alexandre.dfm/" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/instagram.png" alt="" height="30" /></a>
 <a href="http://x.com/AlexandreDFM" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/x.png" alt="" height="30" /></a>
 <a href="https://www.twitch.tv/AlexandreDFM" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/twitch.png" alt="" height="30" /></a>
