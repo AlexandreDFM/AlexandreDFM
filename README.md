@@ -25,5 +25,5 @@ I'm looking forward to hearing your opinion about my projects and I hope you lik
 
 I love playing video games which you can find on my Twitch Channel (http://twitch.tv/AlexandreDFM or http://twitch.tv/jetlagsoff). On my channel, I also do live coding, sharing that allows me to grow with the help of others! If you think you'd like to find me, you can follow me online for now, and then participate in my discussions on Twitch!
 
-[![Top Langs](https://raw.githubusercontent.com/AlexandreDFM/AlexandreDFM/readme-cards/top-langs.svg)](https://github.com/AlexandreDFM)
 [![Stats Github](https://raw.githubusercontent.com/AlexandreDFM/AlexandreDFM/readme-cards/stats.svg)](https://github.com/AlexandreDFM)
+[![Top Langs](https://raw.githubusercontent.com/AlexandreDFM/AlexandreDFM/readme-cards/top-langs.svg)](https://github.com/AlexandreDFM)
