@@ -46,7 +46,7 @@ Promotion en fast-forward, sans merge commit : voir [../ops/BRANCHES.md](../ops/
 | Nom | staging | production | Contenu |
 | --- | --- | --- | --- |
 | `KUBE_CONFIG` | requis | requis | `NAMESPACE=alexandredfm-<env> ./k8s/rbac/make-kubeconfig.sh https://<api>:6443` |
-| `DIRECTUS_WEBSITE_TOKEN` | requis | requis | Token statique de l'utilisateur Directus « website » (lecture des éléments publiés et de `directus_files` uniquement) |
+| `DIRECTUS_WEBSITE_TOKEN` | requis | requis | Token statique de l'utilisateur Directus « website » (lecture des éléments publiés et de `directus_files` uniquement). En staging, il est créé et envoyé ici par `scripts/refresh-staging.sh` du dépôt my-api |
 | `DIRECTUS_CHECK_TOKEN` | — | conseillé | Token en lecture seule pour `content-check.yaml` (peut être le même que ci-dessus) |
 | `GHCR_PULL_TOKEN`, `GHCR_PULL_USER` | optionnel | optionnel | Seulement si le paquet GHCR est privé (PAT classique `read:packages`) |
 
@@ -55,7 +55,7 @@ Promotion en fast-forward, sans merge commit : voir [../ops/BRANCHES.md](../ops/
 | Nom | staging | production | Exemple |
 | --- | --- | --- | --- |
 | `PUBLIC_SITE_URL` | requis | requis | `https://staging.alexandredfm.fr` / `https://alexandredfm.fr` |
-| `DIRECTUS_URL` | requis | requis | `https://my-api.alexandredfm.fr` |
+| `DIRECTUS_URL` | requis | requis | `https://my-api-staging.alexandredfm.fr` / `https://my-api.alexandredfm.fr` (le Directus de staging est une copie de la prod : dépôt my-api, `k8s/README.md`) |
 | `SITE_NOINDEX` | `true` | `false` | `true` ajoute `X-Robots-Tag: noindex` sur toutes les pages |
 | `GOOGLE_SITE_VERIFICATION` | — | optionnel | Code de la Search Console |
 | `IMAGE_PLATFORMS` (variable du dépôt) | | | `linux/amd64` par défaut, `linux/amd64,linux/arm64` pour des nœuds ARM |
