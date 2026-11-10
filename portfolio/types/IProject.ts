@@ -1,9 +1,9 @@
 /**
- * File Name: project.ts
+ * File Name: IProject.ts
  * Author: Alexandre Kévin DE FREITAS MARTINS
  * Creation Date: 2024
- * Description: project.ts
- * Copyright (c) 2024 Tux Inc.
+ * Description: This is the IProject.ts
+ * Copyright (c) 2024 Alexandre Kévin DE FREITAS MARTINS
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the 'Software'), to deal

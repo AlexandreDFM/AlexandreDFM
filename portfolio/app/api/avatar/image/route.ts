@@ -3,7 +3,7 @@
  * Author: Alexandre Kévin DE FREITAS MARTINS
  * Creation Date: 26/12/2025
  * Description: This is the route.ts
- * Copyright (c) 2025 Hownee Inc.
+ * Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
  * Version: 1.0.0
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy

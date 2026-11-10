@@ -29,16 +29,21 @@ import "server-only";
 import type { Metadata, Viewport } from "next";
 import { getSiteUrl, isNoIndex } from "@/util/config";
 import { defaultLocale, isLocale, locales, type Locale } from "@/util/i18n";
+import en from "@/locales/en.json";
+import fr from "@/locales/fr.json";
 
 export const SITE_NAME = "AlexandreDFM Portfolio";
 export const AUTHOR = "Alexandre De Freitas Martins";
 /** Square portrait (460x460), used for JSON-LD and the PWA icons. */
 export const PORTRAIT_PATH = "/app/bio/alexandredfm.jpeg";
 
-const DESCRIPTIONS: Record<Locale, string> = {
-    fr: "Alexandre De Freitas Martins, développeur full stack : projets, blog et contact.",
-    en: "Alexandre De Freitas Martins, full stack developer: projects, blog and contact.",
-};
+/** Texts shown to search engines and link previews, kept with the other translations. */
+const MESSAGES: Record<Locale, typeof fr> = { fr, en };
+
+/** Default description of the site (locales/*.json, meta.description). */
+export function siteDescription(locale: Locale): string {
+    return MESSAGES[locale].meta.description;
+}
 
 export const viewport: Viewport = {
     width: "device-width",
@@ -76,7 +81,7 @@ export function siteMetadata(locale: Locale, pathname: string | null): Metadata 
             default: `${AUTHOR} - Developer Portfolio`,
             template: "AlexandreDFM - %s",
         },
-        description: DESCRIPTIONS[locale],
+        description: siteDescription(locale),
         applicationName: SITE_NAME,
         authors: [{ name: AUTHOR, url: siteUrl }],
         creator: AUTHOR,
@@ -138,17 +143,21 @@ export function siteJsonLd() {
             name: AUTHOR,
             url: siteUrl,
             image: `${siteUrl}${PORTRAIT_PATH}`,
+            // Same accounts as contact.items in locales/*.json and the GitHub profile README
             sameAs: [
                 "https://github.com/AlexandreDFM",
                 "https://www.linkedin.com/in/alexandre-de-freitas-martins/",
+                "https://www.instagram.com/alexandre.dfm/",
+                "https://x.com/AlexandreDFM",
+                "https://www.youtube.com/@AlexandreDFM",
+                "https://www.twitch.tv/alexandredfm",
             ],
             jobTitle: "Full Stack Developer",
-            // To keep up to date (see RAPPORT.md §6.2)
-            worksFor: {
-                "@type": "Organization",
-                name: "Tux Inc.",
-                url: "https://tux-inc.com",
-            },
+            // Personal development groups, not employers: memberOf rather than worksFor
+            memberOf: [
+                { "@type": "Organization", name: "Tux Inc.", url: "https://tux-inc.com" },
+                { "@type": "Organization", name: "Hownee", url: "https://hownee.com" },
+            ],
             knowsAbout: [
                 "Web Development",
                 "Cloud Solutions",
