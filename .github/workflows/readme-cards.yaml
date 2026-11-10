@@ -1,0 +1,44 @@
+name: README cards
+
+on:
+  schedule:
+    - cron: "0 4 * * *"   # once a day
+  workflow_dispatch:
+
+permissions:
+  contents: write         # push to the readme-cards branch only
+
+jobs:
+  cards:
+    runs-on: ubuntu-latest
+    environment: readme-cards
+    steps:
+      - name: Top languages
+        uses: readme-tools/github-readme-stats-action@v2.1.0
+        with:
+          card: top-langs
+          options: username=AlexandreDFM&layout=compact&theme=prussian&count_private=true
+          path: cards/top-langs.svg
+          token: ${{ secrets.README_CARDS_TOKEN }}
+          fail_on_error: "true"   # keep yesterday's card instead of an error card
+
+      - name: Stats
+        uses: readme-tools/github-readme-stats-action@v2.1.0
+        with:
+          card: stats
+          options: username=AlexandreDFM&show_icons=true&theme=prussian&count_private=true
+          path: cards/stats.svg
+          token: ${{ secrets.README_CARDS_TOKEN }}
+          fail_on_error: "true"   # keep yesterday's card instead of an error card
+
+      # main is protected: the cards live on their own branch, one commit replaced each day
+      - name: Publish on the readme-cards branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          cd cards
+          git init -q -b readme-cards
+          git add ./*.svg
+          git -c user.name=github-actions -c user.email=github-actions@users.noreply.github.com \
+            commit -qm "README cards"
+          git push -qf "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}" readme-cards
