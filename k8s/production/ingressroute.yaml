@@ -19,12 +19,16 @@ spec:
   routes:
     - match: Host(`alexandredfm.fr`)
       kind: Rule
+      # Wins over the former IngressRoute (same host) until the admin deletes it
+      priority: 1000
       services:
         - name: alexandredfm-web
           port: http
     # One canonical host: www -> apex (no duplicate content)
     - match: Host(`www.alexandredfm.fr`)
       kind: Rule
+      # Wins over the former IngressRoute (same host) until the admin deletes it
+      priority: 1000
       middlewares:
         - name: alexandredfm-redirect-www
       services:
