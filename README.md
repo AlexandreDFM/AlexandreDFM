@@ -19,11 +19,17 @@ I'm looking forward to hearing your opinion about my projects and I hope you lik
 <a href="https://www.jetlags.fr" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/other/chrome.png" alt="" height="30" /></a>
 </p>
 
-<img align="right" width="150" height="150" src="https://github.com/AlexandreDFM/Profil/blob/main/img/me/alexandre.jpg"></a>
+<img align="right" width="150" height="150" src="https://raw.githubusercontent.com/AlexandreDFM/Profil/main/img/me/alexandre.jpg"></a>
 
 ### Some fun facts about me:
 
-I love playing video games which you can find on my Twitch Channel (http://twitch.tv/AlexandreDFM or http://twitch.tv/jetlagsoff). On my channel, I also do live coding, sharing that allows me to grow with the help of others! If you think you'd like to find me, you can follow me online for now, and then participate in my discussions on Twitch!
+- I love to play video games, especially on my Twitch channel (http://twitch.tv/AlexandreDFM or http://twitch.tv/jetlagsoff)
+- I love to do live coding on Twitch, sharing my knowledge and learning from others
+- I love to create new things, whether it's a new project, a new feature, or a new way of doing things
+- I love to learn new things, whether it's a new programming language, a new framework, or a new way of thinking
 
-[![Stats Github](https://raw.githubusercontent.com/AlexandreDFM/AlexandreDFM/readme-cards/stats.svg)](https://github.com/AlexandreDFM)
-[![Top Langs](https://raw.githubusercontent.com/AlexandreDFM/AlexandreDFM/readme-cards/top-langs.svg)](https://github.com/AlexandreDFM)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/AlexandreDFM/AlexandreDFM/readme-cards/stats.svg" alt="Alexandre's GitHub Stats" width="45%" />
+  <img src="https://raw.githubusercontent.com/AlexandreDFM/AlexandreDFM/readme-cards/top-langs.svg" alt="Alexandre's Top Languages" width="45%" />
+</p>
+
