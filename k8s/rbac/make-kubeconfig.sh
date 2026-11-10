@@ -5,13 +5,13 @@
 #
 # Usage (with an admin kubeconfig, after applying deployer.yaml):
 #   ./k8s/rbac/make-kubeconfig.sh https://<api-server>:6443
-#   NAMESPACE=alexandredfm-production ./k8s/rbac/make-kubeconfig.sh https://<api-server>:6443 | gh secret set KUBE_CONFIG --env production
+#   NAMESPACE=alexandredfm-prod ./k8s/rbac/make-kubeconfig.sh https://<api-server>:6443 | gh secret set KUBE_CONFIG --env production
 #   NAMESPACE=alexandredfm-staging    ./k8s/rbac/make-kubeconfig.sh https://<api-server>:6443 | gh secret set KUBE_CONFIG --env staging
 #
 set -euo pipefail
 
 SERVER="${1:-}"
-NAMESPACE="${NAMESPACE:-alexandredfm-production}"
+NAMESPACE="${NAMESPACE:-alexandredfm-prod}"
 ACCOUNT="${ACCOUNT:-github-deployer}"
 
 if [ -z "$SERVER" ]; then

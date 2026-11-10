@@ -6,7 +6,7 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: alexandredfm-production
+  name: alexandredfm-prod
   labels:
     app.kubernetes.io/part-of: alexandredfm
     environment: production

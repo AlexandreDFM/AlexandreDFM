@@ -2,7 +2,7 @@ name: Deploy to Kubernetes
 
 # Called by build.yaml once the image of the commit exists:
 #   staging branch -> GitHub environment "staging"    -> namespace alexandredfm-staging
-#   main branch    -> GitHub environment "production" -> namespace alexandredfm-production
+#   main branch    -> GitHub environment "production" -> namespace alexandredfm-prod
 # A reusable workflow (not workflow_run): workflow_run only fires with the
 # definition of the default branch, so a first push on staging would never deploy.
 # One-time setup (namespaces, deploy accounts, TLS, GitHub Secrets and
@@ -34,7 +34,9 @@ jobs:
 
       - name: Target
         run: |
-          echo "NAMESPACE=$APP-$TARGET" >> "$GITHUB_ENV"
+          # Namespaces: alexandredfm-prod and alexandredfm-staging (GitHub environments: production, staging)
+          suffix=$([ "$TARGET" = production ] && echo prod || echo staging)
+          echo "NAMESPACE=$APP-$suffix" >> "$GITHUB_ENV"
           echo "MANIFESTS=k8s/$TARGET" >> "$GITHUB_ENV"
           echo "Deploying ${{ github.sha }} to $TARGET"
 
