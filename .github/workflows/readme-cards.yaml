@@ -12,12 +12,14 @@ jobs:
   cards:
     runs-on: ubuntu-latest
     environment: readme-cards
+    # Same size for both cards: 467x165. Top languages is 165 high with its 5
+    # languages (compact layout); the stats card gets there with 20 px lines (default 25).
     steps:
       - name: Top languages
         uses: readme-tools/github-readme-stats-action@v2.1.0
         with:
           card: top-langs
-          options: username=AlexandreDFM&layout=compact&theme=prussian&count_private=true
+          options: username=AlexandreDFM&layout=compact&theme=prussian&count_private=true&card_width=467
           path: cards/top-langs.svg
           token: ${{ secrets.README_CARDS_TOKEN }}
           fail_on_error: "true"   # keep yesterday's card instead of an error card
@@ -26,7 +28,7 @@ jobs:
         uses: readme-tools/github-readme-stats-action@v2.1.0
         with:
           card: stats
-          options: username=AlexandreDFM&show_icons=true&theme=prussian&count_private=true
+          options: username=AlexandreDFM&show_icons=true&theme=prussian&count_private=true&card_width=467&line_height=20
           path: cards/stats.svg
           token: ${{ secrets.README_CARDS_TOKEN }}
           fail_on_error: "true"   # keep yesterday's card instead of an error card
