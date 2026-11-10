@@ -55,10 +55,11 @@ jobs:
 
       - name: Check the one-time setup
         run: |
-          # Created by hand by the admin (Cloudflare Origin certificate)
+          # TLS Secrets named by the IngressRoutes (Cloudflare Origin certificate),
+          # created by hand by the admin. None while the ingress uses "tls: {}".
           missing=0
-          required_secrets=("$APP-tls")
-          for secret in "${required_secrets[@]}"; do
+          secrets=$(kubectl kustomize "$MANIFESTS" | awk '$1 == "secretName:" {print $2}' | sort -u)
+          for secret in $secrets; do
             if ! kubectl -n "$NAMESPACE" get secret "$secret" > /dev/null 2>&1; then
               echo "::error::Secret $secret is missing in $NAMESPACE (k8s/README.md, TLS)"
               missing=1

@@ -7,7 +7,7 @@ GitHub (staging/main) ──build.yaml──▶ ghcr.io/alexandredfm/alexandredf
                          │
                          └─deploy.yaml──▶ kubectl (compte github-deployer, limité au namespace)
                                               │
-Visiteur ─▶ Cloudflare (Full strict) ─▶ Traefik (IngressRoute, TLS Origin) ─▶ Service ─▶ Pod web :3000
+Visiteur ─▶ Cloudflare (SSL Full) ─▶ Traefik (IngressRoute, certificat par défaut) ─▶ Service ─▶ Pod web :3000
                                                                                     │
                                                                        Directus my-api (côté serveur)
 ```
@@ -75,13 +75,7 @@ Promotion en fast-forward, sans merge commit : voir [../ops/BRANCHES.md](../ops/
    NAMESPACE=alexandredfm-production ./k8s/rbac/make-kubeconfig.sh https://<ip-ou-nom>:6443 | gh secret set KUBE_CONFIG --env production
    ```
    ✔︎ `KUBECONFIG=<(… | base64 --decode) kubectl -n alexandredfm-staging auth can-i create deployments` → `yes`, et `auth can-i delete deployments` → `no`.
-3. **Certificat Cloudflare Origin** : Cloudflare → SSL/TLS → Origin Server → Create Certificate, pour `alexandredfm.fr` et `*.alexandredfm.fr`. Puis :
-   ```bash
-   for ns in alexandredfm-production alexandredfm-staging; do
-     kubectl -n $ns create secret tls alexandredfm-tls --cert=origin.pem --key=origin-key.pem
-   done
-   ```
-   Ensuite, Cloudflare → SSL/TLS → mode **Full (strict)**. Désactiver Rocket Loader et Email Address Obfuscation (CSP).
+3. **TLS et Cloudflare** : pour l'instant, Traefik présente son certificat par défaut (`tls: {}` dans les IngressRoutes), et Cloudflare doit être en SSL **Full** (pas « Full (strict) », qui exige un certificat valide : erreur 526). Désactiver Rocket Loader et Email Address Obfuscation, qui cassent la CSP. Pour passer plus tard au certificat Origin, voir « Certificat Cloudflare Origin (plus tard) » ci-dessous.
 4. **DNS** : l'enregistrement `staging` doit être **proxied** (nuage orange). Supprimer `www.staging`.
 5. **GitHub** : environnements `staging` (branche autorisée : `staging`) et `production` (branche autorisée : `main`), avec les Secrets et Variables ci-dessus. `../ops/github-setup.sh environments` les crée.
 6. **Paquet GHCR** : le rendre public (Package settings → Change visibility), ou définir `GHCR_PULL_TOKEN`.
@@ -95,6 +89,25 @@ Promotion en fast-forward, sans merge commit : voir [../ops/BRANCHES.md](../ops/
    ```
    Même chose pour la production après la promotion vers `main` (`-production`). Les deux IngressRoutes déclarent le même hôte : supprimer l'ancienne **juste après** le premier déploiement réussi.
 8. Supprimer les anciens secrets GitHub (`KUBERNETES_URL`, `KUBERNETES_SECRET`, `K8S_SECRETS_YAML_*`) et les anciens environnements (`../ops/github-setup.sh cleanup`).
+
+## Certificat Cloudflare Origin (plus tard)
+
+Avec le mode « Full », Cloudflare chiffre jusqu'au serveur mais ne vérifie pas le certificat. « Full (strict) » avec un certificat Origin ferme cette faille. Le dépôt my-api suit la même démarche, avec le même certificat.
+
+1. Cloudflare → SSL/TLS → Origin Server → Create Certificate, pour `alexandredfm.fr` et `*.alexandredfm.fr` (15 ans par défaut). Garder la clé dans le gestionnaire de mots de passe.
+2. Le mettre dans chaque namespace :
+   ```bash
+   for ns in alexandredfm-production alexandredfm-staging; do
+     kubectl -n $ns create secret tls alexandredfm-tls --cert=origin.pem --key=origin-key.pem
+   done
+   ```
+3. Dans `production/ingressroute.yaml` et `staging/ingressroute.yaml`, remplacer `tls: {}` par :
+   ```yaml
+   tls:
+     secretName: alexandredfm-tls
+   ```
+   Le workflow vérifie alors que ce Secret existe avant de déployer.
+4. Déployer (staging, puis prod), puis passer Cloudflare en **Full (strict)**.
 
 ## Exploitation
 
@@ -114,9 +127,9 @@ Redéployer sans changer de code (par exemple après avoir changé une Variable)
 | Symptôme | Cause | Correction |
 | --- | --- | --- |
 | « Secret KUBE_CONFIG is missing » | Secret absent dans l'environnement GitHub | Étape 2 |
-| « Secret alexandredfm-tls is missing » | Certificat Origin non créé dans ce namespace | Étape 3 |
+| « Secret alexandredfm-tls is missing » | IngressRoute passée au certificat Origin sans le Secret dans ce namespace | « Certificat Cloudflare Origin (plus tard) », étape 2 |
 | `ImagePullBackOff` (401) | Paquet GHCR privé sans `GHCR_PULL_TOKEN` | Étape 6 |
-| Erreur 526 Cloudflare | Mode Full (strict) avec le certificat par défaut de Traefik | Étape 3 |
+| Erreur 526 Cloudflare | Mode Full (strict) avec le certificat par défaut de Traefik | Repasser en « Full », ou installer le certificat Origin |
 | Le site sert l'ancienne version | Ancienne IngressRoute encore présente sur le même hôte | Étape 7 |
 | Images de projets en 404 | Fichiers absents du volume Directus | `docs/STORAGE.md` du dépôt my-api |
 | `invalid Kustomization … newTag` | Tag non mis entre guillemets (un SHA fait de chiffres est lu comme un nombre) | Le workflow met le tag entre guillemets ; garder le `sed` tel quel |
@@ -126,5 +139,5 @@ Redéployer sans changer de code (par exemple après avoir changé une Variable)
 
 - Le compte `github-deployer` peut créer et modifier deployments, services, secrets, configmaps, ingressroutes et middlewares. Il ne peut **pas** supprimer, ni faire `exec`, ni créer de namespace, ni agir dans l'autre namespace.
 - Les blocs `run` de `deploy.yaml`, exécutés avec ce compte, aboutissent à un rollout réussi : pod non-root, système de fichiers en lecture seule.
-- À travers Traefik : health 200, CSP et HSTS présents, `X-Robots-Tag: noindex` sur staging, `/about` avec `Accept-Language: de` → `/fr/about`, traversée de chemin → 400, `www` → 301 vers l'apex.
+- À travers Traefik (avec un certificat Origin factice) : health 200, CSP et HSTS présents, `X-Robots-Tag: noindex` sur staging, `/about` avec `Accept-Language: de` → `/fr/about`, traversée de chemin → 400, `www` → 301 vers l'apex.
 - Redéployer le même SHA déclenche bien le `rollout restart`.

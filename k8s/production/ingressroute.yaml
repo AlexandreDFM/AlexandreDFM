@@ -1,6 +1,10 @@
-# Behind Cloudflare (SSL mode "Full (strict)"): alexandredfm-tls holds the
-# Cloudflare Origin certificate for alexandredfm.fr and *.alexandredfm.fr,
-# created once by the admin (see k8s/README.md). k3s' Traefik has no ACME resolver.
+# TLS between Cloudflare and Traefik: for now Traefik's default certificate
+# ("tls: {}"), accepted by Cloudflare in SSL mode "Full". Later, Cloudflare Origin
+# certificate + mode "Full (strict)": replace "tls: {}" by
+#   tls:
+#     secretName: alexandredfm-tls
+# (k8s/README.md, "Certificat Cloudflare Origin"); the deploy workflow then
+# checks that this Secret exists.
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
@@ -11,8 +15,7 @@ metadata:
 spec:
   entryPoints:
     - websecure
-  tls:
-    secretName: alexandredfm-tls
+  tls: {}
   routes:
     - match: Host(`alexandredfm.fr`)
       kind: Rule

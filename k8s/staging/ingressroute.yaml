@@ -1,3 +1,10 @@
+# TLS between Cloudflare and Traefik: for now Traefik's default certificate
+# ("tls: {}"), accepted by Cloudflare in SSL mode "Full". Later, Cloudflare Origin
+# certificate + mode "Full (strict)": replace "tls: {}" by
+#   tls:
+#     secretName: alexandredfm-tls
+# (k8s/README.md, "Certificat Cloudflare Origin"); the deploy workflow then
+# checks that this Secret exists.
 # staging.alexandredfm.fr only: a second-level subdomain such as
 # www.staging.alexandredfm.fr is not covered by Cloudflare's universal certificate.
 # The DNS record must be proxied (orange cloud) so the server IP stays hidden.
@@ -11,8 +18,7 @@ metadata:
 spec:
   entryPoints:
     - websecure
-  tls:
-    secretName: alexandredfm-tls
+  tls: {}
   routes:
     - match: Host(`staging.alexandredfm.fr`)
       kind: Rule
