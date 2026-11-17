@@ -30,7 +30,7 @@ jobs:
       url: ${{ vars.PUBLIC_SITE_URL }}
     steps:
       - name: Checkout the built commit
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Target
         run: |
