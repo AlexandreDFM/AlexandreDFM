@@ -37,11 +37,11 @@ export default function Study() {
                 returnObjects: true,
             }).map((formation, index) => (
                 <div key={index} className="flex flex-col">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-4">
                         <h1 className="text-foreground/80 grow text-lg font-semibold">
                             {formation.degree}
                         </h1>
-                        <span className="text-muted shrink-0 align-middle text-sm">
+                        <span className="text-muted shrink-0 text-sm whitespace-nowrap">
                             {formation.date}
                         </span>
                     </div>
