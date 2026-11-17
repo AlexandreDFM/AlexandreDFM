@@ -3,7 +3,7 @@
  * Author: Alexandre Kévin DE FREITAS MARTINS
  * Creation Date: 9/11/2026
  * Description: Admin session cookies and Directus access-token refresh
- *              (shared by the server actions and the middleware)
+ *              (shared by the server actions and the proxy)
  * Copyright (c) 2026 Alexandre Kévin DE FREITAS MARTINS
  *
  */

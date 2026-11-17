@@ -94,7 +94,7 @@ export async function isAuthenticated(): Promise<boolean> {
     if (!token) return false;
 
     try {
-        // The middleware refreshes an expired access token before we get here
+        // The proxy refreshes an expired access token before we get here
         const directus = client();
         await directus.setToken(token);
         await directus.request(readMe({ fields: ["id"] }));
