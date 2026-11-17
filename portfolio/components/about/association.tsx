@@ -37,11 +37,11 @@ export default function Association() {
                 returnObjects: true,
             }).map((assoc, index) => (
                 <div key={index} className="flex flex-col">
-                    <div className="flex items-center justify-between">
-                        <h1 className="text-foreground/80 text-lg font-semibold">
+                    <div className="flex items-center justify-between gap-4">
+                        <h1 className="text-foreground/80 grow text-lg font-semibold">
                             {assoc.title}
                         </h1>
-                        <span className="text-muted text-sm">
+                        <span className="text-muted shrink-0 text-sm whitespace-nowrap">
                             {assoc.date}
                         </span>
                     </div>

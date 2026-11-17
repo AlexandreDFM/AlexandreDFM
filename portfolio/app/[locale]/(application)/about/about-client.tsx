@@ -130,6 +130,23 @@ export default function AboutClient() {
                             </div>
                         ))}
                     </div>
+
+                    {/* Centres d'intérêt */}
+                    <h1 className="my-4 text-lg font-semibold">
+                        {t("about.content.interest.title")}
+                    </h1>
+                    <div className="flex flex-wrap gap-2 px-4">
+                        {t<string[]>("about.content.interest.items", {
+                            returnObjects: true,
+                        }).map((text: string, index: number) => (
+                            <div
+                                key={index}
+                                className="rounded bg-primary-100 px-2 py-1 text-center text-sm text-primary-800 dark:bg-blue-500/10 dark:text-blue-200/80"
+                            >
+                                {text}
+                            </div>
+                        ))}
+                    </div>
                 </CardBody>
             </Card>
 

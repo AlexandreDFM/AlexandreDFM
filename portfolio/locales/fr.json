@@ -73,7 +73,7 @@
             "personnal_info": {
                 "myname": "Alexandre",
                 "mylastname": "De Freitas Martins",
-                "mydesc": "22 ans, Nice, France"
+                "mydesc": "23 ans, Nice, France"
             },
             "language": {
                 "title": "Langues",
@@ -89,7 +89,7 @@
                         "pourcent": "100%"
                     },
                     {
-                        "name": "Anglais (Toeic)",
+                        "name": "Anglais (TOEIC)",
                         "level": "B2",
                         "pourcent": "80%"
                     },
@@ -114,52 +114,60 @@
                     "C#",
                     "Python",
                     "Cython",
-                    "ReactNative",
-                    "Docker",
-                    "VueJS",
-                    "NuxtJS",
-                    "Directus",
-                    "NestJS",
-                    "NextJS",
+                    "JavaScript",
+                    "TypeScript",
                     "React",
-                    "Flutter"
+                    "React Native",
+                    "Next.js",
+                    "Vue.js",
+                    "Nuxt",
+                    "NestJS",
+                    "Flutter",
+                    "Directus",
+                    "Docker",
+                    "Kubernetes",
+                    "Git",
+                    "GitHub Actions"
                 ]
             },
             "interest": {
                 "title": "Centres d'intérêt",
                 "items": [
-                    "Graphisme, Montage",
+                    "Graphisme",
+                    "Montage",
                     "Jeux Vidéo",
-                    "Tennis, Tennis de Table"
+                    "Tennis",
+                    "Tennis de Table",
+                    "Escalade"
                 ]
             },
             "bio": {
                 "title": "Biographie",
                 "items": [
-                    "Actuellement en étude pour obtenir un diplôme m'octroyant le titre d'Expert en Technologies de l'Information et ingénierie logicielle à Epitech, j'aime créer et concevoir de moi-même des projets visuels ou auditifs que je partage sur les réseaux, ou dans mon cercle privé.",
-                    "Durant mon temps libre, j'approfondis mes connaissances et cherche à comprendre le fonctionnement des choses."
+                    "Expert en ingénierie logicielle et en technologies de l'information, je me passionne pour la conception de solutions innovantes. Je cultive un profil hybride, alliant une rigueur technique à une forte créativité visuelle et auditive que je développe à travers des projets personnels.",
+                    "Fort d'une grande capacité d'auto-apprentissage et d'une expérience éprouvée en conduite de projets complexes, je souhaite mettre mes compétences au service de défis concrets. Je suis actuellement à l'écoute d'opportunités en CDI ou CDD, ainsi que de propositions de doctorat en convention CIFRE."
                 ]
             },
             "formation": {
                 "title": "Formation",
                 "items": [
                     {
+                        "date": "09/2021 - 09/2026",
+                        "degree": "Titre d'Expert en technologies de l'information et ingénierie logicielle & Diplôme d'Expert en technologies de l'information",
+                        "school": "Epitech, 131 Bd René Cassin 06200 Nice, France",
+                        "desc": "Epitech m'a permis d'étudier le développement informatique en réalisant de nombreux projets : des algorithmes puissants, des sites internet à l'infrastructure complexe, ainsi que des jeux."
+                    },
+                    {
+                        "date": "09/2024 - 07/2025",
+                        "degree": "Études spécialisées en ingénierie des jeux vidéo et des logiciels",
+                        "school": "Keimyung University, Daegu, Corée du Sud",
+                        "desc": "Mon échange à Keimyung University m'a permis d'apprendre le développement de jeux vidéo à travers ses différentes complexités."
+                    },
+                    {
                         "date": "09/2018 - 07/2021",
                         "degree": "Baccalauréat Section Euro Allemande",
-                        "school": "Lycée Albert Calmette, 5 Av Marechal Foch 06000 Nice",
+                        "school": "Lycée Albert Calmette, 5 Av Maréchal Foch 06000 Nice, France",
                         "desc": "Spécialités NSI, Mathématiques et SVT"
-                    },
-                    {
-                        "date": "09/2021 - Aujourd'hui",
-                        "degree": "Titre d'Expert en Technologies de l'Information et ingénierie logicielle",
-                        "school": "Epitech, 131 Bd René Cassin 06200 Nice",
-                        "desc": "Epitech me permet d'étudier le développement informatique, en réalisant plusieurs projets contenant des algorithmes puissants, des sites internet à l'infrastructure complexe, ainsi que des jeux."
-                    },
-                    {
-                        "date": "09/2024 - Aujourd'hui",
-                        "degree": "Études spécialisées en ingénierie des jeux vidéos et des logiciels",
-                        "school": "Keimyung University, Daegu, South Korea",
-                        "desc": "Mon échange à Keimyung University me permet d'apprendre le développement de jeu vidéo à travers ses différentes complexités."
                     }
                 ]
             },
@@ -167,21 +175,33 @@
                 "title": "Expérience professionnelle",
                 "items": [
                     {
+                        "date": "03/2026 - 09/2026",
+                        "title": "CDD - Accompagnateur Pédagogique Epitech (APE)",
+                        "company": "Epitech, 2 Rue du Professeur Charles Appleton, 69007 Lyon, France",
+                        "desc": "Après mon changement de campus (Nice → Lyon), j'étais chargé de dispenser des cours et de fournir un soutien technique et relationnel aux étudiants. J'ai également réalisé divers outils et sujets pour améliorer l'expérience des étudiants et de l'école."
+                    },
+                    {
+                        "date": "09/2025 - 02/2026",
+                        "title": "Stage - Junior Accompagnateur Pédagogique Epitech (JAPE)",
+                        "company": "Epitech, 131 Bd René Cassin 06200 Nice, France",
+                        "desc": "Chargé de dispenser des cours et de fournir un soutien technique et relationnel aux étudiants. J'ai également réalisé divers outils et sujets pour améliorer l'expérience des étudiants et de l'école."
+                    },
+                    {
                         "date": "02/2024 - 06/2024",
                         "title": "Stage - Chef de Projet",
-                        "company": "Jeandet Peintures Refinishing (JPR) \\newline 307 Bd de la Madeleine, 06000 Nice, France",
-                        "desc": "Mon stage à JPR constitait à mettre à jour le parc informatique et logiciel ainsi qu'au développement d'une plateforme d'E-Commerce."
+                        "company": "Jeandet Peintures Refinishing (JPR), 307 Bd de la Madeleine, 06000 Nice, France",
+                        "desc": "Mon stage à JPR consistait à mettre à jour le parc informatique et logiciel de l'entreprise, ainsi qu'à développer une plateforme e-commerce."
                     },
                     {
                         "date": "02/2023 - 02/2024",
                         "title": "Stage - Assistant Epitech Régional (AER)",
-                        "company": "Epitech, 131 Bd René Cassin 06200 Nice",
-                        "desc": "En tant qu'Assistant Epitech Régional à Epitech, j'étais chargé de dispenser des cours et de fournir un soutien technique et relationnel aux étudiants."
+                        "company": "Epitech, 131 Bd René Cassin 06200 Nice, France",
+                        "desc": "En tant qu'AER, j'étais chargé de dispenser des cours et de fournir un soutien technique et relationnel aux étudiants."
                     },
                     {
                         "date": "07/2022 - 12/2022",
                         "title": "Stage - Développeur Full-Stack",
-                        "company": "Indigen Solutions, 29 Rue Pastorelli 06000 Nice",
+                        "company": "Indigen Solutions, 29 Rue Pastorelli 06000 Nice, France",
                         "desc": "Au sein d'Indigen Solutions, une société de solutions informatiques, j'ai pu être placé sur de nombreux projets web pour différentes PME."
                     }
                 ]
@@ -190,12 +210,12 @@
                 "title": "Certifications",
                 "items": [
                     {
-                        "date": "04/05/2023",
+                        "date": "4 mai 2023",
                         "certification": "STORYTELLING DIGITAL",
                         "deliveredBy": "IonisX"
                     },
                     {
-                        "date": "04/05/2023",
+                        "date": "4 mai 2023",
                         "certification": "GESTION DE PROJET INFORMATIQUE",
                         "deliveredBy": "IonisX"
                     }
@@ -205,19 +225,19 @@
                 "title": "Associations",
                 "items": [
                     {
-                        "date": "09/2022 - Aujourd'hui",
+                        "date": "09/2022 - 03/2026",
                         "title": "Epitech - Ambassadeur",
-                        "description": "Promotion, et mise en avant de l'école EPITECH à travers différents évènements."
+                        "description": "Promotion et mise en avant de l'école Epitech lors de différents évènements."
                     },
                     {
                         "date": "02/2023 - 08/2024",
                         "title": "Coding Club Nice - Coordinateur Coding Club",
-                        "description": "Accompagnement, et promotion d'activités destinées à apprendre l'informatique à un jeune public."
+                        "description": "Accompagnement et promotion d'activités destinées à apprendre l'informatique à un jeune public."
                     },
                     {
                         "date": "01/2022 - 07/2024",
                         "title": "E-MMA Nice - Communication Manager",
-                        "description": "E-mma est une association qui promeut la mixité dans le domaine technologique."
+                        "description": "E-MMA est une association qui promeut la mixité dans le domaine technologique."
                     }
                 ]
             }
