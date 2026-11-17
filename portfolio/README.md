@@ -35,7 +35,7 @@ Les fichiers uploadés dans le Directus local sont dans `backend/uploads/`.
 | Commande | Rôle |
 | --- | --- |
 | `pnpm dev` | Serveur de développement |
-| `pnpm build` / `pnpm start` | Build de production / serveur |
+| `pnpm build` / `pnpm start` | Build de production / serveur `standalone`, comme dans l'image Docker (`next start` ne fonctionne pas avec `output: "standalone"` depuis Next 16) |
 | `pnpm lint` | ESLint (flat config) |
 | `pnpm typecheck` | TypeScript |
 | `pnpm test` | Tests (Vitest) : négociation de la langue, proxy d'assets Directus |
@@ -60,7 +60,7 @@ Aucune variable `NEXT_PUBLIC_*` : la même image Docker sert en staging et en pr
 | --- | --- |
 | `app/[locale]/` | Pages (fr, en) et admin (`/admin`, connexion avec un compte Directus qui a accès à l'app) |
 | `app/api/` | Routes serveur : lecture et écriture Directus, proxy des images (`util/directus-asset.ts`) |
-| `middleware.ts` | Redirection de langue, rafraîchissement de la session admin, `noindex` |
+| `proxy.ts` | Redirection de langue, rafraîchissement de la session admin, `noindex` |
 | `util/` | Config, client Directus, i18n, métadonnées SEO, nettoyage HTML |
 | `components/` | Composants d'interface |
 | `styles/globals.css` | Thème (variables clair/sombre, jeton `muted`), animations |
