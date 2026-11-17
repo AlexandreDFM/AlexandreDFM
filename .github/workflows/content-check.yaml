@@ -47,7 +47,9 @@ jobs:
             | jq -r '.data[] | "\(.id) \(.filename_download)"' > files.txt
           echo "$(wc -l < files.txt) files declared in Directus"
           while read -r id name; do
-            code=$(curl -s -o /dev/null -w '%{http_code}' -r 0-0 \
+            # A small range, not 0-0: Directus answers 416 to a one-byte range
+            # even when the file is there (seen with Directus 11.10)
+            code=$(curl -s -o /dev/null -w '%{http_code}' -r 0-1023 \
               -H "Authorization: Bearer $DIRECTUS_TOKEN" "$DIRECTUS_URL/assets/$id")
             case "$code" in
               200|206) ;;
@@ -58,8 +60,14 @@ jobs:
       - name: Open an issue
         if: always()
         run: |
-          [ -s report.txt ] || { echo "Everything is served"; exit 0; }
           open=$(gh issue list -R "$GITHUB_REPOSITORY" --label content-check --state open --json number -q '.[0].number')
+          if [ ! -s report.txt ]; then
+            echo "Everything is served"
+            # Close the issue once the content is back
+            [ -z "$open" ] || gh issue close "$open" -R "$GITHUB_REPOSITORY" \
+              --comment "Content check of $(date -u +%F): everything is served again."
+            exit 0
+          fi
           if [ -n "$open" ]; then
             gh issue comment "$open" -R "$GITHUB_REPOSITORY" --body-file report.txt
           else
