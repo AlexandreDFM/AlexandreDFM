@@ -30,9 +30,17 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 import { ThemeSwitcher } from "./ThemeSwitcher";
-import { LanguageSwitcher } from "./LanguageSwitcher";
 import { useTranslation } from "../hooks/useTranslation";
 import React, { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
+
+// HeroUI's Select generates different ids on the server and in the browser,
+// which React reports as a hydration mismatch. Rendered in the browser only,
+// with a placeholder of the same size (w-36, h-10) so the navbar does not move.
+const LanguageSwitcher = dynamic(
+    () => import("./LanguageSwitcher").then((m) => m.LanguageSwitcher),
+    { ssr: false, loading: () => <div className="h-10 w-36" aria-hidden="true" /> },
+);
 
 export const Navbar: React.FC = () => {
     const { t, locale } = useTranslation();
