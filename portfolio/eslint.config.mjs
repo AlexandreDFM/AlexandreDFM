@@ -1,13 +1,18 @@
-// ESLint flat config (ESLint 9). `next lint` is deprecated: run `pnpm lint`.
-import { dirname } from "node:path";
-import { fileURLToPath } from "node:url";
-import { FlatCompat } from "@eslint/eslintrc";
-
-const compat = new FlatCompat({ baseDirectory: dirname(fileURLToPath(import.meta.url)) });
+// ESLint flat config. eslint-config-next 16 ships flat configs: no FlatCompat needed.
+import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
 
 const config = [
     { ignores: [".next/**", "node_modules/**", ".pnpm-store/**", "next-env.d.ts"] },
-    ...compat.extends("next/core-web-vitals"),
+    ...nextCoreWebVitals,
+    {
+        // New in eslint-plugin-react-hooks 7 (React Compiler rules). The flagged
+        // code (data loading and mount state set in effects) works as is: warnings
+        // until it is reworked, so the Next 16 upgrade changes no behaviour.
+        rules: {
+            "react-hooks/set-state-in-effect": "warn",
+            "react-hooks/immutability": "warn",
+        },
+    },
 ];
 
 export default config;
