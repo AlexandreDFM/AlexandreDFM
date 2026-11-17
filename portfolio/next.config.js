@@ -65,6 +65,8 @@ const nextConfig = {
     outputFileTracingRoot: dirname(fileURLToPath(import.meta.url)),
     poweredByHeader: false,
     devIndicators: false,
+    // next dev would otherwise write an AGENTS.md file into the project
+    agentRules: false,
     images: {
         remotePatterns: [
             {
