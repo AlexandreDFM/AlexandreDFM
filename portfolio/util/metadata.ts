@@ -56,7 +56,7 @@ export const viewport: Viewport = {
     ],
 };
 
-/** Locale and path of the current request, set by the middleware. */
+/** Locale and path of the current request, set by the proxy (proxy.ts). */
 export function requestLocale(headerLocale: string | null): Locale {
     return isLocale(headerLocale ?? undefined) ? (headerLocale as Locale) : defaultLocale;
 }

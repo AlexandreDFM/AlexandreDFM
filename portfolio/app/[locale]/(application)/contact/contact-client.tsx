@@ -27,6 +27,8 @@
 
 "use client";
 
+import type { JSX } from "react";
+
 import { Mail, Phone } from "lucide-react";
 import { GithubIcon, InstagramIcon, LinkedinIcon, XLogoIcon } from "@/components/brand-icons";
 

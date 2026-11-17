@@ -11,12 +11,8 @@ updates:
       minor-and-patch:
         update-types: [minor, patch]
     ignore:
-      # Majors that change the design or need a migration (see RAPPORT.md)
+      # HeroUI 3 changes the components: with the front-end redesign
       - dependency-name: "@heroui/react"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "next"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "react*"
         update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions

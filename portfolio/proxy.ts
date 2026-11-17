@@ -1,8 +1,8 @@
 /**
- * File Name: middleware.ts
+ * File Name: proxy.ts
  * Author: Alexandre Kévin DE FREITAS MARTINS
  * Creation Date: 10/8/2025
- * Description: This is the middleware.ts
+ * Description: This is the proxy.ts
  * Copyright (c) 2025 Alexandre Kévin DE FREITAS MARTINS
  * Version: 1.0.0
  *
@@ -61,7 +61,7 @@ function withRobotsHeader(response: NextResponse): NextResponse {
     return response;
 }
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl;
     const isApi = pathname.startsWith("/api/");
 

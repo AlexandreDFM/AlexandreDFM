@@ -25,6 +25,8 @@
  * THE SOFTWARE.
  */
 
+import type { JSX } from "react";
+
 export interface ISocial {
     icon: JSX.Element;
     href: string;
