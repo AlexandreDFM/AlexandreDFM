@@ -7,19 +7,39 @@ I'm looking forward to hearing your opinion about my projects and I hope you lik
 ### Find me on these websites:
 
 <p align="left">
-<a href="https://www.linkedin.com/in/alexandre-de-freitas-martins/" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/linkedin.png" alt="" height="30" /></a>
-<a href="https://jetlags.fr/discord" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/discord.png" height="30" /></a>
-<a href="https://www.instagram.com/alexandre.dfm/" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/instagram.png" alt="" height="30" /></a>
-<a href="http://x.com/AlexandreDFM" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/x.png" alt="" height="30" /></a>
-<a href="https://www.twitch.tv/AlexandreDFM" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/twitch.png" alt="" height="30" /></a>
-<a href="https://www.twitch.tv/jetlagsoff" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/twitch.png" alt="" height="30" /></a>
-<a href="https://www.youtube.com/@AlexandreDFM" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/youtube.png" alt="" height="30" /></a>
-<a href="https://www.github.com/AlexandreDFM" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/github.png" alt="" height="30" /></a>
-<a href="https://www.alexandredfm.fr" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/other/chrome.png" alt="" height="30" /></a>
-<a href="https://www.jetlags.fr" target="blank"><img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/other/chrome.png" alt="" height="30" /></a>
+  <a href="https://www.linkedin.com/in/alexandre-de-freitas-martins/" target="blank">
+    <img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/linkedin.png" alt="" height="30" />
+  </a>
+  <a href="https://jetlags.fr/discord" target="blank">
+    <img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/discord.png" height="30" />
+  </a>
+  <a href="https://www.instagram.com/alexandre.dfm/" target="blank">
+    <img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/instagram.png" alt="" height="30" />
+  </a>
+  <a href="http://x.com/AlexandreDFM" target="blank">
+    <img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/x.png" alt="" height="30" />
+  </a>
+  <a href="https://www.twitch.tv/AlexandreDFM" target="blank">
+    <img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/twitch.png" alt="" height="30" />
+  </a>
+  <a href="https://www.twitch.tv/jetlagsoff" target="blank">
+    <img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/twitch.png" alt="" height="30" />
+  </a>
+  <a href="https://www.youtube.com/@AlexandreDFM" target="blank">
+    <img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/youtube.png" alt="" height="30" />
+  </a>
+  <a href="https://www.github.com/AlexandreDFM" target="blank">
+    <img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/socials/github.png" alt="" height="30" />
+  </a>
+  <a href="https://www.alexandredfm.fr" target="blank">
+    <img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/other/chrome.png" alt="" height="30" />
+  </a>
+  <a href="https://www.jetlags.fr" target="blank">
+    <img align="center" src="https://github.com/AlexandreDFM/Profil/blob/main/img/other/chrome.png" alt="" height="30" />
+  </a>
 </p>
 
-<img align="right" width="150" height="150" src="https://raw.githubusercontent.com/AlexandreDFM/Profil/main/img/me/alexandre.jpg"></a>
+<img align="right" width="150" height="150" src="https://raw.githubusercontent.com/AlexandreDFM/Profil/main/img/me/alexandre.jpg" alt="Alexandre's profile picture" />
 
 ### Some fun facts about me:
 
