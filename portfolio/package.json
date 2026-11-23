@@ -18,14 +18,14 @@
         "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md,yaml}\""
     },
     "dependencies": {
-        "@directus/sdk": "^27.1.0",
+        "@directus/sdk": "^27.2.0",
         "@heroui/react": "^2.8.10",
         "@heroui/theme": "^2.4.26",
         "@tailwindcss/postcss": "^4.3.5",
         "@tailwindcss/typography": "^0.5.20",
         "framer-motion": "^14.14.0",
         "js-cookie": "^3.0.8",
-        "lucide-react": "^1.72.0",
+        "lucide-react": "^1.77.0",
         "next": "^16.4.6",
         "next-themes": "^0.4.6",
         "react": "^19.3.1",
@@ -47,6 +47,6 @@
         "prettier": "3.10.1",
         "prettier-plugin-tailwindcss": "^0.8.1",
         "typescript": "^6.0.3",
-        "vitest": "^5.1.0"
+        "vitest": "^5.1.1"
     }
 }
